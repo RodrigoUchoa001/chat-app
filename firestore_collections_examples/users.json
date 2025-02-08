@@ -1,0 +1,14 @@
+{
+    "user_uid_1": {
+        "username": "fulano",
+        "email": "fulano@email.com",
+        "photoURL": "link.com",
+        "name": "Fulano de tal",
+        "friends": ["user_uid_2", "user_uid_3"],
+        "friendRequests": ["user_uid_4", "user_uid_5"],
+        "createdAt": "01-02-2025 10:15:30 UTC-3",
+        "lastSeen": "01-02-2025 10:15:30 UTC-3",
+        "isOnline": true,
+        "fcmToken": "token_firebase_fcm"
+    }
+}

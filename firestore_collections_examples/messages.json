@@ -1,0 +1,30 @@
+{
+    "chat_uid_1_PRIVADO": {
+        "msg_001": {
+            "senderId": "user_uid_1",
+            "text": "Hello!",
+            "timestamp": "01-02-2025 09:45:10 UTC-3",
+            "seenBy": ["user_uid_2"]
+        },
+        "msg_002": {
+            "senderId": "user_uid_2",
+            "text": "Hello! How are you?",
+            "timestamp": "01-02-2025 09:46:00 UTC-3",
+            "seenBy": ["user_uid_1"]
+        }
+    },
+    "chatId_uid_2_GRUPO": {
+        "msg_001": {
+            "senderId": "user_uid_3",
+            "text": "Hello guys!",
+            "timestamp": "01-02-2025 20:35:10 UTC-3",
+            "seenBy": ["user_uid_1", "user_uid_2"]
+        },
+            "msg_002": {
+            "senderId": "user_uid_4",
+            "text": "kys",
+            "timestamp": "02-02-2025 10:15:00 UTC-3",
+            "seenBy": ["user_uid_1", "user_uid_2", "user_uid_3"]
+        }
+    }
+}
