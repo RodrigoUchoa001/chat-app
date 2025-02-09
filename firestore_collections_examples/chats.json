@@ -1,25 +1,25 @@
 {
-    "chat_uid_1_PRIVADO": {
-        "type": "private",
-        "participants": ["user_uid_1", "user_uid_2"],
-        "lastMessage": {
-            "senderId": "user_uid_1",
-            "text": "Hello!",
-            "timestamp": "01-02-2025 09:45:10 UTC-3"
-        },
-        "createdAt": "31-01-2025 23:00:40 UTC-3"
+  "chat_uid_1_PRIVADO": {
+    "type": "private",
+    "participants": ["user_uid_1", "user_uid_2"],
+    "lastMessage": {
+      "senderId": "user_uid_1",
+      "text": "Hello!",
+      "timestamp": "01-02-2025 09:45:10 UTC-3"
     },
-    "chatId_uid_2_GRUPO": {
-        "type": "group",
-        "groupName": "GRUPO DOS BROTHERS",
-        "groupPhotoURL": "link.com",
-        "admins": ["user_uid_1", "user_uid_2"],
-        "participants": ["user_uid_1", "user_uid_2", "user_uid_3", "user_uid_4"],
-        "lastMessage": {
-            "senderId": "user_uid_4",
-            "text": "nude when?",
-            "timestamp": "02-02-2025 10:15:00 UTC-3"
-        },
-        "createdAt": "01-02-2025 20:30:00 UTC-3"
-    }
+    "createdAt": "31-01-2025 23:00:40 UTC-3"
+  },
+  "chatId_uid_2_GRUPO": {
+    "type": "group",
+    "groupName": "GRUPO DOS BROTHERS",
+    "groupPhotoURL": "link.com",
+    "admins": ["user_uid_1", "user_uid_2"],
+    "participants": ["user_uid_1", "user_uid_2", "user_uid_3", "user_uid_4"],
+    "lastMessage": {
+      "senderId": "user_uid_4",
+      "text": "nude when?",
+      "timestamp": "02-02-2025 10:15:00 UTC-3"
+    },
+    "createdAt": "01-02-2025 20:30:00 UTC-3"
+  }
 }
