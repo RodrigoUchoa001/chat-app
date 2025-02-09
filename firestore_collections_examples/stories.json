@@ -1,0 +1,30 @@
+{
+  "user_uid_1": {
+    "story_abc123": {
+      "mediaURL": "https://link.com/story.jpg",
+      "mediaType": "image",
+      "caption": "Curtindo o dia!",
+      "createdAt": "02-02-2025 15:30:00 UTC-3",
+      "expiresAt": "03-02-2025 15:30:00 UTC-3",
+      "views": ["uid_456", "uid_789"]
+    },
+    "story_def456": {
+      "mediaURL": "https://link.com/video.mp4",
+      "mediaType": "video",
+      "caption": "Novo projeto Flutter 🚀",
+      "createdAt": "02-02-2025 16:00:00 UTC-3",
+      "expiresAt": "03-02-2025 16:00:00 UTC-3",
+      "views": []
+    }
+  },
+  "uid_456": {
+    "story_xyz789": {
+      "mediaURL": "https://link.com/story2.jpg",
+      "mediaType": "image",
+      "caption": "Café da manhã ☕",
+      "createdAt": "02-02-2025 08:00:00 UTC-3",
+      "expiresAt": "03-02-2025 08:00:00 UTC-3",
+      "views": ["uid_123"]
+    }
+  }
+}
