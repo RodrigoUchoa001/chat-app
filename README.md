@@ -1,6 +1,6 @@
 # Chat App
 
-A chat app developed with Firebase Firestore and Flutter.
+A chat app developed with Firebase and Flutter.
 
 Inspired by the design of Alex Hylton, design available at [Chatting App UI kit - Chatbox](https://www.figma.com/community/file/1152599900945065665).
 
