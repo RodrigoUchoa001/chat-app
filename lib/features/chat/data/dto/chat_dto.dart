@@ -55,7 +55,9 @@ class MessageDTO {
     senderId = json['senderId'];
     text = json['text'];
     timestamp = json['timestamp'];
-    seenBy = json['seenBy'].cast<String>();
+    if (json['seenBy'] != null) {
+      seenBy = json['seenBy'].cast<String>();
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -63,7 +65,9 @@ class MessageDTO {
     data['senderId'] = senderId;
     data['text'] = text;
     data['timestamp'] = timestamp;
-    data['seenBy'] = seenBy;
+    if (seenBy != null) {
+      data['seenBy'] = seenBy;
+    }
     return data;
   }
 }
