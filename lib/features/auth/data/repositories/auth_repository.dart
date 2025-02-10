@@ -57,15 +57,59 @@ class AuthRepository implements AuthRepositoryInterface {
   }
 
   @override
-  Future<bool> loginWithEmailAndPassword(String email, String password) {
-    // TODO: implement loginWithEmailAndPassword
-    throw UnimplementedError();
+  Future<bool> loginWithEmailAndPassword(String email, String password) async {
+    try {
+      final userCredential = await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      final user = userCredential.user;
+      if (user == null) return false;
+
+      final userRef = _firestore.collection('users').doc(user.uid);
+      await userRef.update({'isOnline': true});
+
+      return true;
+    } catch (e) {
+      print('Erro no login com email e senha: $e');
+      return false;
+    }
   }
 
   @override
-  Future<bool> registerWithEmailAndPassword(String email, String password) {
-    // TODO: implement registerWithEmailAndPassword
-    throw UnimplementedError();
+  Future<bool> registerWithEmailAndPassword(
+      String email, String password) async {
+    try {
+      final userCredential = await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      final user = userCredential.user;
+      if (user == null) return false;
+
+      final userRef = _firestore.collection('users').doc(user.uid);
+
+      await userRef.set(
+        UserDTO(
+          name: user.displayName ?? 'No Name',
+          email: user.email,
+          photoURL: user.photoURL ?? '',
+          createdAt: FieldValue.serverTimestamp().toString(),
+          isOnline: true,
+          lastSeen: null,
+          friends: [],
+          friendRequests: [],
+          fcmToken: '',
+        ).toJson(),
+      );
+
+      return true;
+    } catch (e) {
+      print('Erro no registro com email e senha: $e');
+      return false;
+    }
   }
 
   @override
