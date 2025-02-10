@@ -1,4 +1,5 @@
 class UserDTO {
+  String? uid;
   String? email;
   String? photoURL;
   String? name;
@@ -11,6 +12,7 @@ class UserDTO {
 
   UserDTO(
       {this.email,
+      this.uid,
       this.photoURL,
       this.name,
       this.friends,
@@ -21,6 +23,7 @@ class UserDTO {
       this.fcmToken});
 
   UserDTO.fromJson(Map<String, dynamic> json) {
+    uid = json['uid'];
     email = json['email'];
     photoURL = json['photoURL'];
     name = json['name'];
