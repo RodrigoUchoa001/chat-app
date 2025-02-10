@@ -1,6 +1,16 @@
+import 'package:chatapp/core/providers/firebase_auth_providers.dart';
+import 'package:chatapp/core/providers/firebase_firestore_provider.dart';
 import 'package:chatapp/features/chat/data/dto/chat_dto.dart';
 import 'package:chatapp/features/chat/domain/repositories/chat_repository_interface.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+final chatRepositoryProvider = Provider<ChatRepositoryInterface>((ref) {
+  final firestore = ref.watch(firestoreProvider);
+  final currentUser = ref.watch(currentUserProvider).asData?.value;
+
+  return ChatRepository(firestore, currentUser!.uid);
+});
 
 class ChatRepository implements ChatRepositoryInterface {
   final FirebaseFirestore _firestore;
