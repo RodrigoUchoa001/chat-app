@@ -1,6 +1,6 @@
 import 'package:chatapp/features/auth/data/repositories/auth_repository.dart';
 import 'package:chatapp/features/auth/domain/repositories/auth_repository_interface.dart';
-import 'package:riverpod/riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final authControllerProvider = Provider<AuthController>((ref) {
   final authRepository = ref.watch(authRepositoryProvider);
