@@ -1,8 +1,17 @@
+import 'package:chatapp/core/providers/firebase_auth_providers.dart';
+import 'package:chatapp/core/providers/firebase_firestore_provider.dart';
 import 'package:chatapp/features/auth/data/dto/user_dto.dart';
 import 'package:chatapp/features/auth/domain/repositories/auth_repository_interface.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:riverpod/riverpod.dart';
+
+final authRepositoryProvider = Provider<AuthRepositoryInterface>((ref) {
+  final auth = ref.watch(authProvider);
+  final firestore = ref.watch(firestoreProvider);
+  return AuthRepository(auth, firestore);
+});
 
 class AuthRepository implements AuthRepositoryInterface {
   final FirebaseAuth _auth;
