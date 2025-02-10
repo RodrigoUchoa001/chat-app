@@ -33,13 +33,15 @@ class AuthRepository implements AuthRepositoryInterface {
       if (!userSnapshot.exists) {
         await userRef.set(
           UserDTO(
-            email: user.email,
             name: user.displayName ?? 'No Name',
+            email: user.email,
             photoURL: user.photoURL ?? '',
             createdAt: FieldValue.serverTimestamp().toString(),
             isOnline: true,
             lastSeen: null,
             friends: [],
+            friendRequests: [],
+            fcmToken: '',
           ).toJson(),
         );
       } else {
