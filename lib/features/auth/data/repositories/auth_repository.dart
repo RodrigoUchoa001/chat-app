@@ -7,13 +7,14 @@ import 'package:google_sign_in/google_sign_in.dart';
 class AuthRepository implements AuthRepositoryInterface {
   final FirebaseAuth _auth;
   final FirebaseFirestore _firestore;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   AuthRepository(this._auth, this._firestore);
 
   @override
   Future<bool> loginWithGoogle() async {
     try {
-      final googleAccount = await GoogleSignIn().signIn();
+      final googleAccount = await _googleSignIn.signIn();
       if (googleAccount == null) return false;
 
       final googleAuth = await googleAccount.authentication;
@@ -68,8 +69,8 @@ class AuthRepository implements AuthRepositoryInterface {
   }
 
   @override
-  Future<bool> logout() {
-    // TODO: implement logout
-    throw UnimplementedError();
+  Future<void> logout() async {
+    await _auth.signOut();
+    await _googleSignIn.signOut();
   }
 }
