@@ -50,11 +50,17 @@ class ChatRepository implements ChatRepositoryInterface {
   Future<MessageDTO?> sendMessage(String chatId, String message) {
     final messageRef = _firestore.collection('messages').doc(chatId);
 
-    return messageRef.collection('messages').add({
-      'senderId': _userId,
-      'text': message,
-      'timestamp': FieldValue.serverTimestamp(),
-    }).then((doc) {
+    return messageRef
+        .collection('messages')
+        .add(
+          MessageDTO(
+            senderId: _userId,
+            text: message,
+            timestamp: DateTime.now().toString(),
+            seenBy: [],
+          ).toJson(),
+        )
+        .then((doc) {
       // updating last message in chat doc
       final chatRef = _firestore.collection('chats').doc(chatId);
       chatRef.update({
