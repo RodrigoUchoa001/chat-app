@@ -1,6 +1,7 @@
 import 'package:chatapp/gen/fonts.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class OnBoardExistingAccount extends ConsumerWidget {
   const OnBoardExistingAccount({super.key});
@@ -19,13 +20,18 @@ class OnBoardExistingAccount extends ConsumerWidget {
             fontWeight: FontWeight.normal,
           ),
         ),
-        Text(
-          "Log in",
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 16,
-            fontFamily: FontFamily.circular,
-            fontWeight: FontWeight.bold,
+        GestureDetector(
+          onTap: () {
+            context.go('/login');
+          },
+          child: Text(
+            "Log in",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+              fontFamily: FontFamily.circular,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
       ],
