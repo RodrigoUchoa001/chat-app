@@ -80,6 +80,18 @@ class ChatRepository implements ChatRepositoryInterface {
   }
 
   @override
+  Future<void> markMessageAsSeen(String chatId, String messageId) {
+    return _firestore
+        .collection('messages')
+        .doc(chatId)
+        .collection('messages')
+        .doc(messageId)
+        .update({
+      'seenBy': FieldValue.arrayUnion([_userId])
+    });
+  }
+
+  @override
   Future<void> createPrivateChat(String friendId) {
     return _firestore.collection('chats').add({
       'type': "private",
