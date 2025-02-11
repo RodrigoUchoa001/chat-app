@@ -4,7 +4,7 @@ import 'package:chatapp/features/onboarding/presentation/widgets/on_board_existi
 import 'package:chatapp/features/onboarding/presentation/widgets/on_board_login_buttons_row.dart';
 import 'package:chatapp/features/onboarding/presentation/widgets/on_board_sign_up_button.dart';
 import 'package:chatapp/features/onboarding/presentation/widgets/on_board_subtitle.dart';
-import 'package:chatapp/features/onboarding/presentation/widgets/on_board_title.dart';
+import 'package:chatapp/gen/fonts.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -38,7 +38,25 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                   const SizedBox(height: 64),
                   OnBoardAppbar(),
                   const SizedBox(height: 43.8),
-                  OnBoardTitle(),
+                  Text(
+                    'Connect friends',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 68,
+                      height: 1.2,
+                      fontFamily: FontFamily.caros,
+                    ),
+                  ),
+                  Text(
+                    'easily & quickly',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 68,
+                      height: 1.2,
+                      fontFamily: FontFamily.caros,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                   const SizedBox(height: 16),
                   OnBoardSubtitle(),
                   const SizedBox(height: 38),

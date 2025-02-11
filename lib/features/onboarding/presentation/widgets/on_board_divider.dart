@@ -21,7 +21,7 @@ class OnBoardDivider extends ConsumerWidget {
             "OR",
             style: TextStyle(
               color: Color(0xFFD6E4E0),
-              fontSize: 16,
+              fontSize: 14,
               fontFamily: FontFamily.circular,
               fontWeight: FontWeight.w100,
             ),
