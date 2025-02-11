@@ -21,8 +21,8 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
         child: Stack(
           children: [
             Positioned(
-              top: -100,
-              left: 0,
+              top: -200,
+              left: -100,
               child: Image(
                 image: AssetImage('assets/background/elipse.png'),
               ),
@@ -57,6 +57,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 68,
+                      height: 1.2,
                       fontFamily: FontFamily.caros,
                     ),
                   ),
@@ -65,6 +66,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 68,
+                      height: 1.2,
                       fontFamily: FontFamily.caros,
                       fontWeight: FontWeight.bold,
                     ),
