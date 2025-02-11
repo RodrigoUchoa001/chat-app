@@ -68,7 +68,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             ),
             const SizedBox(height: 16),
             const Text(
-              'Welcome back! Sign in using your social account or email to continue with us',
+              'Welcome back! Sign in using your social account or email to continue with us.',
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Color(0xFF797C7B),
