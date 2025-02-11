@@ -20,7 +20,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF201c1c),
+      backgroundColor: Color(0xFF1A1A1A),
       body: SafeArea(
         child: Stack(
           children: [
