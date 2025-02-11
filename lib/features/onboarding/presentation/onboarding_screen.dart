@@ -1,8 +1,8 @@
+import 'package:chatapp/core/widgets/chat_text_button.dart';
 import 'package:chatapp/features/onboarding/presentation/widgets/on_board_appbar.dart';
 import 'package:chatapp/features/onboarding/presentation/widgets/on_board_divider.dart';
 import 'package:chatapp/features/onboarding/presentation/widgets/on_board_existing_account.dart';
 import 'package:chatapp/features/onboarding/presentation/widgets/on_board_login_buttons_row.dart';
-import 'package:chatapp/features/onboarding/presentation/widgets/on_board_sign_up_button.dart';
 import 'package:chatapp/features/onboarding/presentation/widgets/on_board_subtitle.dart';
 import 'package:chatapp/gen/fonts.gen.dart';
 import 'package:flutter/material.dart';
@@ -64,7 +64,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                   const SizedBox(height: 20),
                   OnBoardDivider(),
                   const SizedBox(height: 20),
-                  OnBoardSignUpButton(),
+                  ChatTextButton(onTap: () {}, text: "Sign up with email"),
                   const SizedBox(height: 46),
                   OnBoardExistingAccount(),
                 ],
