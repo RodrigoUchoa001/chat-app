@@ -28,15 +28,43 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         child: ListView(
           children: [
             const SizedBox(height: 60),
-            const Text(
-              'Log in to Chatbox',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.white,
-                fontFamily: FontFamily.caros,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Stack(
+                  alignment: Alignment.bottomLeft,
+                  children: [
+                    Container(
+                      height: 8,
+                      width:
+                          61.1, //change accordingly to the size of the text below
+                      decoration: BoxDecoration(
+                        color: Color(0xFF58C3b6),
+                      ),
+                    ),
+                    const Text(
+                      'Log in ',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontFamily: FontFamily.caros,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+                const Text(
+                  ' to Chatbox',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: FontFamily.caros,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 16),
             const Text(
