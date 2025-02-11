@@ -12,4 +12,7 @@ class FontFamily {
 
   /// Font family: Caros
   static const String caros = 'Caros';
+
+  /// Font family: circular
+  static const String circular = 'circular';
 }
