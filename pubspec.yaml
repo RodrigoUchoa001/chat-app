@@ -17,6 +17,7 @@ dependencies:
   google_sign_in: ^6.2.2
   async: ^2.11.0
   flutter_svg: ^2.0.17
+  go_router: ^14.8.0
 
 dev_dependencies:
   flutter_test:
@@ -46,3 +47,6 @@ flutter:
         - asset: assets/fonts/caros/Caros Medium.otf
         - asset: assets/fonts/caros/Caros Italic.otf
           style: italic
+    - family: circular
+      fonts:
+        - asset: assets/fonts/circular_std/circular-std-medium-500.ttf
