@@ -33,6 +33,10 @@ class $AssetsIconsGen {
   /// File path: assets/icons/apple.svg
   SvgGenImage get apple => const SvgGenImage('assets/icons/apple.svg');
 
+  /// File path: assets/icons/back_button.svg
+  SvgGenImage get backButton =>
+      const SvgGenImage('assets/icons/back_button.svg');
+
   /// File path: assets/icons/facebook.svg
   SvgGenImage get facebook => const SvgGenImage('assets/icons/facebook.svg');
 
@@ -49,7 +53,7 @@ class $AssetsIconsGen {
 
   /// List of all assets
   List<SvgGenImage> get values =>
-      [apple, facebook, google, logoForBlackBack, logoForWhiteBack];
+      [apple, backButton, facebook, google, logoForBlackBack, logoForWhiteBack];
 }
 
 class Assets {
