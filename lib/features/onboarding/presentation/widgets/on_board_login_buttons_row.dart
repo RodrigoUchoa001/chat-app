@@ -1,3 +1,4 @@
+import 'package:chatapp/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:chatapp/features/onboarding/presentation/widgets/login_icon_button.dart';
 import 'package:chatapp/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ class OnBoardLoginButtonsRow extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final auth = ref.watch(authControllerProvider);
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -21,7 +23,13 @@ class OnBoardLoginButtonsRow extends ConsumerWidget {
         const SizedBox(width: 20),
         LoginIconButton(
           iconPath: Assets.icons.google.path,
-          onTap: () {},
+          onTap: () async {
+            if (await auth.loginWithGoogle()) {
+              Fluttertoast.showToast(msg: 'Login successful!');
+              await auth.logout();
+            }
+            Fluttertoast.showToast(msg: 'Login failed!');
+          },
         ),
         const SizedBox(width: 20),
         LoginIconButton(
