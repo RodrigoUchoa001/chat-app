@@ -226,7 +226,7 @@ packages:
     source: hosted
     version: "1.2.0"
   email_validator:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: email_validator
       sha256: b19aa5d92fdd76fbc65112060c94d45ba855105a28bb6e462de7ff03b12fa1fb
@@ -369,7 +369,7 @@ packages:
     source: sdk
     version: "0.0.0"
   fluttertoast:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: fluttertoast
       sha256: "25e51620424d92d3db3832464774a6143b5053f15e382d8ffbfd40b6e795dcf1"
