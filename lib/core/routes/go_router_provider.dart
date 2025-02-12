@@ -1,5 +1,6 @@
 import 'package:chatapp/core/routes/route_names.dart';
 import 'package:chatapp/features/auth/presentation/login_screen.dart';
+import 'package:chatapp/features/auth/presentation/signup_screen.dart';
 import 'package:chatapp/features/onboarding/presentation/onboarding_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -17,6 +18,11 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         path: '/login',
         name: loginRoute,
         builder: (context, state) => const LoginScreen(),
+      ),
+      GoRoute(
+        path: '/signup',
+        name: signupRoute,
+        builder: (context, state) => const SignupScreen(),
       ),
     ],
   );
