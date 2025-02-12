@@ -21,6 +21,21 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
+  final _formKey = GlobalKey<FormState>();
+
+  String? _validator(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return 'This field cannot be empty.';
+    }
+    return null;
+  }
+
+  void _validate() {
+    if (_formKey.currentState!.validate()) {
+      // TODO: Implement login
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,35 +46,40 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       ),
       body: SafeArea(
         minimum: EdgeInsets.symmetric(horizontal: 30),
-        child: ListView(
-          children: [
-            const SizedBox(height: 60),
-            AuthTitle(
-              title1: 'Log in',
-              title2: 'to Chatbox',
-              containerWidth: 55.5,
-            ),
-            const SizedBox(height: 16),
-            AuthSubtitle(
-              subtitle:
-                  'Welcome back! Sign in using your social account or email to continue with us.',
-            ),
-            const SizedBox(height: 30),
-            OnBoardLoginButtonsRow(),
-            const SizedBox(height: 30),
-            OnBoardDivider(),
-            const SizedBox(height: 30),
-            AuthTextField(
-              controller: emailController,
-              labelText: 'Email',
-            ),
-            const SizedBox(height: 30),
-            AuthTextField(
-              controller: passwordController,
-              labelText: 'Password',
-              obscureText: true,
-            ),
-          ],
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              const SizedBox(height: 60),
+              AuthTitle(
+                title1: 'Log in',
+                title2: 'to Chatbox',
+                containerWidth: 55.5,
+              ),
+              const SizedBox(height: 16),
+              AuthSubtitle(
+                subtitle:
+                    'Welcome back! Sign in using your social account or email to continue with us.',
+              ),
+              const SizedBox(height: 30),
+              OnBoardLoginButtonsRow(),
+              const SizedBox(height: 30),
+              OnBoardDivider(),
+              const SizedBox(height: 30),
+              AuthTextField(
+                controller: emailController,
+                labelText: 'Email',
+                validator: _validator,
+              ),
+              const SizedBox(height: 30),
+              AuthTextField(
+                controller: passwordController,
+                labelText: 'Password',
+                obscureText: true,
+                validator: _validator,
+              ),
+            ],
+          ),
         ),
       ),
       bottomSheet: Container(
@@ -70,7 +90,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: ChatTextButton(
-                onTap: () {},
+                onTap: () => _validate(),
                 text: 'Log in',
                 buttonColor: Color(0xFF24786D),
                 textColor: Colors.white,
