@@ -88,7 +88,7 @@ class AuthRepository implements AuthRepositoryInterface {
 
   @override
   Future<bool> registerWithEmailAndPassword(
-      String email, String password) async {
+      String name, String email, String password) async {
     try {
       final userCredential = await _auth.createUserWithEmailAndPassword(
         email: email,
@@ -100,23 +100,32 @@ class AuthRepository implements AuthRepositoryInterface {
 
       final userRef = _firestore.collection('users').doc(user.uid);
 
-      await userRef.set(
-        UserDTO(
-          name: user.displayName ?? 'No Name',
-          email: user.email,
-          photoURL: user.photoURL ?? '',
-          createdAt: FieldValue.serverTimestamp().toString(),
-          isOnline: true,
-          lastSeen: null,
-          friends: [],
-          friendRequests: [],
-          fcmToken: '',
-        ).toJson(),
-      );
+      final userData = UserDTO(
+        name: name,
+        email: user.email,
+        photoURL: user.photoURL ?? '',
+        createdAt: DateTime.now().toString(),
+        isOnline: true,
+        lastSeen: null,
+        friends: [],
+        friendRequests: [],
+        fcmToken: '',
+      ).toJson();
+
+      print('user data: $userData');
+
+      await userRef.set(userData);
 
       return true;
-    } catch (e) {
-      print('Erro no registro com email e senha: $e');
+    } on FirebaseAuthException catch (e) {
+      print('🔥 FirebaseAuthException: Code ${e.code}, Message: ${e.message}');
+      return false;
+    } on FirebaseException catch (e) {
+      print('🔥 FirebaseException: Code ${e.code}, Message: ${e.message}');
+      return false;
+    } catch (e, stackTrace) {
+      print('❌ Error: $e');
+      print('StackTrace: $stackTrace');
       return false;
     }
   }
