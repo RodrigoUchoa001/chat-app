@@ -1,12 +1,13 @@
 import 'package:chatapp/core/widgets/chat_text_button.dart';
+import 'package:chatapp/features/auth/presentation/widgets/auth_back_button.dart';
+import 'package:chatapp/features/auth/presentation/widgets/auth_subtitle.dart';
+import 'package:chatapp/features/auth/presentation/widgets/auth_text_field.dart';
+import 'package:chatapp/features/auth/presentation/widgets/auth_title.dart';
 import 'package:chatapp/features/onboarding/presentation/widgets/on_board_divider.dart';
 import 'package:chatapp/features/onboarding/presentation/widgets/on_board_login_buttons_row.dart';
-import 'package:chatapp/gen/assets.gen.dart';
 import 'package:chatapp/gen/fonts.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:go_router/go_router.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -25,126 +26,37 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       backgroundColor: Color(0xFF121414),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        leading: context.canPop()
-            ? IconButton(
-                onPressed: () => context.pop(),
-                icon: SvgPicture.asset(
-                  Assets.icons.backButton.path,
-                  width: 8,
-                  height: 12,
-                ),
-              )
-            : SizedBox(),
+        leading: AuthBackButton(),
       ),
       body: SafeArea(
         minimum: EdgeInsets.symmetric(horizontal: 30),
         child: ListView(
           children: [
             const SizedBox(height: 60),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Stack(
-                  alignment: Alignment.bottomLeft,
-                  children: [
-                    Container(
-                      height: 8,
-                      width:
-                          61.1, //change accordingly to the size of the text below
-                      decoration: BoxDecoration(
-                        color: Color(0xFF58C3b6),
-                      ),
-                    ),
-                    const Text(
-                      'Log in ',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontFamily: FontFamily.caros,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-                const Text(
-                  ' to Chatbox',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontFamily: FontFamily.caros,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
+            AuthTitle(
+              title1: 'Log in',
+              title2: 'to Chatbox',
+              containerWidth: 55.5,
             ),
             const SizedBox(height: 16),
-            const Text(
-              'Welcome back! Sign in using your social account or email to continue with us.',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Color(0xFF797C7B),
-                fontFamily: FontFamily.circular,
-                fontSize: 14,
-              ),
+            AuthSubtitle(
+              subtitle:
+                  'Welcome back! Sign in using your social account or email to continue with us.',
             ),
             const SizedBox(height: 30),
             OnBoardLoginButtonsRow(),
             const SizedBox(height: 30),
             OnBoardDivider(),
             const SizedBox(height: 30),
-            TextField(
+            AuthTextField(
               controller: emailController,
-              decoration: InputDecoration(
-                labelText: 'Your email',
-                labelStyle: TextStyle(
-                  color: Color(0xFF5EBAAE),
-                  fontFamily: FontFamily.circular,
-                  fontSize: 14,
-                ),
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xFF595E5C)),
-                ),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xFF5EBAAE)),
-                ),
-                border: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xFF595E5C)),
-                ),
-              ),
-              style: TextStyle(
-                color: Colors.white,
-                fontFamily: FontFamily.caros,
-                fontSize: 16,
-              ),
+              labelText: 'Email',
             ),
             const SizedBox(height: 30),
-            TextField(
+            AuthTextField(
               controller: passwordController,
+              labelText: 'Password',
               obscureText: true,
-              decoration: InputDecoration(
-                labelText: 'Password',
-                labelStyle: TextStyle(
-                  color: Color(0xFF5EBAAE),
-                  fontFamily: FontFamily.circular,
-                  fontSize: 14,
-                ),
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xFF595E5C)),
-                ),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xFF5EBAAE)),
-                ),
-                border: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xFF595E5C)),
-                ),
-              ),
-              style: TextStyle(
-                color: Colors.white,
-                fontFamily: FontFamily.caros,
-                fontSize: 16,
-              ),
             ),
           ],
         ),
