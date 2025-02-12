@@ -1,4 +1,5 @@
 import 'package:chatapp/core/widgets/chat_text_button.dart';
+import 'package:chatapp/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:chatapp/features/auth/presentation/widgets/auth_back_button.dart';
 import 'package:chatapp/features/auth/presentation/widgets/auth_subtitle.dart';
 import 'package:chatapp/features/auth/presentation/widgets/auth_text_field.dart';
@@ -6,6 +7,8 @@ import 'package:chatapp/features/auth/presentation/widgets/auth_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:go_router/go_router.dart';
 
 class SignupScreen extends ConsumerStatefulWidget {
   const SignupScreen({super.key});
@@ -39,9 +42,22 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
     return null;
   }
 
-  void _validate() {
+  void _validate() async {
     if (_formKey.currentState!.validate()) {
-      // TODO: Implement signup
+      final auth = ref.read(authControllerProvider);
+
+      try {
+        if (await auth.registerWithEmailAndPassword(
+          nameController.text,
+          emailController.text,
+          passwordController.text,
+        )) {
+          // context.go('/onboarding');
+          Fluttertoast.showToast(msg: 'Login successful!');
+        }
+      } catch (e) {
+        Fluttertoast.showToast(msg: 'Error signing up: $e');
+      }
     }
   }
 
