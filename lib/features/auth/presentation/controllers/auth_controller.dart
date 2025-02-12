@@ -12,8 +12,8 @@ class AuthController {
 
   AuthController(this._authRepository);
 
-  Future<void> loginWithGoogle() async {
-    await _authRepository.loginWithGoogle();
+  Future<bool> loginWithGoogle() async {
+    return await _authRepository.loginWithGoogle();
   }
 
   Future<void> loginWithEmailAndPassword(String email, String password) async {
