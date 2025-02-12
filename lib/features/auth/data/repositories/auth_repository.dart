@@ -1,3 +1,4 @@
+import 'package:chatapp/core/errors/firebase_error_handler.dart';
 import 'package:chatapp/core/providers/firebase_auth_providers.dart';
 import 'package:chatapp/core/providers/firebase_firestore_provider.dart';
 import 'package:chatapp/features/auth/data/dto/user_dto.dart';
@@ -87,7 +88,7 @@ class AuthRepository implements AuthRepositoryInterface {
   }
 
   @override
-  Future<bool> registerWithEmailAndPassword(
+  Future<String?> registerWithEmailAndPassword(
       String name, String email, String password) async {
     try {
       final userCredential = await _auth.createUserWithEmailAndPassword(
@@ -96,7 +97,7 @@ class AuthRepository implements AuthRepositoryInterface {
       );
 
       final user = userCredential.user;
-      if (user == null) return false;
+      if (user == null) return "Error while registering. Please try again.";
 
       final userRef = _firestore.collection('users').doc(user.uid);
 
@@ -116,17 +117,13 @@ class AuthRepository implements AuthRepositoryInterface {
 
       await userRef.set(userData);
 
-      return true;
+      return null;
     } on FirebaseAuthException catch (e) {
-      print('🔥 FirebaseAuthException: Code ${e.code}, Message: ${e.message}');
-      return false;
+      return FirebaseErrorHandler.handleAuthError(e);
     } on FirebaseException catch (e) {
-      print('🔥 FirebaseException: Code ${e.code}, Message: ${e.message}');
-      return false;
-    } catch (e, stackTrace) {
-      print('❌ Error: $e');
-      print('StackTrace: $stackTrace');
-      return false;
+      return FirebaseErrorHandler.handleFirestoreError(e);
+    } catch (e) {
+      return FirebaseErrorHandler.handleGenericError(e);
     }
   }
 
