@@ -46,17 +46,15 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
     if (_formKey.currentState!.validate()) {
       final auth = ref.read(authControllerProvider);
 
-      try {
-        if (await auth.registerWithEmailAndPassword(
-          nameController.text,
-          emailController.text,
-          passwordController.text,
-        )) {
-          // context.go('/onboarding');
-          Fluttertoast.showToast(msg: 'Login successful!');
-        }
-      } catch (e) {
-        Fluttertoast.showToast(msg: 'Error signing up: $e');
+      if (await auth.registerWithEmailAndPassword(
+        nameController.text,
+        emailController.text,
+        passwordController.text,
+      )) {
+        // context.go('/onboarding');
+        Fluttertoast.showToast(msg: 'Login successful!');
+      } else {
+        Fluttertoast.showToast(msg: 'Error signing up!');
       }
     }
   }
