@@ -22,7 +22,7 @@ class OnBoardExistingAccount extends ConsumerWidget {
         ),
         GestureDetector(
           onTap: () {
-            context.go('/login');
+            context.push('/login');
           },
           child: Text(
             "Log in",
