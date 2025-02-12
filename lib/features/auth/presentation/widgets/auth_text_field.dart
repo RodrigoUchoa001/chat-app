@@ -18,6 +18,7 @@ class AuthTextField extends ConsumerWidget {
     return TextField(
       controller: controller,
       obscureText: obscureText,
+      cursorColor: Color(0xFF5EBAAE),
       decoration: InputDecoration(
         labelText: labelText,
         labelStyle: TextStyle(
