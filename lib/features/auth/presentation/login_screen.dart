@@ -1,4 +1,5 @@
 import 'package:chatapp/core/widgets/chat_text_button.dart';
+import 'package:chatapp/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:chatapp/features/auth/presentation/widgets/auth_back_button.dart';
 import 'package:chatapp/features/auth/presentation/widgets/auth_subtitle.dart';
 import 'package:chatapp/features/auth/presentation/widgets/auth_text_field.dart';
@@ -8,6 +9,7 @@ import 'package:chatapp/features/onboarding/presentation/widgets/on_board_login_
 import 'package:chatapp/gen/fonts.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
@@ -30,9 +32,18 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     return null;
   }
 
-  void _validate() {
+  void _validate() async {
     if (_formKey.currentState!.validate()) {
-      // TODO: Implement login
+      final auth = ref.read(authControllerProvider);
+
+      if (await auth.loginWithEmailAndPassword(
+        emailController.text,
+        passwordController.text,
+      )) {
+        Fluttertoast.showToast(msg: 'Login successful!');
+      } else {
+        Fluttertoast.showToast(msg: 'Error logging in!');
+      }
     }
   }
 
