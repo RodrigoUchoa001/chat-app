@@ -8,6 +8,7 @@ import 'package:chatapp/features/onboarding/presentation/widgets/on_board_login_
 import 'package:chatapp/gen/fonts.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -88,14 +89,17 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     fontSize: 14,
                   ),
                 ),
-                const Text(
-                  ' Sign up.',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Color(0xFF5EBAAE),
-                    fontFamily: FontFamily.circular,
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
+                GestureDetector(
+                  onTap: () => context.push('/signup'),
+                  child: const Text(
+                    ' Sign up.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Color(0xFF5EBAAE),
+                      fontFamily: FontFamily.circular,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ],
