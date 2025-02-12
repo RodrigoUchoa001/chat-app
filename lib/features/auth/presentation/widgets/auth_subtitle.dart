@@ -8,8 +8,8 @@ class AuthSubtitle extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return const Text(
-      'Welcome back! Sign in using your social account or email to continue with us.',
+    return Text(
+      subtitle,
       textAlign: TextAlign.center,
       style: TextStyle(
         color: Color(0xFF797C7B),
