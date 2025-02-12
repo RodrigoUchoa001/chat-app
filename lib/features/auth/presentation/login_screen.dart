@@ -1,9 +1,12 @@
 import 'package:chatapp/core/widgets/chat_text_button.dart';
 import 'package:chatapp/features/onboarding/presentation/widgets/on_board_divider.dart';
 import 'package:chatapp/features/onboarding/presentation/widgets/on_board_login_buttons_row.dart';
+import 'package:chatapp/gen/assets.gen.dart';
 import 'package:chatapp/gen/fonts.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -22,6 +25,16 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       backgroundColor: Color(0xFF121414),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
+        leading: context.canPop()
+            ? IconButton(
+                onPressed: () => context.pop(),
+                icon: SvgPicture.asset(
+                  Assets.icons.backButton.path,
+                  width: 8,
+                  height: 12,
+                ),
+              )
+            : SizedBox(),
       ),
       body: SafeArea(
         minimum: EdgeInsets.symmetric(horizontal: 30),
