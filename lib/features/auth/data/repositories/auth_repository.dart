@@ -46,7 +46,7 @@ class AuthRepository implements AuthRepositoryInterface {
             name: user.displayName ?? 'No Name',
             email: user.email,
             photoURL: user.photoURL ?? '',
-            createdAt: FieldValue.serverTimestamp().toString(),
+            createdAt: DateTime.now().toString(),
             isOnline: true,
             lastSeen: null,
             friends: [],
