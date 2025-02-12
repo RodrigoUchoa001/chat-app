@@ -13,9 +13,9 @@ Inspired by the design of Alex Hylton, design available at [Chatting App UI kit 
 - Try Firebase Storage to store media sent by users and Stories.
 
 ## Functionalities
-- ✅ Users
-    - ✅ Login with Google. 
-    - ✅ Login and Signup with email and password. 
+- ✅✅ Users
+    - ✅✅ Login with Google. 
+    - ✅✅ Login and Signup with email and password. 
 - ✅ Friends Requests
     - ✅ Send friend requests to another accounts.
     - ✅ Accept or decline friend requests by another accounts.
