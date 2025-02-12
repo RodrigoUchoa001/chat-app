@@ -20,7 +20,7 @@ class AuthController {
     return await _authRepository.loginWithEmailAndPassword(email, password);
   }
 
-  Future<bool> registerWithEmailAndPassword(
+  Future<String?> registerWithEmailAndPassword(
       String name, String email, String password) async {
     return await _authRepository.registerWithEmailAndPassword(
         name, email, password);
