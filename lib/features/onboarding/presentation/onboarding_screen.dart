@@ -1,4 +1,5 @@
 import 'package:chatapp/core/widgets/chat_text_button.dart';
+import 'package:chatapp/features/onboarding/presentation/providers/is_loging_in_provider.dart';
 import 'package:chatapp/features/onboarding/presentation/widgets/on_board_appbar.dart';
 import 'package:chatapp/features/onboarding/presentation/widgets/on_board_divider.dart';
 import 'package:chatapp/features/onboarding/presentation/widgets/on_board_existing_account.dart';
@@ -7,6 +8,7 @@ import 'package:chatapp/features/onboarding/presentation/widgets/on_board_subtit
 import 'package:chatapp/gen/fonts.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class OnboardingScreen extends ConsumerStatefulWidget {
   const OnboardingScreen({super.key});
@@ -19,6 +21,8 @@ class OnboardingScreen extends ConsumerStatefulWidget {
 class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
+    final isLogingIn = ref.watch(isLogingInProvider);
+
     return Scaffold(
       backgroundColor: Color(0xFF1A1A1A),
       body: SafeArea(
@@ -64,7 +68,12 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                   const SizedBox(height: 20),
                   OnBoardDivider(),
                   const SizedBox(height: 20),
-                  ChatTextButton(onTap: () {}, text: "Sign up with email"),
+                  ChatTextButton(
+                    onTap: isLogingIn ? null : () => context.push('/signup'),
+                    text: isLogingIn ? "Logging in..." : "Sign up with email",
+                    buttonColor: Color(0xFF24786D),
+                    textColor: Colors.white,
+                  ),
                   const SizedBox(height: 46),
                   OnBoardExistingAccount(),
                 ],
