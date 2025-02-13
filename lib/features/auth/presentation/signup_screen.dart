@@ -59,7 +59,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
       if (errorMessage == null) {
         Fluttertoast.showToast(msg: 'Login successful!');
       } else {
-        Fluttertoast.showToast(msg: 'Error signing up!');
+        Fluttertoast.showToast(msg: errorMessage);
       }
     }
   }
