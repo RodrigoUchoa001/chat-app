@@ -1,6 +1,7 @@
 import 'package:chatapp/core/providers/bottom_nav_index_provider.dart';
 import 'package:chatapp/features/chat/presentation/chat_screen.dart';
 import 'package:chatapp/gen/assets.gen.dart';
+import 'package:chatapp/gen/fonts.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -20,24 +21,55 @@ class HomeScreen extends ConsumerWidget {
 
     return Scaffold(
       body: pages[currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: currentIndex,
-        onTap: (index) =>
-            ref.read(bottomNavIndexProvider.notifier).state = index,
-        items: [
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset(Assets.icons.message.path),
-            label: 'Chats',
+      bottomNavigationBar: SizedBox(
+        height: 90,
+        child: BottomNavigationBar(
+          backgroundColor: const Color(0xFF121414),
+          selectedItemColor: Colors.white,
+          unselectedItemColor: const Color(0xFF797C7B),
+          selectedLabelStyle: const TextStyle(
+            fontFamily: FontFamily.caros,
+            fontSize: 16,
+            color: Colors.white,
           ),
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset(Assets.icons.user.path),
-            label: 'Friends',
+          unselectedLabelStyle: const TextStyle(
+            fontFamily: FontFamily.caros,
+            fontSize: 16,
+            color: Color(0xFF797C7B),
           ),
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset(Assets.icons.settings.path),
-            label: 'Settings',
-          ),
-        ],
+          showSelectedLabels: true,
+          currentIndex: currentIndex,
+          onTap: (index) =>
+              ref.read(bottomNavIndexProvider.notifier).state = index,
+          items: [
+            BottomNavigationBarItem(
+              icon: _buildSvgIcon(Assets.icons.message.path, currentIndex == 0),
+              label: 'Chats',
+            ),
+            BottomNavigationBarItem(
+              icon: _buildSvgIcon(Assets.icons.user.path, currentIndex == 1),
+              label: 'Friends',
+            ),
+            BottomNavigationBarItem(
+              icon:
+                  _buildSvgIcon(Assets.icons.settings.path, currentIndex == 2),
+              label: 'Settings',
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSvgIcon(String assetPath, bool isSelected) {
+    return ColorFiltered(
+      colorFilter: ColorFilter.mode(
+        isSelected ? Colors.white : const Color(0xFF797C7B),
+        BlendMode.srcIn,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 6),
+        child: SvgPicture.asset(assetPath, width: 26, height: 26),
       ),
     );
   }
