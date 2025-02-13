@@ -4,9 +4,9 @@ import 'package:chatapp/features/auth/presentation/widgets/auth_back_button.dart
 import 'package:chatapp/features/auth/presentation/widgets/auth_subtitle.dart';
 import 'package:chatapp/features/auth/presentation/widgets/auth_text_field.dart';
 import 'package:chatapp/features/auth/presentation/widgets/auth_title.dart';
-import 'package:chatapp/features/onboarding/presentation/providers/is_loging_in_provider.dart';
-import 'package:chatapp/features/onboarding/presentation/widgets/on_board_divider.dart';
-import 'package:chatapp/features/onboarding/presentation/widgets/on_board_login_buttons_row.dart';
+import 'package:chatapp/features/auth/presentation/providers/is_loging_in_provider.dart';
+import 'package:chatapp/features/auth/presentation/widgets/on_board_divider.dart';
+import 'package:chatapp/features/auth/presentation/widgets/on_board_login_buttons_row.dart';
 import 'package:chatapp/gen/fonts.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

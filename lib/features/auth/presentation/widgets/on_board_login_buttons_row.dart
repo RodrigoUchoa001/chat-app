@@ -1,6 +1,6 @@
 import 'package:chatapp/features/auth/presentation/controllers/auth_controller.dart';
-import 'package:chatapp/features/onboarding/presentation/providers/is_loging_in_provider.dart';
-import 'package:chatapp/features/onboarding/presentation/widgets/login_icon_button.dart';
+import 'package:chatapp/features/auth/presentation/providers/is_loging_in_provider.dart';
+import 'package:chatapp/features/auth/presentation/widgets/login_icon_button.dart';
 import 'package:chatapp/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
