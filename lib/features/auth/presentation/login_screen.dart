@@ -4,6 +4,7 @@ import 'package:chatapp/features/auth/presentation/widgets/auth_back_button.dart
 import 'package:chatapp/features/auth/presentation/widgets/auth_subtitle.dart';
 import 'package:chatapp/features/auth/presentation/widgets/auth_text_field.dart';
 import 'package:chatapp/features/auth/presentation/widgets/auth_title.dart';
+import 'package:chatapp/features/onboarding/presentation/providers/is_loging_in_provider.dart';
 import 'package:chatapp/features/onboarding/presentation/widgets/on_board_divider.dart';
 import 'package:chatapp/features/onboarding/presentation/widgets/on_board_login_buttons_row.dart';
 import 'package:chatapp/gen/fonts.gen.dart';
@@ -33,6 +34,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   }
 
   void _validate() async {
+    ref.read(isLogingInProvider.notifier).state = true;
+
     if (_formKey.currentState!.validate()) {
       final auth = ref.read(authControllerProvider);
 
@@ -43,14 +46,19 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
       if (errorMessage == null) {
         Fluttertoast.showToast(msg: 'Login successful!');
+        // TODO: implement context.go to home screen
+        ref.read(isLogingInProvider.notifier).state = false;
       } else {
         Fluttertoast.showToast(msg: errorMessage);
+        ref.read(isLogingInProvider.notifier).state = false;
       }
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final isLogingIn = ref.watch(isLogingInProvider);
+
     return Scaffold(
       backgroundColor: Color(0xFF121414),
       appBar: AppBar(
@@ -103,8 +111,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: ChatTextButton(
-                onTap: () => _validate(),
-                text: 'Log in',
+                onTap: isLogingIn ? null : () => _validate(),
+                text: isLogingIn ? 'Logging in...' : 'Log in',
                 buttonColor: Color(0xFF24786D),
                 textColor: Colors.white,
               ),
