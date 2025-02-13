@@ -36,13 +36,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     if (_formKey.currentState!.validate()) {
       final auth = ref.read(authControllerProvider);
 
-      if (await auth.loginWithEmailAndPassword(
+      final errorMessage = await auth.loginWithEmailAndPassword(
         emailController.text,
         passwordController.text,
-      )) {
+      );
+
+      if (errorMessage == null) {
         Fluttertoast.showToast(msg: 'Login successful!');
       } else {
-        Fluttertoast.showToast(msg: 'Error logging in!');
+        Fluttertoast.showToast(msg: errorMessage);
       }
     }
   }
