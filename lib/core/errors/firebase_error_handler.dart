@@ -4,7 +4,7 @@ class FirebaseErrorHandler {
   static String handleAuthError(FirebaseAuthException e) {
     switch (e.code) {
       case 'email-already-in-use':
-        return 'Email Already in use.';
+        return 'Email already in use.';
       case 'invalid-email':
         return 'The email address is not valid.';
       case 'weak-password':
