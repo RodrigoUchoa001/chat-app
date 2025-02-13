@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:go_router/go_router.dart';
 
 class SignupScreen extends ConsumerStatefulWidget {
   const SignupScreen({super.key});
@@ -57,7 +58,8 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
       );
 
       if (errorMessage == null) {
-        Fluttertoast.showToast(msg: 'Login successful!');
+        Fluttertoast.showToast(msg: 'Signup successful!');
+        context.go('/home');
       } else {
         Fluttertoast.showToast(msg: errorMessage);
       }
