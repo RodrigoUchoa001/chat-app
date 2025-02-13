@@ -16,7 +16,8 @@ class AuthController {
     return await _authRepository.loginWithGoogle();
   }
 
-  Future<bool> loginWithEmailAndPassword(String email, String password) async {
+  Future<String?> loginWithEmailAndPassword(
+      String email, String password) async {
     return await _authRepository.loginWithEmailAndPassword(email, password);
   }
 

@@ -67,7 +67,8 @@ class AuthRepository implements AuthRepositoryInterface {
   }
 
   @override
-  Future<bool> loginWithEmailAndPassword(String email, String password) async {
+  Future<String?> loginWithEmailAndPassword(
+      String email, String password) async {
     try {
       final userCredential = await _auth.signInWithEmailAndPassword(
         email: email,
@@ -75,15 +76,18 @@ class AuthRepository implements AuthRepositoryInterface {
       );
 
       final user = userCredential.user;
-      if (user == null) return false;
+      if (user == null) return 'Error while logging in. Please try again.';
 
       final userRef = _firestore.collection('users').doc(user.uid);
       await userRef.update({'isOnline': true});
 
-      return true;
+      return null;
+    } on FirebaseAuthException catch (e) {
+      return FirebaseErrorHandler.handleAuthError(e);
+    } on FirebaseException catch (e) {
+      return FirebaseErrorHandler.handleFirestoreError(e);
     } catch (e) {
-      print('Erro no login com email e senha: $e');
-      return false;
+      return FirebaseErrorHandler.handleGenericError(e);
     }
   }
 
