@@ -46,7 +46,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
       if (errorMessage == null) {
         Fluttertoast.showToast(msg: 'Login successful!');
-        // TODO: implement context.go to home screen
+        context.go('/home');
+
         ref.read(isLogingInProvider.notifier).state = false;
       } else {
         Fluttertoast.showToast(msg: errorMessage);
