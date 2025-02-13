@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ChatTextButton extends ConsumerWidget {
-  final Function() onTap;
+  final Function()? onTap;
   final String text;
   final Color? buttonColor;
   final Color? textColor;
@@ -19,6 +19,7 @@ class ChatTextButton extends ConsumerWidget {
     return TextButton(
       onPressed: onTap,
       style: TextButton.styleFrom(
+        disabledBackgroundColor: buttonColor!.withAlpha(100),
         backgroundColor: buttonColor ?? Colors.white,
         minimumSize: const Size.fromHeight(48),
         shape: RoundedRectangleBorder(
