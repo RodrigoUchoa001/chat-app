@@ -28,7 +28,6 @@ class OnBoardLoginButtonsRow extends ConsumerWidget {
           onTap: () async {
             ref.read(isLogingInProvider.notifier).state = true;
 
-            await Future.delayed(const Duration(seconds: 3));
             if (await auth.loginWithGoogle()) {
               Fluttertoast.showToast(msg: 'Login successful!');
               await auth.logout();
