@@ -30,6 +30,9 @@ class $AssetsBackgroundGen {
 class $AssetsIconsGen {
   const $AssetsIconsGen();
 
+  /// File path: assets/icons/Message.svg
+  SvgGenImage get message => const SvgGenImage('assets/icons/Message.svg');
+
   /// File path: assets/icons/apple.svg
   SvgGenImage get apple => const SvgGenImage('assets/icons/apple.svg');
 
@@ -51,9 +54,24 @@ class $AssetsIconsGen {
   SvgGenImage get logoForWhiteBack =>
       const SvgGenImage('assets/icons/logo_for_white_back.svg');
 
+  /// File path: assets/icons/settings.svg
+  SvgGenImage get settings => const SvgGenImage('assets/icons/settings.svg');
+
+  /// File path: assets/icons/user.svg
+  SvgGenImage get user => const SvgGenImage('assets/icons/user.svg');
+
   /// List of all assets
-  List<SvgGenImage> get values =>
-      [apple, backButton, facebook, google, logoForBlackBack, logoForWhiteBack];
+  List<SvgGenImage> get values => [
+        message,
+        apple,
+        backButton,
+        facebook,
+        google,
+        logoForBlackBack,
+        logoForWhiteBack,
+        settings,
+        user
+      ];
 }
 
 class Assets {
