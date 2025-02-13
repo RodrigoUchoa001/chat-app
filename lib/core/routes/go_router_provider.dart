@@ -1,3 +1,4 @@
+import 'package:chatapp/core/providers/firebase_auth_providers.dart';
 import 'package:chatapp/core/routes/route_names.dart';
 import 'package:chatapp/features/auth/presentation/login_screen.dart';
 import 'package:chatapp/features/auth/presentation/signup_screen.dart';
@@ -8,8 +9,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 final goRouterProvider = Provider<GoRouter>((ref) {
+  final user = ref.watch(currentUserProvider).asData?.value;
+
   return GoRouter(
-    initialLocation: '/onboarding',
+    initialLocation: user == null ? '/onboarding' : '/home',
     routes: [
       GoRoute(
         path: '/onboarding',
