@@ -7,7 +7,7 @@ class AuthTextField extends StatelessWidget {
   final String labelText;
   final String? Function(String?)? validator;
 
-  AuthTextField({
+  const AuthTextField({
     super.key,
     required this.controller,
     required this.labelText,
