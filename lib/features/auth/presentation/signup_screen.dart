@@ -45,6 +45,11 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
     if (_formKey.currentState!.validate()) {
       final auth = ref.read(authControllerProvider);
 
+      if (passwordController.text != confirmPasswordController.text) {
+        Fluttertoast.showToast(msg: 'Passwords do not match.');
+        return;
+      }
+
       final errorMessage = await auth.registerWithEmailAndPassword(
         nameController.text,
         emailController.text,
