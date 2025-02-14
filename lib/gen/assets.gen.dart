@@ -54,6 +54,9 @@ class $AssetsIconsGen {
   SvgGenImage get logoForWhiteBack =>
       const SvgGenImage('assets/icons/logo_for_white_back.svg');
 
+  /// File path: assets/icons/search.svg
+  SvgGenImage get search => const SvgGenImage('assets/icons/search.svg');
+
   /// File path: assets/icons/settings.svg
   SvgGenImage get settings => const SvgGenImage('assets/icons/settings.svg');
 
@@ -69,6 +72,7 @@ class $AssetsIconsGen {
         google,
         logoForBlackBack,
         logoForWhiteBack,
+        search,
         settings,
         user
       ];
