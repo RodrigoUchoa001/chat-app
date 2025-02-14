@@ -34,9 +34,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   }
 
   void _validate() async {
-    ref.read(isLogingInProvider.notifier).state = true;
-
     if (_formKey.currentState!.validate()) {
+      ref.read(isLogingInProvider.notifier).state = true;
+
       final auth = ref.read(authControllerProvider);
 
       final errorMessage = await auth.loginWithEmailAndPassword(
