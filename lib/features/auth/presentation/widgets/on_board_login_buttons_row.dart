@@ -5,6 +5,7 @@ import 'package:chatapp/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:go_router/go_router.dart';
 
 class OnBoardLoginButtonsRow extends ConsumerWidget {
   const OnBoardLoginButtonsRow({super.key});
@@ -30,7 +31,7 @@ class OnBoardLoginButtonsRow extends ConsumerWidget {
 
             if (await auth.loginWithGoogle()) {
               Fluttertoast.showToast(msg: 'Login successful!');
-              await auth.logout();
+              context.go('/home');
               ref.read(isLogingInProvider.notifier).state = false;
             } else {
               Fluttertoast.showToast(msg: 'Login failed!');
