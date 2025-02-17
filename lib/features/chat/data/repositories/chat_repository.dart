@@ -117,4 +117,15 @@ class ChatRepository implements ChatRepositoryInterface {
   Future<void> deleteChat(String chatId) {
     return _firestore.collection('chats').doc(chatId).delete();
   }
+
+  @override
+  Stream<int> getUnseenMessagesCount(String chatId) {
+    return _firestore
+        .collection('messages')
+        .doc(chatId)
+        .collection('messages')
+        .where('seenBy', arrayContains: _userId, isEqualTo: false)
+        .snapshots()
+        .map((snapshot) => snapshot.docs.length);
+  }
 }
