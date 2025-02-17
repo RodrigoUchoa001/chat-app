@@ -9,7 +9,15 @@ final mockUserChatsProvider = StreamProvider<List<ChatDTO>?>((ref) {
   return chatRepo.getChats();
 });
 
+final unreadMessagesProvider =
+    StreamProvider.family<int, String>((ref, chatId) {
+  final chatRepo = ref.watch(fakeChatRepositoryProvider);
+  return chatRepo.getUnseenMessagesCount(chatId);
+});
+
 class FakeChatRepository implements ChatRepositoryInterface {
+  final String _userId = "user1";
+
   @override
   Future<void> createGroupChat(
       String groupName, String groupPhotoURL, List<String> participants) {
@@ -79,5 +87,11 @@ class FakeChatRepository implements ChatRepositoryInterface {
   Future<MessageDTO?> sendMessage(String chatId, String message) {
     // TODO: implement sendMessage
     throw UnimplementedError();
+  }
+
+  @override
+  Stream<int> getUnseenMessagesCount(String chatId) async* {
+    await Future.delayed(Duration(seconds: 1));
+    yield _userId == "user1" ? 5 : 0;
   }
 }
