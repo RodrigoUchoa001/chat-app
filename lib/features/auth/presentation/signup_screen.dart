@@ -76,65 +76,71 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
       ),
       body: SafeArea(
         minimum: EdgeInsets.symmetric(horizontal: 30),
-        child: Form(
-          key: _formKey,
-          child: ListView(
-            children: [
-              AuthTitle(
-                title1: 'Sign up',
-                title2: 'with Email',
-                containerWidth: 68.6,
-              ),
-              const SizedBox(height: 17),
-              AuthSubtitle(
-                subtitle:
-                    'Get chatting with friends and family today by signing up for our chat app!',
-              ),
-              const SizedBox(height: 60),
-              AuthTextField(
-                controller: nameController,
-                labelText: 'Your name',
-                validator: _textValidator,
-              ),
-              const SizedBox(height: 30),
-              AuthTextField(
-                controller: emailController,
-                labelText: 'Your email',
-                validator: _emailValidator,
-              ),
-              const SizedBox(height: 30),
-              AuthTextField(
-                controller: passwordController,
-                labelText: 'Password',
-                validator: _textValidator,
-                obscureText: true,
-              ),
-              const SizedBox(height: 30),
-              AuthTextField(
-                controller: confirmPasswordController,
-                labelText: 'Confirm Password',
-                validator: _textValidator,
-                obscureText: true,
-              ),
-            ],
-          ),
-        ),
-      ),
-      bottomSheet: Container(
-        color: Color(0xFF121414),
-        child: ListView(
-          shrinkWrap: true,
+        child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: ChatTextButton(
-                onTap: () => _validate(),
-                text: 'Create a account',
-                buttonColor: Color(0xFF24786D),
-                textColor: Colors.white,
+            Expanded(
+              child: Form(
+                key: _formKey,
+                child: ListView(
+                  children: [
+                    AuthTitle(
+                      title1: 'Sign up',
+                      title2: 'with Email',
+                      containerWidth: 68.6,
+                    ),
+                    const SizedBox(height: 17),
+                    AuthSubtitle(
+                      subtitle:
+                          'Get chatting with friends and family today by signing up for our chat app!',
+                    ),
+                    const SizedBox(height: 60),
+                    AuthTextField(
+                      controller: nameController,
+                      labelText: 'Your name',
+                      validator: _textValidator,
+                    ),
+                    const SizedBox(height: 30),
+                    AuthTextField(
+                      controller: emailController,
+                      labelText: 'Your email',
+                      validator: _emailValidator,
+                    ),
+                    const SizedBox(height: 30),
+                    AuthTextField(
+                      controller: passwordController,
+                      labelText: 'Password',
+                      validator: _textValidator,
+                      obscureText: true,
+                    ),
+                    const SizedBox(height: 30),
+                    AuthTextField(
+                      controller: confirmPasswordController,
+                      labelText: 'Confirm Password',
+                      validator: _textValidator,
+                      obscureText: true,
+                    ),
+                  ],
+                ),
               ),
             ),
-            const SizedBox(height: 40),
+            Container(
+              color: Color(0xFF121414),
+              child: ListView(
+                shrinkWrap: true,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: ChatTextButton(
+                      onTap: () => _validate(),
+                      text: 'Create a account',
+                      buttonColor: Color(0xFF24786D),
+                      textColor: Colors.white,
+                    ),
+                  ),
+                  const SizedBox(height: 40),
+                ],
+              ),
+            ),
           ],
         ),
       ),

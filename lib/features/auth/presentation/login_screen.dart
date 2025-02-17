@@ -68,85 +68,93 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       ),
       body: SafeArea(
         minimum: EdgeInsets.symmetric(horizontal: 30),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              const SizedBox(height: 60),
-              AuthTitle(
-                title1: 'Log in',
-                title2: 'to Chatbox',
-                containerWidth: 55.5,
-              ),
-              const SizedBox(height: 16),
-              AuthSubtitle(
-                subtitle:
-                    'Welcome back! Sign in using your social account or email to continue with us.',
-              ),
-              const SizedBox(height: 30),
-              OnBoardLoginButtonsRow(),
-              const SizedBox(height: 30),
-              OnBoardDivider(),
-              const SizedBox(height: 30),
-              AuthTextField(
-                controller: emailController,
-                labelText: 'Email',
-                validator: _validator,
-              ),
-              const SizedBox(height: 30),
-              AuthTextField(
-                controller: passwordController,
-                labelText: 'Password',
-                obscureText: true,
-                validator: _validator,
-              ),
-            ],
-          ),
-        ),
-      ),
-      bottomSheet: Container(
-        color: Color(0xFF121414),
-        child: ListView(
-          shrinkWrap: true,
+        child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: ChatTextButton(
-                onTap: isLogingIn ? null : () => _validate(),
-                text: isLogingIn ? 'Logging in...' : 'Log in',
-                buttonColor: Color(0xFF24786D),
-                textColor: Colors.white,
-              ),
-            ),
-            const SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  "Don't have account? ",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontFamily: FontFamily.circular,
-                    fontSize: 14,
+            Expanded(
+              child: Form(
+                key: _formKey,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 60),
+                      AuthTitle(
+                        title1: 'Log in',
+                        title2: 'to Chatbox',
+                        containerWidth: 55.5,
+                      ),
+                      const SizedBox(height: 16),
+                      AuthSubtitle(
+                        subtitle:
+                            'Welcome back! Sign in using your social account or email to continue with us.',
+                      ),
+                      const SizedBox(height: 30),
+                      OnBoardLoginButtonsRow(),
+                      const SizedBox(height: 30),
+                      OnBoardDivider(),
+                      const SizedBox(height: 30),
+                      AuthTextField(
+                        controller: emailController,
+                        labelText: 'Email',
+                        validator: _validator,
+                      ),
+                      const SizedBox(height: 30),
+                      AuthTextField(
+                        controller: passwordController,
+                        labelText: 'Password',
+                        obscureText: true,
+                        validator: _validator,
+                      ),
+                    ],
                   ),
                 ),
-                GestureDetector(
-                  onTap: () => context.push('/signup'),
-                  child: const Text(
-                    ' Sign up.',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Color(0xFF5EBAAE),
-                      fontFamily: FontFamily.circular,
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
+              ),
+            ),
+            Container(
+              color: Color(0xFF121414),
+              child: ListView(
+                shrinkWrap: true,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: ChatTextButton(
+                      onTap: isLogingIn ? null : () => _validate(),
+                      text: isLogingIn ? 'Logging in...' : 'Log in',
+                      buttonColor: Color(0xFF24786D),
+                      textColor: Colors.white,
                     ),
                   ),
-                ),
-              ],
+                  const SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        "Don't have account? ",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: FontFamily.circular,
+                          fontSize: 14,
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () => context.push('/signup'),
+                        child: const Text(
+                          ' Sign up.',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Color(0xFF5EBAAE),
+                            fontFamily: FontFamily.circular,
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 40),
+                ],
+              ),
             ),
-            const SizedBox(height: 40),
           ],
         ),
       ),
