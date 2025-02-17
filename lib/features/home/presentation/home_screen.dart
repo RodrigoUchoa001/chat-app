@@ -1,5 +1,5 @@
 import 'package:chatapp/core/providers/bottom_nav_index_provider.dart';
-import 'package:chatapp/features/chat/presentation/chat_screen.dart';
+import 'package:chatapp/features/chat/presentation/chats_list_screen.dart';
 import 'package:chatapp/gen/assets.gen.dart';
 import 'package:chatapp/gen/fonts.gen.dart';
 import 'package:flutter/material.dart';
@@ -14,9 +14,9 @@ class HomeScreen extends ConsumerWidget {
     final currentIndex = ref.watch(bottomNavIndexProvider);
 
     final List<Widget> pages = [
-      const ChatScreen(),
-      const ChatScreen(),
-      const ChatScreen(),
+      const ChatsListScreen(),
+      const ChatsListScreen(),
+      const ChatsListScreen(),
     ];
 
     return SafeArea(
