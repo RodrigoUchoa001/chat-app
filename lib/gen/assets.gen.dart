@@ -30,8 +30,14 @@ class $AssetsBackgroundGen {
 class $AssetsIconsGen {
   const $AssetsIconsGen();
 
+  /// File path: assets/icons/Call.svg
+  SvgGenImage get call => const SvgGenImage('assets/icons/Call.svg');
+
   /// File path: assets/icons/Message.svg
   SvgGenImage get message => const SvgGenImage('assets/icons/Message.svg');
+
+  /// File path: assets/icons/Video.svg
+  SvgGenImage get video => const SvgGenImage('assets/icons/Video.svg');
 
   /// File path: assets/icons/apple.svg
   SvgGenImage get apple => const SvgGenImage('assets/icons/apple.svg');
@@ -65,7 +71,9 @@ class $AssetsIconsGen {
 
   /// List of all assets
   List<SvgGenImage> get values => [
+        call,
         message,
+        video,
         apple,
         backButton,
         facebook,
