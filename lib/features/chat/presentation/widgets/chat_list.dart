@@ -11,6 +11,8 @@ class ChatList extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final fakeChats = ref.watch(mockUserChatsProvider);
 
+    final unseenMessagesCount = ref.watch(unreadMessagesProvider('user1'));
+
     return Padding(
       padding: const EdgeInsets.only(left: 24, right: 24, top: 26),
       child: fakeChats.when(
@@ -86,24 +88,32 @@ class ChatList extends ConsumerWidget {
                         ),
                       ),
                       const SizedBox(height: 7),
-                      Container(
-                        width: 21.81,
-                        height: 21.81,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(50),
-                          color: Color(0xFFF04A4C),
-                        ),
-                        child: Center(
-                          child: const Text(
-                            '3',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontFamily: FontFamily.circular,
-                            ),
-                          ),
-                        ),
-                      ),
+                      unseenMessagesCount.when(
+                        data: (count) {
+                          return count == 0
+                              ? Container()
+                              : Container(
+                                  width: 21.81,
+                                  height: 21.81,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(50),
+                                    color: Color(0xFFF04A4C),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      count.toString(),
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 12,
+                                        fontFamily: FontFamily.circular,
+                                      ),
+                                    ),
+                                  ),
+                                );
+                        },
+                        error: (error, stackTrace) => Container(),
+                        loading: () => Container(),
+                      )
                     ],
                   ),
                 ],
