@@ -3,6 +3,7 @@ import 'package:chatapp/features/chat/presentation/utils/calculate_time_since_la
 import 'package:chatapp/gen/fonts.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class ChatList extends ConsumerWidget {
   const ChatList({super.key});
@@ -22,7 +23,9 @@ class ChatList extends ConsumerWidget {
             final chat = chats[index];
 
             return TextButton(
-              onPressed: () {},
+              onPressed: () {
+                context.push('/chat/${chat.id}');
+              },
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 15),
                 child: Row(
