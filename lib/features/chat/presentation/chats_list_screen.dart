@@ -1,4 +1,4 @@
-import 'package:chatapp/features/chat/presentation/widgets/chat_app_bar.dart';
+import 'package:chatapp/features/chat/presentation/widgets/chat_list_app_bar.dart';
 import 'package:chatapp/features/chat/presentation/widgets/chat_list.dart';
 import 'package:chatapp/features/chat/presentation/widgets/chat_status_row.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +29,7 @@ class _ChatScreenState extends ConsumerState<ChatsListScreen> {
               child: Column(
                 children: [
                   SizedBox(height: 17),
-                  ChatAppBar(),
+                  ChatListAppBar(),
                   SizedBox(height: 40),
                   ChatStatusRow(),
                 ],

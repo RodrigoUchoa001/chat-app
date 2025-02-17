@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 
-class ChatAppBar extends ConsumerWidget {
-  const ChatAppBar({super.key});
+class ChatListAppBar extends ConsumerWidget {
+  const ChatListAppBar({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
