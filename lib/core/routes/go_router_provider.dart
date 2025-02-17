@@ -36,8 +36,8 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const HomeScreen(),
       ),
       GoRoute(
-        path: '/chat',
-        name: chatRoute,
+        path: '/chats-list',
+        name: chatsList,
         builder: (context, state) => const ChatsListScreen(),
       ),
       GoRoute(
