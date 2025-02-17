@@ -1,4 +1,5 @@
 class ChatDTO {
+  String? id;
   String? type;
   String? groupName;
   String? groupPhotoURL;
@@ -8,7 +9,8 @@ class ChatDTO {
   String? createdAt;
 
   ChatDTO(
-      {this.type,
+      {this.id,
+      this.type,
       this.groupName,
       this.groupPhotoURL,
       this.admins,
@@ -17,6 +19,7 @@ class ChatDTO {
       this.createdAt});
 
   ChatDTO.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
     type = json['type'];
     groupName = json['groupName'];
     groupPhotoURL = json['groupPhotoURL'];
@@ -30,6 +33,7 @@ class ChatDTO {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
     data['type'] = type;
     data['groupName'] = groupName;
     data['groupPhotoURL'] = groupPhotoURL;
