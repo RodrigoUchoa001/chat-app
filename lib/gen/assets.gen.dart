@@ -46,6 +46,12 @@ class $AssetsIconsGen {
   SvgGenImage get backButton =>
       const SvgGenImage('assets/icons/back_button.svg');
 
+  /// File path: assets/icons/camera.svg
+  SvgGenImage get camera => const SvgGenImage('assets/icons/camera.svg');
+
+  /// File path: assets/icons/clip.svg
+  SvgGenImage get clip => const SvgGenImage('assets/icons/clip.svg');
+
   /// File path: assets/icons/facebook.svg
   SvgGenImage get facebook => const SvgGenImage('assets/icons/facebook.svg');
 
@@ -59,6 +65,10 @@ class $AssetsIconsGen {
   /// File path: assets/icons/logo_for_white_back.svg
   SvgGenImage get logoForWhiteBack =>
       const SvgGenImage('assets/icons/logo_for_white_back.svg');
+
+  /// File path: assets/icons/microphone.svg
+  SvgGenImage get microphone =>
+      const SvgGenImage('assets/icons/microphone.svg');
 
   /// File path: assets/icons/search.svg
   SvgGenImage get search => const SvgGenImage('assets/icons/search.svg');
@@ -76,10 +86,13 @@ class $AssetsIconsGen {
         video,
         apple,
         backButton,
+        camera,
+        clip,
         facebook,
         google,
         logoForBlackBack,
         logoForWhiteBack,
+        microphone,
         search,
         settings,
         user
