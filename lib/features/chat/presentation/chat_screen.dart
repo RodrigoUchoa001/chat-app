@@ -1,4 +1,5 @@
 import 'package:chatapp/features/auth/presentation/widgets/auth_back_button.dart';
+import 'package:chatapp/features/chat/presentation/widgets/chat_input_field.dart';
 import 'package:chatapp/gen/assets.gen.dart';
 import 'package:chatapp/gen/fonts.gen.dart';
 import 'package:flutter/material.dart';
@@ -117,77 +118,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                 ),
               ),
             ),
-            Container(
-              height: 90,
-              decoration: BoxDecoration(
-                color: Color(0xFF121414),
-                border: Border(
-                  top: BorderSide(
-                    color: Color(0xFF192222),
-                    width: 1,
-                  ),
-                ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: Row(
-                  children: [
-                    IconButton(
-                      onPressed: () {},
-                      icon: SvgPicture.asset(
-                        Assets.icons.clip.path,
-                        height: 24,
-                      ),
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: TextField(
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 12,
-                            fontFamily: FontFamily.circular,
-                          ),
-                          cursorColor: Colors.white,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                width: 0,
-                                style: BorderStyle.none,
-                              ),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            filled: true,
-                            fillColor: Color(0xFF192222),
-                            hintText: 'Write your message',
-                            hintStyle: TextStyle(
-                              color: Color(0xFF797C7B),
-                              fontSize: 12,
-                              fontFamily: FontFamily.circular,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () {},
-                      icon: SvgPicture.asset(
-                        Assets.icons.camera.path,
-                        height: 24,
-                      ),
-                    ),
-                    SizedBox(width: 16),
-                    IconButton(
-                      onPressed: () {},
-                      icon: SvgPicture.asset(
-                        Assets.icons.microphone.path,
-                        height: 24,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            ChatInputField(),
           ],
         ),
       ),
