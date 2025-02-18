@@ -1,5 +1,6 @@
 import 'package:chatapp/features/auth/presentation/widgets/auth_back_button.dart';
 import 'package:chatapp/features/chat/presentation/widgets/chat_input_field.dart';
+import 'package:chatapp/features/chat/presentation/widgets/chat_profile_pic.dart';
 import 'package:chatapp/gen/assets.gen.dart';
 import 'package:chatapp/gen/fonts.gen.dart';
 import 'package:flutter/material.dart';
@@ -26,27 +27,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           leading: AuthBackButton(),
           title: Row(
             children: [
-              Stack(
-                alignment: Alignment.bottomRight,
-                children: [
-                  CircleAvatar(
-                    radius: 26,
-                    backgroundImage: NetworkImage(
-                      '',
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(4),
-                    child: Container(
-                      width: 8,
-                      height: 8,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50),
-                        color: Color(0xFF0FE16D),
-                      ),
-                    ),
-                  ),
-                ],
+              ChatProfilePic(
+                groupPhotoURL: '',
+                isOnline: true,
               ),
               const SizedBox(width: 12),
               Column(

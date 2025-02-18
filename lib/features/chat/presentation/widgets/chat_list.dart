@@ -1,5 +1,6 @@
 import 'package:chatapp/features/chat/data/repositories/fake_chat_repository.dart';
 import 'package:chatapp/features/chat/presentation/utils/calculate_time_since_last_message.dart';
+import 'package:chatapp/features/chat/presentation/widgets/chat_profile_pic.dart';
 import 'package:chatapp/gen/fonts.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -33,27 +34,9 @@ class ChatList extends ConsumerWidget {
                   children: [
                     Row(
                       children: [
-                        Stack(
-                          alignment: Alignment.bottomRight,
-                          children: [
-                            CircleAvatar(
-                              radius: 26,
-                              backgroundImage: NetworkImage(
-                                chat.groupPhotoURL ?? '',
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(4),
-                              child: Container(
-                                width: 8,
-                                height: 8,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(50),
-                                  color: Color(0xFF0FE16D),
-                                ),
-                              ),
-                            ),
-                          ],
+                        ChatProfilePic(
+                          groupPhotoURL: chat.groupPhotoURL ?? '',
+                          isOnline: true,
                         ),
                         const SizedBox(width: 12),
                         Column(
