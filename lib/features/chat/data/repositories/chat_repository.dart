@@ -47,8 +47,29 @@ class ChatRepository implements ChatRepositoryInterface {
   }
 
   @override
-  Future<MessageDTO?> sendMessage(String chatId, String message) {
+  Future<MessageDTO?> sendMessage(
+    String chatId,
+    String message, {
+    String? friendId,
+    List<String>? groupParticipants,
+    String? groupName,
+    String? groupPhotoURL,
+  }) async {
+    final chatRef = _firestore.collection('chats').doc(chatId);
     final messageRef = _firestore.collection('messages').doc(chatId);
+
+    final chatDoc = await chatRef.get();
+    // if chat doesn't exist, create it
+    if (!chatDoc.exists) {
+      if (friendId != null) {
+        await createPrivateChat(friendId);
+      } else if (groupParticipants != null && groupName != null) {
+        await createGroupChat(
+            groupName, groupPhotoURL ?? '', groupParticipants);
+      } else {
+        throw Exception("Não foi possível determinar o tipo de chat.");
+      }
+    }
 
     return messageRef
         .collection('messages')
