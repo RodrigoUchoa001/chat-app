@@ -107,13 +107,15 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                 child: Column(
                   children: [
                     chatBubble(
-                        message: "Hello how are you?",
-                        time: "09:25 AM",
-                        isMe: true),
+                      message: "Hello how are you?",
+                      time: "09:25 AM",
+                      isMe: true,
+                    ),
                     chatBubble(
-                        message: "Hello de boassa?",
-                        time: "09:25 AM",
-                        isMe: false),
+                      message: "Hello de boassa?",
+                      time: "09:25 AM",
+                      isMe: false,
+                    ),
                   ],
                 ),
               ),
