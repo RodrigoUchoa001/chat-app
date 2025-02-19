@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ChatProfilePic extends ConsumerWidget {
-  final String groupPhotoURL;
+  final String chatPhotoURL;
   final bool isOnline;
   const ChatProfilePic(
-      {required this.groupPhotoURL, required this.isOnline, super.key});
+      {required this.chatPhotoURL, required this.isOnline, super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -15,7 +15,7 @@ class ChatProfilePic extends ConsumerWidget {
         CircleAvatar(
           radius: 26,
           backgroundImage: NetworkImage(
-            groupPhotoURL,
+            chatPhotoURL,
           ),
         ),
         isOnline
