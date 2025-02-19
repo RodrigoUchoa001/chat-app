@@ -28,7 +28,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           title: Row(
             children: [
               ChatProfilePic(
-                groupPhotoURL: '',
+                chatPhotoURL: '',
                 isOnline: true,
               ),
               const SizedBox(width: 12),
