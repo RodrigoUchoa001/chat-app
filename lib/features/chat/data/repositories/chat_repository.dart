@@ -25,12 +25,13 @@ class ChatRepository implements ChatRepositoryInterface {
   ChatRepository(this._firestore, this._userId);
 
   @override
-  Stream<List<ChatDTO>?> getChats() {
+  Stream<List<ChatDTO>> getChats() {
     return _firestore
         .collection('chats')
         .where('participants', arrayContains: _userId)
         .snapshots()
         .map((querySnapshot) {
+      if (querySnapshot.docs.isEmpty) return [];
       return querySnapshot.docs.map((doc) {
         return ChatDTO.fromJson(doc.data());
       }).toList();
