@@ -9,7 +9,7 @@ final mockUserChatsProvider = StreamProvider<List<ChatDTO>?>((ref) {
   return chatRepo.getChats();
 });
 
-final unreadMessagesProvider =
+final fakeUnreadMessagesProvider =
     StreamProvider.family<int, String>((ref, chatId) {
   final chatRepo = ref.watch(fakeChatRepositoryProvider);
   return chatRepo.getUnseenMessagesCount(chatId);
