@@ -18,7 +18,6 @@ class _ChatScreenState extends ConsumerState<ChatsListScreen> {
 
     return SafeArea(
       child: Scaffold(
-        // NEXT TODO: Implement chat screen now using firebase
         body: Stack(
           alignment: Alignment.bottomCenter,
           children: [
