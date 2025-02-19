@@ -12,6 +12,12 @@ final chatRepositoryProvider = Provider<ChatRepositoryInterface>((ref) {
   return ChatRepository(firestore, currentUser!.uid);
 });
 
+final unreadMessagesProvider =
+    StreamProvider.family<int, String>((ref, chatId) {
+  final chatRepo = ref.watch(chatRepositoryProvider);
+  return chatRepo.getUnseenMessagesCount(chatId);
+});
+
 class ChatRepository implements ChatRepositoryInterface {
   final FirebaseFirestore _firestore;
   final String _userId;
