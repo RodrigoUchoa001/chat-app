@@ -50,6 +50,12 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         name: settingsRoute,
         builder: (context, state) => const ChatsListScreen(),
       ),
+      GoRoute(
+        path: '/chat/:chatId',
+        name: chatRoute,
+        builder: (context, state) =>
+            ChatScreen(chatId: state.pathParameters['chatId']!),
+      ),
     ],
   );
 });
