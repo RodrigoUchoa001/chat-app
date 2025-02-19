@@ -58,9 +58,6 @@ class ChatRepository implements ChatRepositoryInterface {
     String chatId,
     String message, {
     String? friendId,
-    List<String>? groupParticipants,
-    String? groupName,
-    String? groupPhotoURL,
   }) async {
     final chatRef = _firestore.collection('chats').doc(chatId);
     final messageRef = _firestore.collection('messages').doc(chatId);
@@ -68,11 +65,9 @@ class ChatRepository implements ChatRepositoryInterface {
     final chatDoc = await chatRef.get();
     // if chat doesn't exist, create it
     if (!chatDoc.exists) {
+      // the chat can not exist only if it's a private chat
       if (friendId != null) {
         await createPrivateChat(friendId);
-      } else if (groupParticipants != null && groupName != null) {
-        await createGroupChat(
-            groupName, groupPhotoURL ?? '', groupParticipants);
       } else {
         throw Exception("Não foi possível determinar o tipo de chat.");
       }
