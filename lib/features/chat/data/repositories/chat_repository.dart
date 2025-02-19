@@ -9,7 +9,11 @@ final chatRepositoryProvider = Provider<ChatRepositoryInterface>((ref) {
   final firestore = ref.watch(firestoreProvider);
   final currentUser = ref.watch(currentUserProvider).asData?.value;
 
-  return ChatRepository(firestore, currentUser!.uid);
+  if (currentUser == null) {
+    throw Exception('User is null on chatRepositoryProvider');
+  }
+
+  return ChatRepository(firestore, currentUser.uid);
 });
 
 final unreadMessagesProvider =
