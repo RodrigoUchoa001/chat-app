@@ -4,8 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 
-class ChatListAppBar extends ConsumerWidget {
-  const ChatListAppBar({super.key});
+class AppBarWidget extends ConsumerWidget {
+  final Widget leftButton;
+  final String title;
+  final Widget rightButton;
+  const AppBarWidget(
+      {required this.leftButton,
+      required this.title,
+      required this.rightButton,
+      super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -24,27 +31,17 @@ class ChatListAppBar extends ConsumerWidget {
               ),
               borderRadius: BorderRadius.circular(50),
             ),
-            child: SvgPicture.asset(
-              Assets.icons.search.path,
-              fit: BoxFit.scaleDown,
-              height: 18.33,
-              width: 18.33,
-            ),
+            child: leftButton,
           ),
           Text(
-            'Home',
+            title,
             style: TextStyle(
               color: Colors.white,
               fontFamily: FontFamily.caros,
               fontSize: 20,
             ),
           ),
-          CircleAvatar(
-            radius: 22,
-            backgroundImage: NetworkImage(
-              'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-            ),
-          ),
+          rightButton,
         ],
       ),
     );
