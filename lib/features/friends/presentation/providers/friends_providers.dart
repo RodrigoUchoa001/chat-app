@@ -11,6 +11,10 @@ final friendsListProvider = StreamProvider<List<UserDTO?>>((ref) {
   return friendsRepo.getFriends().asyncMap((friendUids) async {
     final friendsStreams = friendUids!.map(userRepo.getUserDetails).toList();
 
+    if (friendsStreams.isEmpty) {
+      return List<UserDTO?>.empty();
+    }
+
     return StreamZip(friendsStreams).first;
   });
 });
