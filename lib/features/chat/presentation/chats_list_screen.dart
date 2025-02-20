@@ -1,4 +1,5 @@
 import 'package:chatapp/core/widgets/app_bar_widget.dart';
+import 'package:chatapp/core/widgets/home_content_background_widget.dart';
 import 'package:chatapp/features/chat/presentation/widgets/chat_list.dart';
 import 'package:chatapp/features/chat/presentation/widgets/chat_status_row.dart';
 import 'package:chatapp/gen/assets.gen.dart';
@@ -53,16 +54,8 @@ class _ChatScreenState extends ConsumerState<ChatsListScreen> {
                 ],
               ),
             ),
-            Container(
-              height: screenHeight -
-                  313.33, // 313.33 is the height of all the widgets above
-              decoration: BoxDecoration(
-                color: Color(0xFF121414),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(50),
-                  topRight: Radius.circular(50),
-                ),
-              ),
+            HomeContentBackground(
+              height: screenHeight - 313.33,
               child: ChatList(),
             ),
           ],
