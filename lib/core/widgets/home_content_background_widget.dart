@@ -11,6 +11,7 @@ class HomeContentBackground extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       height: height,
+      width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
         color: Color(0xFF121414),
         borderRadius: BorderRadius.only(
