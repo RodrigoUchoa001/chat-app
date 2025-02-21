@@ -59,13 +59,30 @@ class FriendsListWidget extends ConsumerWidget {
                           ),
                         ),
                         const SizedBox(width: 12),
-                        Text(
-                          friends[index]!.name ?? 'No name',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontFamily: FontFamily.caros,
-                          ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              friends[index]!.name ?? 'No name',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontFamily: FontFamily.caros,
+                              ),
+                            ),
+                            if (friends[index]!.statusMessage != null &&
+                                friends[index]!.statusMessage!.isNotEmpty)
+                              Text(
+                                friends[index]!.statusMessage!,
+                                style: TextStyle(
+                                  color: Color(0xFF797C7B),
+                                  fontSize: 12,
+                                  fontFamily: FontFamily.circular,
+                                ),
+                              )
+                            else
+                              SizedBox(),
+                          ],
                         ),
                       ],
                     ),
