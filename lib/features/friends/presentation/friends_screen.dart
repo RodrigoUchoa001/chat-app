@@ -1,5 +1,6 @@
 import 'package:chatapp/core/widgets/app_bar_widget.dart';
 import 'package:chatapp/core/widgets/home_content_background_widget.dart';
+import 'package:chatapp/features/friends/presentation/widgets/friends_list_widget.dart';
 import 'package:chatapp/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -56,7 +57,7 @@ class _FriendsScreenState extends ConsumerState<FriendsScreen> {
             ),
             HomeContentBackground(
               height: screenHeight - 175.33, //CHUTEI ESSE NUMERO
-              child: Container(),
+              child: FriendsListWidget(),
             ),
           ],
         ),
