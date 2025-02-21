@@ -9,6 +9,7 @@
     "createdAt": "01-02-2025 10:15:30 UTC-3",
     "lastSeen": "01-02-2025 10:15:30 UTC-3",
     "isOnline": true,
-    "fcmToken": "token_firebase_fcm"
+    "fcmToken": "token_firebase_fcm",
+    "statusMessage": "Estou online!"
   }
 }
