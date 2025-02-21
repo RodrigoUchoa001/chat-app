@@ -9,6 +9,7 @@ class UserDTO {
   String? lastSeen;
   bool? isOnline;
   String? fcmToken;
+  String? statusMessage;
 
   UserDTO(
       {this.email,
@@ -20,7 +21,8 @@ class UserDTO {
       this.createdAt,
       this.lastSeen,
       this.isOnline,
-      this.fcmToken});
+      this.fcmToken,
+      this.statusMessage});
 
   UserDTO.fromJson(Map<String, dynamic> json) {
     uid = json['uid'];
@@ -33,6 +35,7 @@ class UserDTO {
     lastSeen = json['lastSeen'];
     isOnline = json['isOnline'];
     fcmToken = json['fcmToken'];
+    statusMessage = json['statusMessage'];
   }
 
   Map<String, dynamic> toJson() {
@@ -46,6 +49,7 @@ class UserDTO {
     data['lastSeen'] = lastSeen;
     data['isOnline'] = isOnline;
     data['fcmToken'] = fcmToken;
+    data['statusMessage'] = statusMessage;
     return data;
   }
 }
