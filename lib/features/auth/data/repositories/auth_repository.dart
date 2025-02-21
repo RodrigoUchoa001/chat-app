@@ -53,6 +53,7 @@ class AuthRepository implements AuthRepositoryInterface {
             friends: [],
             friendRequests: [],
             fcmToken: '',
+            statusMessage: '',
           ).toJson(),
         );
       } else {
@@ -115,6 +116,7 @@ class AuthRepository implements AuthRepositoryInterface {
         friends: [],
         friendRequests: [],
         fcmToken: '',
+        statusMessage: '',
       ).toJson();
 
       print('user data: $userData');
