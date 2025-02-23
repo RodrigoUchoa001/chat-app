@@ -19,16 +19,26 @@ class ChatDTO {
       this.createdAt});
 
   ChatDTO.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    type = json['type'];
-    groupName = json['groupName'];
-    groupPhotoURL = json['groupPhotoURL'];
-    admins = json['admins'].cast<String>();
-    participants = json['participants'].cast<String>();
-    lastMessage = json['lastMessage'] != null
-        ? MessageDTO.fromJson(json['lastMessage'])
-        : null;
-    createdAt = json['createdAt'];
+    if (json['type'] == 'private') {
+      id = json['id'];
+      type = json['type'];
+      participants = json['participants'].cast<String>();
+      lastMessage = json['lastMessage'] != null
+          ? MessageDTO.fromJson(json['lastMessage'])
+          : null;
+      createdAt = json['createdAt'];
+    } else if (json['type'] == 'group') {
+      id = json['id'];
+      type = json['type'];
+      groupName = json['groupName'];
+      groupPhotoURL = json['groupPhotoURL'];
+      admins = json['admins'].cast<String>();
+      participants = json['participants'].cast<String>();
+      lastMessage = json['lastMessage'] != null
+          ? MessageDTO.fromJson(json['lastMessage'])
+          : null;
+      createdAt = json['createdAt'];
+    }
   }
 
   Map<String, dynamic> toJson() {
