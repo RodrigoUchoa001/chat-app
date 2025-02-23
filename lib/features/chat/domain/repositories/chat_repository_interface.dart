@@ -2,6 +2,7 @@ import 'package:chatapp/features/chat/data/dto/chat_dto.dart';
 
 abstract interface class ChatRepositoryInterface {
   Stream<List<ChatDTO>?> getChats();
+  Future<String?> getPrivateChatIdByFriendId(String friendId);
   Stream<int> getUnseenMessagesCount(String chatId);
   Stream<List<MessageDTO>?> getMessages(String chatId);
   Future<MessageDTO?> sendMessage(String chatId, String message);
