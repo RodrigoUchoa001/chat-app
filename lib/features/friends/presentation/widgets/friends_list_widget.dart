@@ -1,3 +1,4 @@
+import 'package:chatapp/features/chat/data/repositories/chat_repository.dart';
 import 'package:chatapp/features/friends/presentation/providers/friends_providers.dart';
 import 'package:chatapp/gen/fonts.gen.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ class FriendsListWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final friendsList = ref.watch(friendsListProvider);
+    final chatRepository = ref.watch(chatRepositoryProvider);
 
     return Padding(
       padding: const EdgeInsets.only(left: 24, right: 24, top: 26),
@@ -43,9 +45,17 @@ class FriendsListWidget extends ConsumerWidget {
                 shrinkWrap: true,
                 itemCount: friends.length,
                 itemBuilder: (context, index) => TextButton(
-                  onPressed: () {
-                    // context.push('/chat/${friends[index]!.uid}');
-                    // TODO: find a way to get the chatId for this friend
+                  onPressed: () async {
+                    final chatId = await chatRepository
+                        .getPrivateChatIdByFriendId(friends[index]!.uid!);
+
+                    if (chatId != null) {
+                      context.push('/chat/$chatId');
+                    } else {
+                      await chatRepository
+                          .createPrivateChat(friends[index]!.uid!);
+                      context.push('/chat/${friends[index]!.uid}');
+                    }
                   },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 10),
