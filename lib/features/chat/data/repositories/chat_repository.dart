@@ -2,6 +2,7 @@ import 'package:chatapp/core/providers/firebase_auth_providers.dart';
 import 'package:chatapp/core/providers/firebase_firestore_provider.dart';
 import 'package:chatapp/features/chat/data/dto/chat_dto.dart';
 import 'package:chatapp/features/chat/domain/repositories/chat_repository_interface.dart';
+import 'package:chatapp/features/users/domain/user_repository_interface.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -172,5 +173,22 @@ class ChatRepository implements ChatRepositoryInterface {
         .where('seenBy', arrayContains: _userId, isEqualTo: false)
         .snapshots()
         .map((snapshot) => snapshot.docs.length);
+  }
+
+  @override
+  Future<String?> getChatPhotoURL(
+      ChatDTO chat, UserRepositoryInterface userRepo) async {
+    if (chat.type == 'group') {
+      return chat.groupPhotoURL ?? '';
+    } else {
+      final friendId = chat.participants!
+          .firstWhere((id) => id != _userId, orElse: () => '');
+
+      if (friendId.isNotEmpty) {
+        final friend = await userRepo.getUserDetails(friendId).first;
+        return friend?.photoURL ?? '';
+      }
+    }
+    return ''; // 🔹 Retorno padrão se não encontrar a foto
   }
 }

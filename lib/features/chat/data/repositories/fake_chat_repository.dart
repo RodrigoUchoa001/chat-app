@@ -1,5 +1,6 @@
 import 'package:chatapp/features/chat/data/dto/chat_dto.dart';
 import 'package:chatapp/features/chat/domain/repositories/chat_repository_interface.dart';
+import 'package:chatapp/features/users/domain/user_repository_interface.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final fakeChatRepositoryProvider = Provider((ref) => FakeChatRepository());
@@ -98,6 +99,13 @@ class FakeChatRepository implements ChatRepositoryInterface {
   @override
   Future<String?> getPrivateChatIdByFriendId(String friendId) {
     // TODO: implement getPrivateChatIdByFriendId
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<String?> getChatPhotoURL(
+      ChatDTO chat, UserRepositoryInterface userRepo) {
+    // TODO: implement getChatPhotoURL
     throw UnimplementedError();
   }
 }
