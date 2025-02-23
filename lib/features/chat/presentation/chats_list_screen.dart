@@ -1,3 +1,4 @@
+import 'package:chatapp/core/providers/firebase_auth_providers.dart';
 import 'package:chatapp/core/widgets/app_bar_widget.dart';
 import 'package:chatapp/core/widgets/home_content_background_widget.dart';
 import 'package:chatapp/features/chat/presentation/widgets/chat_list.dart';
@@ -18,6 +19,7 @@ class _ChatScreenState extends ConsumerState<ChatsListScreen> {
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
+    final currentUser = ref.watch(currentUserProvider).asData?.value;
 
     return SafeArea(
       child: Scaffold(
@@ -42,12 +44,23 @@ class _ChatScreenState extends ConsumerState<ChatsListScreen> {
                       ),
                     ),
                     title: 'Home',
-                    rightButton: CircleAvatar(
-                      radius: 22,
-                      backgroundImage: NetworkImage(
-                        'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-                      ),
-                    ),
+                    rightButton: currentUser!.photoURL != null
+                        ? CircleAvatar(
+                            radius: 22,
+                            backgroundImage: NetworkImage(
+                              currentUser.photoURL ?? '',
+                            ),
+                          )
+                        : Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            child: SvgPicture.asset(
+                              Assets.icons.user.path,
+                              height: 52,
+                            ),
+                          ),
                   ),
                   SizedBox(height: 40),
                   ChatStatusRow(),
