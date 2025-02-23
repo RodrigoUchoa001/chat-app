@@ -94,4 +94,10 @@ class FakeChatRepository implements ChatRepositoryInterface {
     await Future.delayed(Duration(seconds: 1));
     yield _userId == "user1" ? 5 : 0;
   }
+
+  @override
+  Future<String?> getPrivateChatIdByFriendId(String friendId) {
+    // TODO: implement getPrivateChatIdByFriendId
+    throw UnimplementedError();
+  }
 }

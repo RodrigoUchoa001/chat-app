@@ -43,6 +43,24 @@ class ChatRepository implements ChatRepositoryInterface {
   }
 
   @override
+  Future<String?> getPrivateChatIdByFriendId(String friendId) async {
+    final querySnapshot = await _firestore
+        .collection('chats')
+        .where('type', isEqualTo: "private")
+        .where('participants', arrayContains: _userId)
+        .get();
+
+    for (var doc in querySnapshot.docs) {
+      List<dynamic> participants = doc['participants'];
+      if (participants.contains(friendId)) {
+        return doc.id;
+      }
+    }
+
+    return null;
+  }
+
+  @override
   Stream<List<MessageDTO>?> getMessages(String chatId) {
     return _firestore
         .collection('messages')
