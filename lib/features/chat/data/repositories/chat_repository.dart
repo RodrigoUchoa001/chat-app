@@ -141,7 +141,7 @@ class ChatRepository implements ChatRepositoryInterface {
     return _firestore.collection('chats').add({
       'type': "private",
       'participants': [_userId, friendId],
-      'createdAt': FieldValue.serverTimestamp(),
+      'createdAt': DateTime.now().toString(),
     });
   }
 
@@ -154,7 +154,7 @@ class ChatRepository implements ChatRepositoryInterface {
       'groupPhotoURL': groupPhotoURL,
       'admins': [_userId],
       'participants': participants,
-      'createdAt': FieldValue.serverTimestamp(),
+      'createdAt': DateTime.now().toString(),
     });
   }
 
