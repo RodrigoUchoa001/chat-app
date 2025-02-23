@@ -1,4 +1,5 @@
 import 'package:chatapp/features/chat/data/dto/chat_dto.dart';
+import 'package:chatapp/features/users/domain/user_repository_interface.dart';
 
 abstract interface class ChatRepositoryInterface {
   Stream<List<ChatDTO>?> getChats();
@@ -11,4 +12,6 @@ abstract interface class ChatRepositoryInterface {
   Future<void> createGroupChat(
       String groupName, String groupPhotoURL, List<String> participants);
   Future<void> deleteChat(String chatId);
+  Future<String?> getChatPhotoURL(
+      ChatDTO chat, UserRepositoryInterface userRepo);
 }
