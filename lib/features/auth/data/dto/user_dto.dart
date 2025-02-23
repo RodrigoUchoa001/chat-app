@@ -52,4 +52,32 @@ class UserDTO {
     data['statusMessage'] = statusMessage;
     return data;
   }
+
+  UserDTO copyWith({
+    String? uid,
+    String? name,
+    String? email,
+    String? photoURL,
+    String? createdAt,
+    bool? isOnline,
+    String? lastSeen,
+    List<String>? friends,
+    List<String>? friendRequests,
+    String? fcmToken,
+    String? statusMessage,
+  }) {
+    return UserDTO(
+      uid: uid ?? this.uid,
+      name: name ?? this.name,
+      email: email ?? this.email,
+      photoURL: photoURL ?? this.photoURL,
+      createdAt: createdAt ?? this.createdAt,
+      isOnline: isOnline ?? this.isOnline,
+      lastSeen: lastSeen ?? this.lastSeen,
+      friends: friends ?? this.friends,
+      friendRequests: friendRequests ?? this.friendRequests,
+      fcmToken: fcmToken ?? this.fcmToken,
+      statusMessage: statusMessage ?? this.statusMessage,
+    );
+  }
 }
