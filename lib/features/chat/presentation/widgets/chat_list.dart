@@ -53,50 +53,56 @@ class ChatList extends ConsumerWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 15),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: [
-                          ChatProfilePic(
-                            chatPhotoURL: chat.type == 'group'
-                                ? chat.groupPhotoURL ?? ''
-                                : user.photoURL ?? '',
-                            isOnline: true,
-                          ),
-                          const SizedBox(width: 12),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                chat.type == 'group'
-                                    ? chat.groupName ?? 'No name'
-                                    : 'private friend name',
-                                // NEXT TODO: get friend name from firebase when is a private chat
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                  fontFamily: FontFamily.caros,
-                                ),
+                      ChatProfilePic(
+                        chatPhotoURL: chat.type == 'group'
+                            ? chat.groupPhotoURL ?? ''
+                            : user.photoURL ?? '',
+                        isOnline: true,
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              chat.type == 'group'
+                                  ? chat.groupName ?? 'No name'
+                                  : 'private friend name (GET FROM FIREBASE)',
+                              // NEXT TODO: get friend name from firebase when is a private chat
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontFamily: FontFamily.caros,
                               ),
-                              const SizedBox(height: 6),
-                              Text(
-                                chat.lastMessage!.text ?? 'No message',
-                                style: TextStyle(
-                                  color: Color(0xFF797C7B),
-                                  fontSize: 12,
-                                  fontFamily: FontFamily.circular,
-                                ),
-                              )
-                            ],
-                          ),
-                        ],
+                            ),
+                            const SizedBox(height: 6),
+                            Text(
+                              chat.lastMessage != null
+                                  ? chat.lastMessage!.text ?? ''
+                                  : '',
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                              style: TextStyle(
+                                color: Color(0xFF797C7B),
+                                fontSize: 12,
+                                fontFamily: FontFamily.circular,
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Text(
-                            calculateTimeSinceLastMessage(
-                                chat.lastMessage!.timestamp!),
+                            chat.lastMessage != null
+                                ? calculateTimeSinceLastMessage(
+                                    chat.lastMessage!.timestamp!)
+                                : "",
                             style: TextStyle(
                               color: Color(0xFF797C7B),
                               fontSize: 12,
