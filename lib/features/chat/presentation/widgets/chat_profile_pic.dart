@@ -1,23 +1,35 @@
+import 'package:chatapp/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 
 class ChatProfilePic extends ConsumerWidget {
-  final String chatPhotoURL;
+  final String? chatPhotoURL;
   final bool isOnline;
-  const ChatProfilePic(
-      {required this.chatPhotoURL, required this.isOnline, super.key});
+  const ChatProfilePic({this.chatPhotoURL, required this.isOnline, super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Stack(
       alignment: Alignment.bottomRight,
       children: [
-        CircleAvatar(
-          radius: 26,
-          backgroundImage: NetworkImage(
-            chatPhotoURL,
-          ),
-        ),
+        chatPhotoURL != null
+            ? CircleAvatar(
+                radius: 26,
+                backgroundImage: NetworkImage(
+                  chatPhotoURL ?? '',
+                ),
+              )
+            : Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                child: SvgPicture.asset(
+                  Assets.icons.user.path,
+                  height: 52,
+                ),
+              ),
         isOnline
             ? Padding(
                 padding: const EdgeInsets.all(4),
