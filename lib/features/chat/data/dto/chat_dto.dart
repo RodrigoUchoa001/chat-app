@@ -55,6 +55,27 @@ class ChatDTO {
     data['createdAt'] = createdAt;
     return data;
   }
+
+  ChatDTO copyWith({
+    String? id,
+    String? type,
+    String? groupName,
+    String? groupPhotoURL,
+    List<String>? admins,
+    List<String>? participants,
+    MessageDTO? lastMessage,
+    String? createdAt,
+  }) =>
+      ChatDTO(
+        id: id ?? this.id,
+        type: type ?? this.type,
+        groupName: groupName ?? this.groupName,
+        groupPhotoURL: groupPhotoURL ?? this.groupPhotoURL,
+        admins: admins ?? this.admins,
+        participants: participants ?? this.participants,
+        lastMessage: lastMessage ?? this.lastMessage,
+        createdAt: createdAt ?? this.createdAt,
+      );
 }
 
 class MessageDTO {
