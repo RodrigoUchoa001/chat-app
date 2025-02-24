@@ -5,11 +5,9 @@ import 'package:chatapp/features/chat/presentation/utils/calculate_time_since_la
 import 'package:chatapp/features/chat/presentation/widgets/chat_profile_pic.dart';
 import 'package:chatapp/features/users/data/repositories/user_repository.dart';
 import 'package:chatapp/features/users/domain/user_repository_interface.dart';
-import 'package:chatapp/gen/assets.gen.dart';
 import 'package:chatapp/gen/fonts.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
 class ChatList extends ConsumerWidget {
@@ -68,23 +66,10 @@ class ChatList extends ConsumerWidget {
                           final hasValidPhoto =
                               chatPhoto != null && chatPhoto.isNotEmpty;
 
-                          if (hasValidPhoto) {
-                            return ChatProfilePic(
-                              chatPhotoURL: chatPhoto,
-                              isOnline: true,
-                            );
-                          } else {
-                            return Container(
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(50),
-                              ),
-                              child: SvgPicture.asset(
-                                Assets.icons.user.path,
-                                height: 52,
-                              ),
-                            );
-                          }
+                          return ChatProfilePic(
+                            chatPhotoURL: hasValidPhoto ? chatPhoto : null,
+                            isOnline: true,
+                          );
                         },
                       ),
                       const SizedBox(width: 12),
