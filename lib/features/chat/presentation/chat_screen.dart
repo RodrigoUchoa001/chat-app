@@ -1,3 +1,4 @@
+import 'package:chatapp/core/providers/firebase_auth_providers.dart';
 import 'package:chatapp/features/auth/presentation/widgets/auth_back_button.dart';
 import 'package:chatapp/features/chat/data/dto/chat_dto.dart';
 import 'package:chatapp/features/chat/data/repositories/chat_repository.dart';
@@ -24,6 +25,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   Widget build(BuildContext context) {
     final chatProvider = ref.watch(chatRepositoryProvider);
     final userRepo = ref.watch(userRepositoryProvider);
+    final currentUser = ref.watch(currentUserProvider);
 
     return SafeArea(
       child: Scaffold(
@@ -69,13 +71,24 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'No name',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontFamily: FontFamily.caros,
-                        ),
+                      currentUser.when(
+                        data: (user) {
+                          return FutureBuilder(
+                            future: _getChatTitle(chat, user!.uid, userRepo),
+                            builder: (context, snapshot) {
+                              return Text(
+                                snapshot.data ?? 'No title',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontFamily: FontFamily.caros,
+                                ),
+                              );
+                            },
+                          );
+                        },
+                        error: (error, stackTrace) => Text('Error: $error'),
+                        loading: () => const CircularProgressIndicator(),
                       ),
                       const SizedBox(height: 6),
                       Text(
@@ -197,5 +210,21 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         ),
       ),
     );
+  }
+
+  Future<String> _getChatTitle(
+      ChatDTO chat, String userId, UserRepositoryInterface userRepo) async {
+    if (chat.type == 'group') {
+      return chat.groupName ?? 'No group name';
+    } else {
+      final friendId =
+          chat.participants!.firstWhere((id) => id != userId, orElse: () => '');
+
+      if (friendId.isNotEmpty) {
+        final friend = await userRepo.getUserDetails(friendId).first;
+        return friend?.name ?? 'No friend name';
+      }
+      return '';
+    }
   }
 }
