@@ -1,8 +1,10 @@
 import 'package:chatapp/core/providers/firebase_auth_providers.dart';
+import 'package:chatapp/features/chat/data/dto/chat_dto.dart';
 import 'package:chatapp/features/chat/data/repositories/chat_repository.dart';
 import 'package:chatapp/features/chat/presentation/utils/calculate_time_since_last_message.dart';
 import 'package:chatapp/features/chat/presentation/widgets/chat_profile_pic.dart';
 import 'package:chatapp/features/users/data/repositories/user_repository.dart';
+import 'package:chatapp/features/users/domain/user_repository_interface.dart';
 import 'package:chatapp/gen/assets.gen.dart';
 import 'package:chatapp/gen/fonts.gen.dart';
 import 'package:flutter/material.dart';
@@ -53,6 +55,7 @@ class ChatList extends ConsumerWidget {
               return TextButton(
                 onPressed: () {
                   context.push('/chat/${chat.id}');
+                  // TODO: create chat and check if the it working fine
                 },
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 15),
@@ -90,19 +93,22 @@ class ChatList extends ConsumerWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              chat.type == 'group'
-                                  ? chat.groupName ?? 'No name'
-                                  : 'private friend name (GET FROM FIREBASE)',
-                              // NEXT TODO: get friend name from firebase when is a private chat
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 1,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontFamily: FontFamily.caros,
-                              ),
-                            ),
+                            FutureBuilder(
+                                future:
+                                    _getChatTitle(chat, user.uid, userProvider),
+                                builder: (context, snapshot) {
+                                  final chatTitle = snapshot.data;
+                                  return Text(
+                                    chatTitle ?? '',
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                      fontFamily: FontFamily.caros,
+                                    ),
+                                  );
+                                }),
                             const SizedBox(height: 6),
                             Text(
                               chat.lastMessage != null
@@ -171,5 +177,21 @@ class ChatList extends ConsumerWidget {
         },
       ),
     );
+  }
+
+  Future<String> _getChatTitle(
+      ChatDTO chat, String userId, UserRepositoryInterface userRepo) async {
+    if (chat.type == 'group') {
+      return chat.groupName ?? 'No group name';
+    } else {
+      final friendId =
+          chat.participants!.firstWhere((id) => id != userId, orElse: () => '');
+
+      if (friendId.isNotEmpty) {
+        final friend = await userRepo.getUserDetails(friendId).first;
+        return friend?.name ?? 'No friend name';
+      }
+      return '';
+    }
   }
 }

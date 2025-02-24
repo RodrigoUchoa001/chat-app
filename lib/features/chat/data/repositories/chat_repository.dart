@@ -189,6 +189,6 @@ class ChatRepository implements ChatRepositoryInterface {
         return friend?.photoURL ?? '';
       }
     }
-    return ''; // 🔹 Retorno padrão se não encontrar a foto
+    return '';
   }
 }
