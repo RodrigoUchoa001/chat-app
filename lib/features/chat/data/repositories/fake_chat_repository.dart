@@ -108,4 +108,10 @@ class FakeChatRepository implements ChatRepositoryInterface {
     // TODO: implement getChatPhotoURL
     throw UnimplementedError();
   }
+
+  @override
+  Stream<ChatDTO?> getChatDetails(String chatId) {
+    // TODO: implement getChatDetails
+    throw UnimplementedError();
+  }
 }

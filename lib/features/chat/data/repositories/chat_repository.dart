@@ -191,4 +191,13 @@ class ChatRepository implements ChatRepositoryInterface {
     }
     return '';
   }
+
+  @override
+  Stream<ChatDTO?> getChatDetails(String chatId) {
+    return _firestore.collection('chats').doc(chatId).snapshots().map(
+          (snapshot) => snapshot.data() != null
+              ? ChatDTO.fromJson(snapshot.data()!)
+              : null,
+        );
+  }
 }
