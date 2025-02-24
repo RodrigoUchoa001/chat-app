@@ -38,7 +38,7 @@ class ChatRepository implements ChatRepositoryInterface {
         .map((querySnapshot) {
       if (querySnapshot.docs.isEmpty) return [];
       return querySnapshot.docs.map((doc) {
-        return ChatDTO.fromJson(doc.data());
+        return ChatDTO.fromJson(doc.data()).copyWith(id: doc.id);
       }).toList();
     });
   }
