@@ -55,7 +55,6 @@ class ChatList extends ConsumerWidget {
               return TextButton(
                 onPressed: () {
                   context.push('/chat/${chat.id}');
-                  // TODO: create chat and check if the it working fine
                 },
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 15),
