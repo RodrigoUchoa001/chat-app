@@ -34,6 +34,7 @@ class ChatRepository implements ChatRepositoryInterface {
     return _firestore
         .collection('chats')
         .where('participants', arrayContains: _userId)
+        .where('lastMessage', isNull: false)
         .snapshots()
         .map((querySnapshot) {
       if (querySnapshot.docs.isEmpty) return [];
@@ -143,6 +144,7 @@ class ChatRepository implements ChatRepositoryInterface {
       'type': "private",
       'participants': [_userId, friendId],
       'createdAt': DateTime.now().toString(),
+      'lastMessage': null,
     });
   }
 
@@ -156,6 +158,7 @@ class ChatRepository implements ChatRepositoryInterface {
       'admins': [_userId],
       'participants': participants,
       'createdAt': DateTime.now().toString(),
+      'lastMessage': null,
     });
   }
 
