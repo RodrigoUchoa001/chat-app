@@ -3,13 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ChatTextField extends ConsumerWidget {
+  final Function(String text)? onChanged;
   final TextEditingController controller;
-  const ChatTextField({required this.controller, super.key});
+  const ChatTextField({this.onChanged, required this.controller, super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return TextField(
       controller: controller,
+      onChanged: onChanged,
       style: TextStyle(
         color: Colors.white,
         fontSize: 12,
