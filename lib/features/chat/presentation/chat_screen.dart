@@ -2,6 +2,7 @@ import 'package:chatapp/core/providers/firebase_auth_providers.dart';
 import 'package:chatapp/features/auth/presentation/widgets/auth_back_button.dart';
 import 'package:chatapp/features/chat/data/dto/chat_dto.dart';
 import 'package:chatapp/features/chat/data/repositories/chat_repository.dart';
+import 'package:chatapp/features/chat/presentation/utils/calculate_time_since_last_message.dart';
 import 'package:chatapp/features/chat/presentation/widgets/chat_input_field.dart';
 import 'package:chatapp/features/chat/presentation/widgets/chat_profile_pic.dart';
 import 'package:chatapp/features/users/data/repositories/user_repository.dart';
@@ -92,6 +93,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                       ),
                       const SizedBox(height: 6),
                       Text(
+                        // TODO: If private chat, check if user is online
                         'online',
                         style: TextStyle(
                           color: Color(0xFF797C7B),
@@ -167,8 +169,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                       itemBuilder: (context, index) {
                         return chatBubble(
                           message: messages[index].text ?? '',
-                          time: DateTime.parse(messages[index].timestamp ?? '')
-                              .toString(),
+                          time: calculateTimeSinceLastMessage(
+                              messages[index].timestamp),
                           isMe: messages[index].senderId ==
                               currentUser.value?.uid,
                         );
