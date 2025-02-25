@@ -5,8 +5,22 @@ import 'package:chatapp/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ChatInputField extends ConsumerWidget {
-  const ChatInputField({super.key});
+class ChatInputField extends ConsumerStatefulWidget {
+  final String chatId;
+  const ChatInputField({required this.chatId, super.key});
+
+  @override
+  ConsumerState createState() => _ChatInputFieldState();
+}
+
+class _ChatInputFieldState extends ConsumerState<ChatInputField> {
+  late final TextEditingController _chatTextFieldController;
+
+  @override
+  void initState() {
+    super.initState();
+    _chatTextFieldController = TextEditingController();
+  }
 
   @override
   Widget build(BuildContext context) {
