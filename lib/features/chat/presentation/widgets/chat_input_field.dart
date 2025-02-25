@@ -1,9 +1,11 @@
+import 'package:chatapp/features/chat/data/repositories/chat_repository.dart';
 import 'package:chatapp/features/chat/presentation/providers/show_send_message_icon_provider.dart';
 import 'package:chatapp/features/chat/presentation/widgets/chat_icon_button.dart';
 import 'package:chatapp/features/chat/presentation/widgets/chat_text_field.dart';
 import 'package:chatapp/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class ChatInputField extends ConsumerStatefulWidget {
   final String chatId;
@@ -64,19 +66,35 @@ class _ChatInputFieldState extends ConsumerState<ChatInputField> {
                 ),
               ),
             ),
-            _buildButtons(showSendMessageIcon),
+            _buildButtons(showSendMessageIcon, ref),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildButtons(bool showSendMessageIcon) {
+  Widget _buildButtons(bool showSendMessageIcon, WidgetRef ref) {
     if (showSendMessageIcon) {
       return ChatIconButton(
         iconPath: Assets.icons.send.path,
         backgroundColor: Color(0xFF20A090),
-        onPressed: () {},
+        onPressed: () {
+          if (_chatTextFieldController.text.isNotEmpty) {
+            final chatProvider = ref.watch(chatRepositoryProvider);
+            try {
+              chatProvider.sendMessage(
+                widget.chatId,
+                _chatTextFieldController.text,
+              );
+              _chatTextFieldController.clear();
+              ref
+                  .read(showSendMessageIconProvider.notifier)
+                  .update((state) => false);
+            } on Exception catch (e) {
+              Fluttertoast.showToast(msg: "Error sending message: $e");
+            }
+          }
+        },
       );
     } else {
       return Row(
