@@ -4,12 +4,22 @@ import 'package:flutter_svg/svg.dart';
 
 class ChatIconButton extends ConsumerWidget {
   final String iconPath;
-  const ChatIconButton({required this.iconPath, super.key});
+  final Color? backgroundColor;
+  final Function() onPressed;
+  const ChatIconButton(
+      {this.backgroundColor,
+      required this.onPressed,
+      required this.iconPath,
+      super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return IconButton(
-      onPressed: () {},
+      style: ButtonStyle(
+        backgroundColor:
+            WidgetStatePropertyAll(backgroundColor ?? Colors.transparent),
+      ),
+      onPressed: onPressed,
       icon: SvgPicture.asset(
         iconPath,
         height: 24,
