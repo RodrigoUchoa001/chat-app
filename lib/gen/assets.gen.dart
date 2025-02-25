@@ -36,6 +36,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/Message.svg
   SvgGenImage get message => const SvgGenImage('assets/icons/Message.svg');
 
+  /// File path: assets/icons/Send.svg
+  SvgGenImage get send => const SvgGenImage('assets/icons/Send.svg');
+
   /// File path: assets/icons/Video.svg
   SvgGenImage get video => const SvgGenImage('assets/icons/Video.svg');
 
@@ -86,6 +89,7 @@ class $AssetsIconsGen {
   List<SvgGenImage> get values => [
         call,
         message,
+        send,
         video,
         apple,
         backButton,
