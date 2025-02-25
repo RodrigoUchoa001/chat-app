@@ -134,23 +134,49 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         ),
         body: Column(
           children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    chatBubble(
-                      message: "Hello how are you?",
-                      time: "09:25 AM",
-                      isMe: true,
+            StreamBuilder(
+              stream: chatProvider.getMessages(widget.chatId),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                }
+
+                final messages = snapshot.data!;
+                if (messages.isEmpty) {
+                  return Expanded(
+                    child: const Center(
+                      child: Text(
+                        'No messages yet!',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 24,
+                          fontFamily: FontFamily.circular,
+                        ),
+                      ),
                     ),
-                    chatBubble(
-                      message: "Hello de boassa?",
-                      time: "09:25 AM",
-                      isMe: false,
+                  );
+                }
+
+                return Expanded(
+                  child: SingleChildScrollView(
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: messages.length,
+                      itemBuilder: (context, index) {
+                        return chatBubble(
+                          message: messages[index].text ?? '',
+                          time: DateTime.parse(messages[index].timestamp ?? '')
+                              .toString(),
+                          isMe: messages[index].senderId ==
+                              currentUser.value?.uid,
+                        );
+                      },
                     ),
-                  ],
-                ),
-              ),
+                  ),
+                );
+              },
             ),
             ChatInputField(),
           ],
