@@ -56,7 +56,7 @@ class _FriendsScreenState extends ConsumerState<FriendsScreen> {
               ),
             ),
             HomeContentBackground(
-              height: screenHeight - 175.33, //CHUTEI ESSE NUMERO
+              height: screenHeight - 190, //CHUTEI ESSE NUMERO
               child: FriendsListWidget(),
             ),
           ],
