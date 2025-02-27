@@ -36,3 +36,10 @@ final friendRequestsProvider = StreamProvider<List<UserDTO?>>((ref) {
     return StreamZip(requestStreams).first;
   });
 });
+
+final friendsRequestCountProvider = StreamProvider<int>((ref) {
+  final friendsRepo = ref.watch(friendsRepositoryProvider);
+  return friendsRepo
+      .getFriendsRequests()
+      .map((requests) => requests?.length ?? 0);
+});
