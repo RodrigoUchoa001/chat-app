@@ -1,6 +1,7 @@
 import 'package:chatapp/features/auth/data/dto/user_dto.dart';
 import 'package:chatapp/features/chat/data/repositories/chat_repository.dart';
 import 'package:chatapp/features/chat/domain/repositories/chat_repository_interface.dart';
+import 'package:chatapp/features/chat/presentation/widgets/chat_profile_pic.dart';
 import 'package:chatapp/features/friends/data/repositories/friends_repository.dart';
 import 'package:chatapp/features/friends/domain/friends_repository_interface.dart';
 import 'package:chatapp/features/friends/presentation/providers/friends_providers.dart';
@@ -194,6 +195,10 @@ class FriendsListWidget extends ConsumerWidget {
                 shrinkWrap: true,
                 itemCount: friendRequests.length,
                 itemBuilder: (context, index) {
+                  final chatPhoto = friendRequests[index]!.photoURL;
+                  final hasValidPhoto =
+                      chatPhoto != null && chatPhoto.isNotEmpty;
+
                   return Card(
                     color: const Color(0xFF242E2E),
                     child: Padding(
@@ -206,11 +211,11 @@ class FriendsListWidget extends ConsumerWidget {
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                CircleAvatar(
-                                  radius: 51 / 2,
-                                  backgroundImage: NetworkImage(
-                                    friendRequests[index]!.photoURL ?? '',
-                                  ),
+                                ChatProfilePic(
+                                  chatPhotoURL: hasValidPhoto
+                                      ? friendRequests[index]!.photoURL
+                                      : null,
+                                  isOnline: false,
                                 ),
                                 const SizedBox(width: 12),
                                 Column(
@@ -318,6 +323,9 @@ class FriendsListWidget extends ConsumerWidget {
 
   Widget friendButton(ChatRepositoryInterface chatRepository,
       List<UserDTO?> friends, int index, BuildContext context) {
+    final friendPhoto = friends[index]!.photoURL;
+    final hasValidPhoto = friendPhoto != null && friendPhoto.isNotEmpty;
+
     return Material(
       color: Colors.transparent,
       child: InkWell(
@@ -337,11 +345,9 @@ class FriendsListWidget extends ConsumerWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              CircleAvatar(
-                radius: 51 / 2,
-                backgroundImage: NetworkImage(
-                  friends[index]!.photoURL ?? '',
-                ),
+              ChatProfilePic(
+                chatPhotoURL: hasValidPhoto ? friends[index]!.photoURL : null,
+                isOnline: true,
               ),
               const SizedBox(width: 12),
               Column(
