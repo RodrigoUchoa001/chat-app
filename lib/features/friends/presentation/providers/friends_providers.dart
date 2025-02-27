@@ -1,4 +1,3 @@
-import 'package:async/async.dart';
 import 'package:chatapp/features/auth/data/dto/user_dto.dart';
 import 'package:chatapp/features/friends/data/repositories/friends_repository.dart';
 import 'package:chatapp/features/users/data/repositories/user_repository.dart';
