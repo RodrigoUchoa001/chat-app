@@ -2,7 +2,6 @@ import 'package:chatapp/core/providers/firebase_auth_providers.dart';
 import 'package:chatapp/features/auth/presentation/widgets/auth_back_button.dart';
 import 'package:chatapp/features/chat/data/dto/chat_dto.dart';
 import 'package:chatapp/features/chat/data/repositories/chat_repository.dart';
-import 'package:chatapp/features/chat/presentation/utils/calculate_time_since_last_message.dart';
 import 'package:chatapp/features/chat/presentation/widgets/chat_input_field.dart';
 import 'package:chatapp/features/chat/presentation/widgets/chat_profile_pic.dart';
 import 'package:chatapp/features/users/data/repositories/user_repository.dart';
@@ -71,39 +70,42 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                     },
                   ),
                   const SizedBox(width: 12),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      currentUser.when(
-                        data: (user) {
-                          return FutureBuilder(
-                            future: _getChatTitle(chat, user!.uid, userRepo),
-                            builder: (context, snapshot) {
-                              return Text(
-                                snapshot.data ?? 'No title',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                  fontFamily: FontFamily.caros,
-                                ),
-                              );
-                            },
-                          );
-                        },
-                        error: (error, stackTrace) => Text('Error: $error'),
-                        loading: () => const CircularProgressIndicator(),
-                      ),
-                      const SizedBox(height: 6),
-                      Text(
-                        // TODO: If private chat, check if user is online
-                        'online',
-                        style: TextStyle(
-                          color: Color(0xFF797C7B),
-                          fontSize: 12,
-                          fontFamily: FontFamily.circular,
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        currentUser.when(
+                          data: (user) {
+                            return FutureBuilder(
+                              future: _getChatTitle(chat, user!.uid, userRepo),
+                              builder: (context, snapshot) {
+                                return Text(
+                                  snapshot.data ?? 'No title',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontFamily: FontFamily.caros,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                          error: (error, stackTrace) => Text('Error: $error'),
+                          loading: () => const CircularProgressIndicator(),
                         ),
-                      ),
-                    ],
+                        const SizedBox(height: 6),
+                        Text(
+                          // TODO: If private chat, check if user is online
+                          'online',
+                          style: TextStyle(
+                            color: Color(0xFF797C7B),
+                            fontSize: 12,
+                            fontFamily: FontFamily.circular,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               );
