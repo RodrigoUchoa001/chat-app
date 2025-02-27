@@ -6,10 +6,13 @@ import 'package:chatapp/features/chat/presentation/utils/calculate_time_since_la
 import 'package:chatapp/features/chat/presentation/widgets/chat_profile_pic.dart';
 import 'package:chatapp/features/users/data/repositories/user_repository.dart';
 import 'package:chatapp/features/users/domain/user_repository_interface.dart';
+import 'package:chatapp/gen/assets.gen.dart';
 import 'package:chatapp/gen/fonts.gen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
 class ChatList extends ConsumerWidget {
@@ -23,7 +26,7 @@ class ChatList extends ConsumerWidget {
     final unseenMessagesCount = ref.watch(unreadMessagesProvider(user!.uid));
 
     return Padding(
-      padding: const EdgeInsets.only(left: 24, right: 24, top: 26),
+      padding: const EdgeInsets.only(top: 26),
       child: StreamBuilder(
         stream: chats.getChats(),
         builder: (context, snapshot) {
@@ -97,101 +100,121 @@ class ChatList extends ConsumerWidget {
       UserRepositoryInterface userProvider,
       User user,
       AsyncValue<int> unseenMessagesCount) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 15),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+    return Slidable(
+      endActionPane: ActionPane(
+        motion: const ScrollMotion(),
+        extentRatio: 0.1,
         children: [
-          FutureBuilder(
-            future: chats.getChatPhotoURL(chat, userProvider),
-            builder: (context, snapshot) {
-              final chatPhoto = snapshot.data;
-              final hasValidPhoto = chatPhoto != null && chatPhoto.isNotEmpty;
-
-              return ChatProfilePic(
-                chatPhotoURL: hasValidPhoto ? chatPhoto : null,
-                isOnline: true,
-              );
-            },
+          Container(
+            decoration: BoxDecoration(
+              color: Color(0xFFEA3736),
+              borderRadius: BorderRadius.circular(50),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(7),
+              child: SvgPicture.asset(Assets.icons.trash.path, width: 22),
+            ),
           ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+        ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 24),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            FutureBuilder(
+              future: chats.getChatPhotoURL(chat, userProvider),
+              builder: (context, snapshot) {
+                final chatPhoto = snapshot.data;
+                final hasValidPhoto = chatPhoto != null && chatPhoto.isNotEmpty;
+
+                return ChatProfilePic(
+                  chatPhotoURL: hasValidPhoto ? chatPhoto : null,
+                  isOnline: true,
+                );
+              },
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  FutureBuilder(
+                      future: _getChatTitle(chat, user.uid, userProvider),
+                      builder: (context, snapshot) {
+                        final chatTitle = snapshot.data;
+                        return Text(
+                          chatTitle ?? '',
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontFamily: FontFamily.caros,
+                          ),
+                        );
+                      }),
+                  const SizedBox(height: 6),
+                  Text(
+                    chat.lastMessage != null
+                        ? chat.lastMessage!.text ?? ''
+                        : '',
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                    style: TextStyle(
+                      color: Color(0xFF797C7B),
+                      fontSize: 12,
+                      fontFamily: FontFamily.circular,
+                    ),
+                  )
+                ],
+              ),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                FutureBuilder(
-                    future: _getChatTitle(chat, user.uid, userProvider),
-                    builder: (context, snapshot) {
-                      final chatTitle = snapshot.data;
-                      return Text(
-                        chatTitle ?? '',
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontFamily: FontFamily.caros,
-                        ),
-                      );
-                    }),
-                const SizedBox(height: 6),
                 Text(
-                  chat.lastMessage != null ? chat.lastMessage!.text ?? '' : '',
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
+                  chat.lastMessage != null
+                      ? calculateTimeSinceLastMessage(
+                          chat.lastMessage!.timestamp!)
+                      : "",
                   style: TextStyle(
                     color: Color(0xFF797C7B),
                     fontSize: 12,
                     fontFamily: FontFamily.circular,
                   ),
+                ),
+                const SizedBox(height: 7),
+                unseenMessagesCount.when(
+                  data: (count) {
+                    return count == 0
+                        ? Container()
+                        : Container(
+                            width: 21.81,
+                            height: 21.81,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(50),
+                              color: Color(0xFFF04A4C),
+                            ),
+                            child: Center(
+                              child: Text(
+                                count.toString(),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                  fontFamily: FontFamily.circular,
+                                ),
+                              ),
+                            ),
+                          );
+                  },
+                  error: (error, stackTrace) => SizedBox(),
+                  loading: () => SizedBox(),
                 )
               ],
             ),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Text(
-                chat.lastMessage != null
-                    ? calculateTimeSinceLastMessage(
-                        chat.lastMessage!.timestamp!)
-                    : "",
-                style: TextStyle(
-                  color: Color(0xFF797C7B),
-                  fontSize: 12,
-                  fontFamily: FontFamily.circular,
-                ),
-              ),
-              const SizedBox(height: 7),
-              unseenMessagesCount.when(
-                data: (count) {
-                  return count == 0
-                      ? Container()
-                      : Container(
-                          width: 21.81,
-                          height: 21.81,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(50),
-                            color: Color(0xFFF04A4C),
-                          ),
-                          child: Center(
-                            child: Text(
-                              count.toString(),
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 12,
-                                fontFamily: FontFamily.circular,
-                              ),
-                            ),
-                          ),
-                        );
-                },
-                error: (error, stackTrace) => SizedBox(),
-                loading: () => SizedBox(),
-              )
-            ],
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
