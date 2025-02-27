@@ -119,9 +119,23 @@ class FriendsListWidget extends ConsumerWidget {
                                 context: context,
                                 builder: (context) {
                                   return AlertDialog(
-                                    title: const Text('Remove friend?'),
+                                    backgroundColor: const Color(0xFF121414),
+                                    title: const Text(
+                                      'Remove friend?',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 24,
+                                        fontFamily: FontFamily.caros,
+                                      ),
+                                    ),
                                     content: const Text(
-                                        'You sure you want to remove this friend?'),
+                                      'You sure you want to remove this friend?',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 12,
+                                        fontFamily: FontFamily.caros,
+                                      ),
+                                    ),
                                     actions: [
                                       TextButton(
                                         child: const Text('Cancel'),
@@ -130,7 +144,7 @@ class FriendsListWidget extends ConsumerWidget {
                                         },
                                       ),
                                       FilledButton(
-                                        child: const Text('Delete'),
+                                        child: const Text('Remove'),
                                         onPressed: () {
                                           Navigator.of(context).pop();
                                           friendsRepository.removeFriend(

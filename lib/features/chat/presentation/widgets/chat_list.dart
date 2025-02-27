@@ -116,9 +116,23 @@ class ChatList extends ConsumerWidget {
                 context: context,
                 builder: (context) {
                   return AlertDialog(
-                    title: const Text('Delete chat?'),
-                    content:
-                        const Text('You sure you want to delete this chat?'),
+                    backgroundColor: const Color(0xFF121414),
+                    title: const Text(
+                      'Delete chat?',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 24,
+                        fontFamily: FontFamily.caros,
+                      ),
+                    ),
+                    content: const Text(
+                      'You sure you want to delete this chat?',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 12,
+                        fontFamily: FontFamily.caros,
+                      ),
+                    ),
                     actions: [
                       TextButton(
                         child: const Text('Cancel'),
