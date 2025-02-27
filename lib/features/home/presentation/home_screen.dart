@@ -1,6 +1,7 @@
 import 'package:chatapp/core/providers/bottom_nav_index_provider.dart';
 import 'package:chatapp/features/chat/presentation/chats_list_screen.dart';
 import 'package:chatapp/features/friends/presentation/friends_screen.dart';
+import 'package:chatapp/features/friends/presentation/providers/friends_providers.dart';
 import 'package:chatapp/gen/assets.gen.dart';
 import 'package:chatapp/gen/fonts.gen.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,8 @@ class HomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentIndex = ref.watch(bottomNavIndexProvider);
+
+    final friendsRequestsCount = ref.watch(friendsRequestCountProvider);
 
     final List<Widget> pages = [
       const ChatsListScreen(),
@@ -57,8 +60,36 @@ class HomeScreen extends ConsumerWidget {
                   label: 'Chats',
                 ),
                 BottomNavigationBarItem(
-                  icon:
+                  icon: Stack(
+                    alignment: Alignment.topRight,
+                    children: [
                       _buildSvgIcon(Assets.icons.user.path, currentIndex == 1),
+                      friendsRequestsCount.when(
+                        data: (friendsRequests) => friendsRequests > 0
+                            ? Container(
+                                width: 16,
+                                height: 16,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(50),
+                                  color: Color(0xFFF04A4C),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    "$friendsRequests",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                      fontFamily: FontFamily.circular,
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : SizedBox(),
+                        error: (error, stackTrace) => SizedBox(),
+                        loading: () => SizedBox(),
+                      ),
+                    ],
+                  ),
                   label: 'Friends',
                 ),
                 BottomNavigationBarItem(
