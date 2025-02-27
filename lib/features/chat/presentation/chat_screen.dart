@@ -2,6 +2,7 @@ import 'package:chatapp/core/providers/firebase_auth_providers.dart';
 import 'package:chatapp/features/auth/presentation/widgets/auth_back_button.dart';
 import 'package:chatapp/features/chat/data/dto/chat_dto.dart';
 import 'package:chatapp/features/chat/data/repositories/chat_repository.dart';
+import 'package:chatapp/features/chat/domain/repositories/chat_repository_interface.dart';
 import 'package:chatapp/features/chat/presentation/widgets/chat_input_field.dart';
 import 'package:chatapp/features/chat/presentation/widgets/chat_profile_pic.dart';
 import 'package:chatapp/features/users/data/repositories/user_repository.dart';
@@ -32,112 +33,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Color(0xFF121414),
-        appBar: AppBar(
-          toolbarHeight: 124,
-          backgroundColor: Colors.transparent,
-          leading: AuthBackButton(),
-          title: StreamBuilder(
-            stream: chatProvider.getChatDetails(widget.chatId),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
-              }
-
-              final chat = snapshot.data!;
-              return Row(
-                children: [
-                  FutureBuilder(
-                    future: chatProvider.getChatPhotoURL(
-                      chat,
-                      userRepo,
-                    ),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const CircularProgressIndicator();
-                      } else if (snapshot.hasError) {
-                        return Text('Error: ${snapshot.error}');
-                      }
-
-                      final chatPhoto = snapshot.data;
-                      final hasValidPhoto =
-                          chatPhoto != null && chatPhoto.isNotEmpty;
-
-                      return ChatProfilePic(
-                        chatPhotoURL: hasValidPhoto ? chatPhoto : null,
-                        // TODO: If private chat, check if user is online
-                        isOnline: chat.type == 'group' ? false : true,
-                      );
-                    },
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        currentUser.when(
-                          data: (user) {
-                            return FutureBuilder(
-                              future: _getChatTitle(chat, user!.uid, userRepo),
-                              builder: (context, snapshot) {
-                                return Text(
-                                  snapshot.data ?? 'No title',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 20,
-                                    fontFamily: FontFamily.caros,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                );
-                              },
-                            );
-                          },
-                          error: (error, stackTrace) => Text('Error: $error'),
-                          loading: () => const CircularProgressIndicator(),
-                        ),
-                        const SizedBox(height: 6),
-                        Text(
-                          // TODO: If private chat, check if user is online
-                          'online',
-                          style: TextStyle(
-                            color: Color(0xFF797C7B),
-                            fontSize: 12,
-                            fontFamily: FontFamily.circular,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              );
-            },
-          ),
-          actions: [
-            Row(
-              children: [
-                Row(
-                  children: [
-                    IconButton(
-                      onPressed: () {},
-                      icon: SvgPicture.asset(
-                        Assets.icons.call.path,
-                        height: 24,
-                      ),
-                    ),
-                    const SizedBox(width: 16),
-                    IconButton(
-                      onPressed: () {},
-                      icon: SvgPicture.asset(
-                        Assets.icons.video.path,
-                        height: 24,
-                      ),
-                    ),
-                    const SizedBox(width: 24),
-                  ],
-                ),
-              ],
-            ),
-          ],
-        ),
+        appBar: chatAppBar(chatProvider, userRepo, currentUser),
         body: Column(
           children: [
             StreamBuilder(
@@ -174,6 +70,117 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  AppBar chatAppBar(ChatRepositoryInterface chatProvider,
+      UserRepositoryInterface userRepo, AsyncValue<User?> currentUser) {
+    return AppBar(
+      toolbarHeight: 124,
+      backgroundColor: Colors.transparent,
+      leading: AuthBackButton(),
+      title: StreamBuilder(
+        stream: chatProvider.getChatDetails(widget.chatId),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          // TODO: When entering a chat with a friend that doesn't exist, get a exception here
+          final chat = snapshot.data!;
+          return Row(
+            children: [
+              FutureBuilder(
+                future: chatProvider.getChatPhotoURL(
+                  chat,
+                  userRepo,
+                ),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator();
+                  } else if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  }
+
+                  final chatPhoto = snapshot.data;
+                  final hasValidPhoto =
+                      chatPhoto != null && chatPhoto.isNotEmpty;
+
+                  return ChatProfilePic(
+                    chatPhotoURL: hasValidPhoto ? chatPhoto : null,
+                    // TODO: If private chat, check if user is online
+                    isOnline: chat.type == 'group' ? false : true,
+                  );
+                },
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    currentUser.when(
+                      data: (user) {
+                        return FutureBuilder(
+                          future: _getChatTitle(chat, user!.uid, userRepo),
+                          builder: (context, snapshot) {
+                            return Text(
+                              snapshot.data ?? 'No title',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontFamily: FontFamily.caros,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            );
+                          },
+                        );
+                      },
+                      error: (error, stackTrace) => Text('Error: $error'),
+                      loading: () => const CircularProgressIndicator(),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      // TODO: If private chat, check if user is online
+                      'online',
+                      style: TextStyle(
+                        color: Color(0xFF797C7B),
+                        fontSize: 12,
+                        fontFamily: FontFamily.circular,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          );
+        },
+      ),
+      actions: [
+        Row(
+          children: [
+            Row(
+              children: [
+                IconButton(
+                  onPressed: () {},
+                  icon: SvgPicture.asset(
+                    Assets.icons.call.path,
+                    height: 24,
+                  ),
+                ),
+                const SizedBox(width: 16),
+                IconButton(
+                  onPressed: () {},
+                  icon: SvgPicture.asset(
+                    Assets.icons.video.path,
+                    height: 24,
+                  ),
+                ),
+                const SizedBox(width: 24),
+              ],
+            ),
+          ],
+        ),
+      ],
     );
   }
 
