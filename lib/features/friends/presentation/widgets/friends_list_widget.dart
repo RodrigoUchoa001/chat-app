@@ -14,7 +14,7 @@ class FriendsListWidget extends ConsumerWidget {
     final chatRepository = ref.watch(chatRepositoryProvider);
 
     return Padding(
-      padding: const EdgeInsets.only(left: 24, right: 24, top: 26),
+      padding: const EdgeInsets.only(top: 26),
       child: friendsList.when(
         data: (friends) {
           if (friends.isEmpty) {
@@ -32,72 +32,81 @@ class FriendsListWidget extends ConsumerWidget {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'My friends',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                  fontFamily: FontFamily.caros,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: const Text(
+                  'My friends',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontFamily: FontFamily.caros,
+                  ),
                 ),
               ),
               const SizedBox(height: 20),
               ListView.builder(
                 shrinkWrap: true,
                 itemCount: friends.length,
-                itemBuilder: (context, index) => TextButton(
-                  onPressed: () async {
-                    final chatId = await chatRepository
-                        .getPrivateChatIdByFriendId(friends[index]!.uid!);
+                itemBuilder: (context, index) {
+                  return Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      onTap: () async {
+                        final chatId = await chatRepository
+                            .getPrivateChatIdByFriendId(friends[index]!.uid!);
 
-                    if (chatId != null) {
-                      context.push('/chat/$chatId');
-                    } else {
-                      await chatRepository
-                          .createPrivateChat(friends[index]!.uid!);
-                      context.push('/chat/${friends[index]!.uid}');
-                    }
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        CircleAvatar(
-                          radius: 22,
-                          backgroundImage: NetworkImage(
-                            friends[index]!.photoURL ?? '',
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        if (chatId != null) {
+                          context.push('/chat/$chatId');
+                        } else {
+                          await chatRepository
+                              .createPrivateChat(friends[index]!.uid!);
+                          context.push('/chat/${friends[index]!.uid}');
+                        }
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 24, vertical: 10),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Text(
-                              friends[index]!.name ?? 'No name',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontFamily: FontFamily.caros,
+                            CircleAvatar(
+                              radius: 51 / 2,
+                              backgroundImage: NetworkImage(
+                                friends[index]!.photoURL ?? '',
                               ),
                             ),
-                            if (friends[index]!.statusMessage != null &&
-                                friends[index]!.statusMessage!.isNotEmpty)
-                              Text(
-                                friends[index]!.statusMessage!,
-                                style: TextStyle(
-                                  color: Color(0xFF797C7B),
-                                  fontSize: 12,
-                                  fontFamily: FontFamily.circular,
+                            const SizedBox(width: 12),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  friends[index]!.name ?? 'No name',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                    fontFamily: FontFamily.caros,
+                                  ),
                                 ),
-                              )
-                            else
-                              SizedBox(),
+                                if (friends[index]!.statusMessage != null &&
+                                    friends[index]!.statusMessage!.isNotEmpty)
+                                  Text(
+                                    friends[index]!.statusMessage!,
+                                    style: TextStyle(
+                                      color: Color(0xFF797C7B),
+                                      fontSize: 12,
+                                      fontFamily: FontFamily.circular,
+                                    ),
+                                  )
+                                else
+                                  SizedBox(),
+                              ],
+                            ),
                           ],
                         ),
-                      ],
+                      ),
                     ),
-                  ),
-                ),
+                  );
+                },
               ),
             ],
           );
