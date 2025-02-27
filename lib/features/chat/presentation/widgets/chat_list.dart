@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
 class ChatList extends ConsumerWidget {
@@ -81,7 +82,7 @@ class ChatList extends ConsumerWidget {
                         },
                         highlightColor: Colors.transparent,
                         child: chatButton(chats, chat, userProvider, user,
-                            unseenMessagesCount),
+                            unseenMessagesCount, context),
                       ),
                     );
                   },
@@ -95,24 +96,51 @@ class ChatList extends ConsumerWidget {
   }
 
   Widget chatButton(
-      ChatRepositoryInterface chats,
-      ChatDTO chat,
-      UserRepositoryInterface userProvider,
-      User user,
-      AsyncValue<int> unseenMessagesCount) {
+    ChatRepositoryInterface chats,
+    ChatDTO chat,
+    UserRepositoryInterface userProvider,
+    User user,
+    AsyncValue<int> unseenMessagesCount,
+    BuildContext context,
+  ) {
     return Slidable(
       endActionPane: ActionPane(
         motion: const ScrollMotion(),
-        extentRatio: 0.1,
+        extentRatio: 0.15,
         children: [
-          Container(
-            decoration: BoxDecoration(
-              color: Color(0xFFEA3736),
-              borderRadius: BorderRadius.circular(50),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(7),
-              child: SvgPicture.asset(Assets.icons.trash.path, width: 22),
+          IconButton(
+            icon: SvgPicture.asset(Assets.icons.trash.path, width: 22),
+            padding: const EdgeInsets.all(7),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: const Text('Delete chat?'),
+                    content:
+                        const Text('You sure you want to delete this chat?'),
+                    actions: [
+                      TextButton(
+                        child: const Text('Cancel'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      FilledButton(
+                        child: const Text('Delete'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          chats.deleteChat(chat.id!);
+                          Fluttertoast.showToast(msg: 'Chat deleted!');
+                        },
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+            style: ButtonStyle(
+              backgroundColor: WidgetStateProperty.all(Color(0xFFEA3736)),
             ),
           ),
         ],
