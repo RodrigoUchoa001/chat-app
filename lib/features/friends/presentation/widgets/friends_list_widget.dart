@@ -4,9 +4,12 @@ import 'package:chatapp/features/chat/domain/repositories/chat_repository_interf
 import 'package:chatapp/features/friends/data/repositories/friends_repository.dart';
 import 'package:chatapp/features/friends/domain/friends_repository_interface.dart';
 import 'package:chatapp/features/friends/presentation/providers/friends_providers.dart';
+import 'package:chatapp/gen/assets.gen.dart';
 import 'package:chatapp/gen/fonts.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
@@ -32,14 +35,16 @@ class FriendsListWidget extends ConsumerWidget {
               const Divider(color: Colors.white),
               const SizedBox(height: 10),
             ]),
-          friendList(friendsList, chatRepository),
+          friendList(friendsList, chatRepository, friendsRepository),
         ],
       ),
     );
   }
 
-  Widget friendList(AsyncValue<List<UserDTO?>> friendsList,
-      ChatRepositoryInterface chatRepository) {
+  Widget friendList(
+      AsyncValue<List<UserDTO?>> friendsList,
+      ChatRepositoryInterface chatRepository,
+      FriendsRepositoryInterface friendsRepository) {
     return friendsList.when(
       data: (friends) {
         if (friends.isEmpty) {
@@ -97,7 +102,56 @@ class FriendsListWidget extends ConsumerWidget {
                           ),
                         ),
                       ),
-                    friendButton(chatRepository, friends, index, context),
+                    Slidable(
+                      endActionPane: ActionPane(
+                        motion: const ScrollMotion(),
+                        extentRatio: 0.15,
+                        children: [
+                          IconButton(
+                            icon: SvgPicture.asset(Assets.icons.trash.path,
+                                width: 22),
+                            padding: const EdgeInsets.all(7),
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: const Text('Remove friend?'),
+                                    content: const Text(
+                                        'You sure you want to remove this friend?'),
+                                    actions: [
+                                      TextButton(
+                                        child: const Text('Cancel'),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                      FilledButton(
+                                        child: const Text('Delete'),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                          friendsRepository.removeFriend(
+                                            friends[index]!.uid!,
+                                          );
+                                          Fluttertoast.showToast(
+                                              msg: 'Friend Removed!');
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                            style: ButtonStyle(
+                              backgroundColor:
+                                  WidgetStateProperty.all(Color(0xFFEA3736)),
+                            ),
+                          ),
+                        ],
+                      ),
+                      child:
+                          friendButton(chatRepository, friends, index, context),
+                    ),
                   ],
                 );
               },
