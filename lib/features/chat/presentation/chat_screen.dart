@@ -195,8 +195,42 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             // Define a smaller padding if the next message is from the same user
             final double bottomPadding = isNextFromSameSender ? 5 : 30;
 
-            return chatBubble(bottomPadding, isMe, isNextFromSameSender,
-                isPreviousFromSameSender, message);
+            // Check if the current message is the first message of the day
+            final bool isFirstMessageOfTheDay = index == 0 ||
+                DateTime.parse(messages[index - 1].timestamp!).day !=
+                    DateTime.parse(messages[index].timestamp!).day;
+
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (isFirstMessageOfTheDay)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Color(0xFF1D2525),
+                        borderRadius: BorderRadius.circular(22),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 5,
+                        ),
+                        child: Text(
+                          messageDate(messages[index].timestamp!),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 12,
+                            fontFamily: FontFamily.circular,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                chatBubble(bottomPadding, isMe, isNextFromSameSender,
+                    isPreviousFromSameSender, message),
+              ],
+            );
           },
         ),
       ),
@@ -284,6 +318,21 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         return friend?.name ?? 'No friend name';
       }
       return '';
+    }
+  }
+
+  String messageDate(String timestamp) {
+    final messageDate = DateTime.parse(timestamp);
+
+    if (messageDate.day == DateTime.now().day) {
+      return 'Today';
+    } else if (messageDate.day ==
+        DateTime.now().subtract(const Duration(days: 1)).day) {
+      return 'Yesterday';
+    } else {
+      return DateFormat('dd/MM/yyyy').format(
+        DateTime.parse(timestamp),
+      );
     }
   }
 }
