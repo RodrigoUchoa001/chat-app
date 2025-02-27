@@ -26,17 +26,19 @@ class FriendsListWidget extends ConsumerWidget {
 
     return Padding(
       padding: const EdgeInsets.only(top: 26),
-      child: Column(
-        children: [
-          friendRequestsList(friendRequests, friendsRepository),
-          if (friendRequestCount.value! > 0)
-            Column(children: [
-              const SizedBox(height: 10),
-              const Divider(color: Colors.white),
-              const SizedBox(height: 10),
-            ]),
-          friendList(friendsList, chatRepository, friendsRepository),
-        ],
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            friendRequestsList(friendRequests, friendsRepository),
+            if (friendRequestCount.value! > 0)
+              Column(children: [
+                const SizedBox(height: 10),
+                const Divider(color: Colors.white),
+                const SizedBox(height: 10),
+              ]),
+            friendList(friendsList, chatRepository, friendsRepository),
+          ],
+        ),
       ),
     );
   }
