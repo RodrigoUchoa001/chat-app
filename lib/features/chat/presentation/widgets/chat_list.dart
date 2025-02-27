@@ -49,19 +49,42 @@ class ChatList extends ConsumerWidget {
             );
           }
 
-          return ListView.builder(
-            itemCount: data.length,
-            itemBuilder: (context, index) {
-              final chat = data[index];
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: const Text(
+                  'My chats',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontFamily: FontFamily.caros,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: data.length,
+                  itemBuilder: (context, index) {
+                    final chat = data[index];
 
-              return TextButton(
-                onPressed: () {
-                  context.push('/chat/${chat.id}');
-                },
-                child: chatButton(
-                    chats, chat, userProvider, user, unseenMessagesCount),
-              );
-            },
+                    return Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        onTap: () {
+                          context.push('/chat/${chat.id}');
+                        },
+                        highlightColor: Colors.transparent,
+                        child: chatButton(chats, chat, userProvider, user,
+                            unseenMessagesCount),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
           );
         },
       ),
