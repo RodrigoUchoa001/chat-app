@@ -24,6 +24,30 @@ class ChatScreen extends ConsumerStatefulWidget {
 }
 
 class _ChatScreenState extends ConsumerState<ChatScreen> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToBottom());
+  }
+
+  void _scrollToBottom() {
+    if (_scrollController.hasClients) {
+      _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final chatProvider = ref.watch(chatRepositoryProvider);
@@ -47,8 +71,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
                 final messages = snapshot.data!;
                 if (messages.isEmpty) {
-                  return Expanded(
-                    child: const Center(
+                  return const Expanded(
+                    child: Center(
                       child: Text(
                         'No messages yet!',
                         style: TextStyle(
@@ -61,12 +85,14 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                   );
                 }
 
+                // scroll to the end when a new message appears
+                WidgetsBinding.instance
+                    .addPostFrameCallback((_) => _scrollToBottom());
+
                 return messagesList(messages, currentUser);
               },
             ),
-            ChatInputField(
-              chatId: widget.chatId,
-            ),
+            ChatInputField(chatId: widget.chatId),
           ],
         ),
       ),
@@ -188,6 +214,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       List<MessageDTO> messages, AsyncValue<User?> currentUser) {
     return Expanded(
       child: ListView.builder(
+        controller: _scrollController,
         shrinkWrap: true,
         itemCount: messages.length,
         itemBuilder: (context, index) {
@@ -219,18 +246,14 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                       color: Color(0xFF1D2525),
                       borderRadius: BorderRadius.circular(22),
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 5,
-                      ),
-                      child: Text(
-                        messageDate(messages[index].timestamp!),
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 12,
-                          fontFamily: FontFamily.circular,
-                        ),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+                    child: Text(
+                      messageDate(messages[index].timestamp!),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 12,
+                        fontFamily: FontFamily.circular,
                       ),
                     ),
                   ),
@@ -240,9 +263,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             ],
           );
         },
-        controller: ScrollController(
-          initialScrollOffset: 1000,
-        ),
       ),
     );
   }
