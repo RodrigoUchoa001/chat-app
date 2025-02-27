@@ -50,7 +50,33 @@ class FriendsListWidget extends ConsumerWidget {
                 shrinkWrap: true,
                 itemCount: friends.length,
                 itemBuilder: (context, index) {
-                  return friendButton(chatRepository, friends, index, context);
+                  bool isTheFirstFriendWithThisLetter = index == 0 ||
+                      friends[index - 1]!.name![0] != friends[index]!.name![0];
+
+                  return Column(
+                    children: [
+                      if (isTheFirstFriendWithThisLetter)
+                        Padding(
+                          padding: EdgeInsets.only(
+                              left: 24,
+                              right: 24,
+                              top: index == 0 ? 0 : 30,
+                              bottom: 20),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              friends[index]!.name![0],
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontFamily: FontFamily.caros,
+                              ),
+                            ),
+                          ),
+                        ),
+                      friendButton(chatRepository, friends, index, context),
+                    ],
+                  );
                 },
               ),
             ],
