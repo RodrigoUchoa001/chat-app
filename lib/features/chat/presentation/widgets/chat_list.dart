@@ -229,9 +229,8 @@ class ChatList extends ConsumerWidget {
                 const SizedBox(height: 7),
                 unseenMessagesCount.when(
                   data: (count) {
-                    return count == 0
-                        ? Container()
-                        : Container(
+                    return count > 0
+                        ? Container(
                             width: 21.81,
                             height: 21.81,
                             decoration: BoxDecoration(
@@ -248,7 +247,8 @@ class ChatList extends ConsumerWidget {
                                 ),
                               ),
                             ),
-                          );
+                          )
+                        : const SizedBox();
                   },
                   error: (error, stackTrace) => SizedBox(),
                   loading: () => SizedBox(),
