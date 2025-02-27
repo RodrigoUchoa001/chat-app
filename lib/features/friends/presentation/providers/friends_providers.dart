@@ -31,9 +31,20 @@ final friendRequestsProvider = StreamProvider<List<UserDTO?>>((ref) {
   final userRepo = ref.watch(userRepositoryProvider);
 
   return friendsRepo.getFriendsRequests().asyncMap((requestUids) async {
-    final requestStreams = requestUids!.map(userRepo.getUserDetails).toList();
+    if (requestUids == null || requestUids.isEmpty) {
+      return [];
+    }
 
-    return StreamZip(requestStreams).first;
+    final requestStreams = requestUids.map((uid) async {
+      final user = await userRepo.getUserDetails(uid).first;
+      if (user != null) {
+        return user.copyWith(uid: uid);
+      }
+      return null;
+    }).toList();
+
+    final friendsList = await Future.wait(requestStreams);
+    return friendsList.whereType<UserDTO>().toList();
   });
 });
 
