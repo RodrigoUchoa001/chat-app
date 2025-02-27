@@ -13,6 +13,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart';
 
 class ChatScreen extends ConsumerStatefulWidget {
   final String chatId;
@@ -255,7 +256,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
               Padding(
                 padding: const EdgeInsets.only(top: 5),
                 child: Text(
-                  calculateTimeSinceLastMessage(message.timestamp),
+                  DateFormat.jm()
+                      .format(DateTime.parse(message.timestamp ?? '')),
                   style: const TextStyle(
                     color: Color(0xFF797C7B),
                     fontSize: 10,
