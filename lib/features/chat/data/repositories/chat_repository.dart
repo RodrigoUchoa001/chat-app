@@ -72,6 +72,9 @@ class ChatRepository implements ChatRepositoryInterface {
         .snapshots()
         .map((querySnapshot) {
       return querySnapshot.docs.map((doc) {
+        // mark all the messages as seen
+        markMessageAsSeen(chatId, doc.id);
+
         return MessageDTO.fromJson(doc.data());
       }).toList();
     });
