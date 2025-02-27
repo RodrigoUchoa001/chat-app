@@ -178,60 +178,61 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   Widget messagesList(
       List<MessageDTO> messages, AsyncValue<User?> currentUser) {
     return Expanded(
-      child: SingleChildScrollView(
-        child: ListView.builder(
-          shrinkWrap: true,
-          itemCount: messages.length,
-          itemBuilder: (context, index) {
-            final message = messages[index];
-            final isMe = message.senderId == currentUser.value?.uid;
+      child: ListView.builder(
+        shrinkWrap: true,
+        itemCount: messages.length,
+        itemBuilder: (context, index) {
+          final message = messages[index];
+          final isMe = message.senderId == currentUser.value?.uid;
 
-            // Check if the next or previous message is from the same sender
-            final bool isNextFromSameSender = index < messages.length - 1 &&
-                messages[index + 1].senderId == message.senderId;
-            final bool isPreviousFromSameSender =
-                index > 0 && messages[index - 1].senderId == message.senderId;
+          // Check if the next or previous message is from the same sender
+          final bool isNextFromSameSender = index < messages.length - 1 &&
+              messages[index + 1].senderId == message.senderId;
+          final bool isPreviousFromSameSender =
+              index > 0 && messages[index - 1].senderId == message.senderId;
 
-            // Define a smaller padding if the next message is from the same user
-            final double bottomPadding = isNextFromSameSender ? 5 : 30;
+          // Define a smaller padding if the next message is from the same user
+          final double bottomPadding = isNextFromSameSender ? 5 : 30;
 
-            // Check if the current message is the first message of the day
-            final bool isFirstMessageOfTheDay = index == 0 ||
-                DateTime.parse(messages[index - 1].timestamp!).day !=
-                    DateTime.parse(messages[index].timestamp!).day;
+          // Check if the current message is the first message of the day
+          final bool isFirstMessageOfTheDay = index == 0 ||
+              DateTime.parse(messages[index - 1].timestamp!).day !=
+                  DateTime.parse(messages[index].timestamp!).day;
 
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                if (isFirstMessageOfTheDay)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 20),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Color(0xFF1D2525),
-                        borderRadius: BorderRadius.circular(22),
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (isFirstMessageOfTheDay)
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Color(0xFF1D2525),
+                      borderRadius: BorderRadius.circular(22),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 5,
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 5,
-                        ),
-                        child: Text(
-                          messageDate(messages[index].timestamp!),
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 12,
-                            fontFamily: FontFamily.circular,
-                          ),
+                      child: Text(
+                        messageDate(messages[index].timestamp!),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                          fontFamily: FontFamily.circular,
                         ),
                       ),
                     ),
                   ),
-                chatBubble(bottomPadding, isMe, isNextFromSameSender,
-                    isPreviousFromSameSender, message),
-              ],
-            );
-          },
+                ),
+              chatBubble(bottomPadding, isMe, isNextFromSameSender,
+                  isPreviousFromSameSender, message),
+            ],
+          );
+        },
+        controller: ScrollController(
+          initialScrollOffset: 1000,
         ),
       ),
     );
