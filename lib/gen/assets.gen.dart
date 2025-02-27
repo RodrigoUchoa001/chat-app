@@ -79,6 +79,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/settings.svg
   SvgGenImage get settings => const SvgGenImage('assets/icons/settings.svg');
 
+  /// File path: assets/icons/trash.svg
+  SvgGenImage get trash => const SvgGenImage('assets/icons/trash.svg');
+
   /// File path: assets/icons/user-add.svg
   SvgGenImage get userAdd => const SvgGenImage('assets/icons/user-add.svg');
 
@@ -102,6 +105,7 @@ class $AssetsIconsGen {
         microphone,
         search,
         settings,
+        trash,
         userAdd,
         user
       ];
