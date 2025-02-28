@@ -8,3 +8,4 @@ String createGroupRoute = 'create-group';
 String friendsRoute = 'friends';
 String settingsRoute = 'settings';
 String profileRoute = 'profile';
+String searchRoute = 'search';
