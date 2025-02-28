@@ -172,13 +172,25 @@ class ChatRepository implements ChatRepositoryInterface {
 
   @override
   Stream<int> getUnseenMessagesCount(String chatId) {
-    return _firestore
+    final totalMessagesStream = _firestore
         .collection('messages')
         .doc(chatId)
         .collection('messages')
-        .where('seenBy', arrayContains: _userId, isEqualTo: false)
+        .snapshots()
+        .map((querySnapshot) => querySnapshot.docs.length);
+
+    final seenMessagesStream = _firestore
+        .collection('messages')
+        .doc(chatId)
+        .collection('messages')
+        .where('seenBy', arrayContains: _userId)
         .snapshots()
         .map((snapshot) => snapshot.docs.length);
+
+    return totalMessagesStream.asyncMap((totalCount) async {
+      final seenCount = await seenMessagesStream.first;
+      return totalCount - seenCount;
+    });
   }
 
   @override
