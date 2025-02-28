@@ -35,6 +35,7 @@ class ChatRepository implements ChatRepositoryInterface {
         .collection('chats')
         .where('participants', arrayContains: _userId)
         .where('lastMessage', isNull: false)
+        .orderBy('lastMessage.timestamp', descending: true)
         .snapshots()
         .map((querySnapshot) {
       if (querySnapshot.docs.isEmpty) return [];
