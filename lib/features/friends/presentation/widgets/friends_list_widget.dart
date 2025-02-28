@@ -213,16 +213,15 @@ class FriendsListWidget extends ConsumerWidget {
                   final hasValidPhoto =
                       chatPhoto != null && chatPhoto.isNotEmpty;
 
-                  return Card(
-                    color: const Color(0xFF242E2E),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 24, vertical: 10),
-                            child: Row(
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: Card(
+                      color: const Color(0xFF242E2E),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          children: [
+                            Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 ChatProfilePic(
@@ -247,75 +246,83 @@ class FriendsListWidget extends ConsumerWidget {
                                 ),
                               ],
                             ),
-                          ),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: SizedBox(
-                                  height: 40,
-                                  child: FilledButton(
-                                    style: FilledButton.styleFrom(
-                                      backgroundColor: const Color(0xFF3E9D9D),
-                                    ),
-                                    onPressed: () {
-                                      friendsRepository.acceptFriendRequest(
-                                          friendRequests[index]!.uid!);
-
-                                      Fluttertoast.showToast(
-                                        msg: 'Friend request accepted',
-                                        toastLength: Toast.LENGTH_SHORT,
-                                        gravity: ToastGravity.BOTTOM,
-                                        timeInSecForIosWeb: 1,
+                            const SizedBox(height: 10),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: SizedBox(
+                                    height: 40,
+                                    child: FilledButton(
+                                      style: FilledButton.styleFrom(
                                         backgroundColor:
                                             const Color(0xFF3E9D9D),
-                                        textColor: Colors.white,
-                                        fontSize: 16.0,
-                                      );
-                                    },
-                                    child: const Text(
-                                      'Accept',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 12,
-                                        fontFamily: FontFamily.circular,
+                                      ),
+                                      onPressed: () {
+                                        friendsRepository.acceptFriendRequest(
+                                            friendRequests[index]!.uid!);
+
+                                        Fluttertoast.showToast(
+                                          msg: 'Friend request accepted',
+                                          toastLength: Toast.LENGTH_SHORT,
+                                          gravity: ToastGravity.BOTTOM,
+                                          timeInSecForIosWeb: 1,
+                                          backgroundColor:
+                                              const Color(0xFF3E9D9D),
+                                          textColor: Colors.white,
+                                          fontSize: 16.0,
+                                        );
+                                      },
+                                      child: const Text(
+                                        'Accept',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 12,
+                                          fontFamily: FontFamily.circular,
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              Expanded(
-                                child: SizedBox(
-                                  height: 40,
-                                  child: TextButton(
-                                    onPressed: () {
-                                      friendsRepository.rejectFriendRequest(
-                                          friendRequests[index]!.uid!);
+                                const SizedBox(width: 10),
+                                Expanded(
+                                  child: SizedBox(
+                                    height: 40,
+                                    child: TextButton(
+                                      onPressed: () {
+                                        friendsRepository.rejectFriendRequest(
+                                            friendRequests[index]!.uid!);
 
-                                      Fluttertoast.showToast(
-                                        msg: 'Friend request declined',
-                                        toastLength: Toast.LENGTH_SHORT,
-                                        gravity: ToastGravity.BOTTOM,
-                                        timeInSecForIosWeb: 1,
-                                        backgroundColor:
-                                            const Color(0xFF3E9D9D),
-                                        textColor: Colors.white,
-                                        fontSize: 16.0,
-                                      );
-                                    },
-                                    child: const Text(
-                                      'Decline',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 12,
-                                        fontFamily: FontFamily.circular,
+                                        Fluttertoast.showToast(
+                                          msg: 'Friend request declined',
+                                          toastLength: Toast.LENGTH_SHORT,
+                                          gravity: ToastGravity.BOTTOM,
+                                          timeInSecForIosWeb: 1,
+                                          backgroundColor:
+                                              const Color(0xFF3E9D9D),
+                                          textColor: Colors.white,
+                                          fontSize: 16.0,
+                                        );
+                                      },
+                                      style: TextButton.styleFrom(
+                                        side: BorderSide(
+                                          color: Colors.white.withAlpha(50),
+                                        ),
+                                      ),
+                                      child: const Text(
+                                        'Decline',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 12,
+                                          fontFamily: FontFamily.circular,
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ],
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   );
