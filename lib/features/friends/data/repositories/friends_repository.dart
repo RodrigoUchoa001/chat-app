@@ -50,20 +50,40 @@ class FriendsRepository implements FriendsRepositoryInterface {
   }
 
   @override
-  Future<void> acceptFriendRequest(String friendId) {
+  Future<void> acceptFriendRequest(String friendId) async {
     // adding the friend to the user's friends list
     final userRef = _firestore.collection('users').doc(_userId);
-    userRef.update({
+    await userRef.update({
       'friends': FieldValue.arrayUnion([friendId]),
       'friendRequests': FieldValue.arrayRemove([friendId]),
     });
 
     // adding the user to the friend's friends list
     final friendRef = _firestore.collection('users').doc(friendId);
-    return friendRef.update({
+    await friendRef.update({
       'friends': FieldValue.arrayUnion([_userId]),
       'friendRequests': FieldValue.arrayRemove([_userId]),
     });
+
+    // verify if the chat already exists
+    final chatQuery = await _firestore
+        .collection('chats')
+        .where('participants', arrayContains: _userId)
+        .get();
+
+    final existingChat = chatQuery.docs.any((doc) {
+      final participants = List<String>.from(doc['participants']);
+      return participants.contains(friendId);
+    });
+
+    // If the chat does not exist, create a new one
+    if (!existingChat) {
+      await _firestore.collection('chats').add({
+        'type': 'private',
+        'participants': [_userId, friendId],
+        'createdAt': DateTime.now().toString(),
+      });
+    }
   }
 
   @override
