@@ -51,11 +51,18 @@ class FriendsRepository implements FriendsRepositoryInterface {
 
   @override
   Future<void> acceptFriendRequest(String friendId) {
+    // adding the friend to the user's friends list
     final userRef = _firestore.collection('users').doc(_userId);
-
-    return userRef.update({
+    userRef.update({
       'friends': FieldValue.arrayUnion([friendId]),
       'friendRequests': FieldValue.arrayRemove([friendId]),
+    });
+
+    // adding the user to the friend's friends list
+    final friendRef = _firestore.collection('users').doc(friendId);
+    return friendRef.update({
+      'friends': FieldValue.arrayUnion([_userId]),
+      'friendRequests': FieldValue.arrayRemove([_userId]),
     });
   }
 
