@@ -6,6 +6,7 @@ import 'package:chatapp/features/auth/presentation/onboarding_screen.dart';
 import 'package:chatapp/features/chat/presentation/chat_screen.dart';
 import 'package:chatapp/features/chat/presentation/chats_list_screen.dart';
 import 'package:chatapp/features/home/presentation/home_screen.dart';
+import 'package:chatapp/features/search/presentation/search_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -56,6 +57,11 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         name: chatRoute,
         builder: (context, state) =>
             ChatScreen(chatId: state.pathParameters['chatId']!),
+      ),
+      GoRoute(
+        path: '/search',
+        name: searchRoute,
+        builder: (context, state) => const SearchScreen(),
       ),
     ],
   );
