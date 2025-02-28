@@ -24,7 +24,6 @@ class ChatList extends ConsumerWidget {
     final chats = ref.watch(chatRepositoryProvider);
     final user = ref.watch(currentUserProvider).asData?.value;
     final userProvider = ref.watch(userRepositoryProvider);
-    final unseenMessagesCount = ref.watch(unreadMessagesProvider(user!.uid));
 
     return Padding(
       padding: const EdgeInsets.only(top: 26),
@@ -74,6 +73,9 @@ class ChatList extends ConsumerWidget {
                   itemBuilder: (context, index) {
                     final chat = data[index];
 
+                    final unseenMessagesCount =
+                        ref.watch(unreadMessagesProvider(chat.id!));
+
                     return Material(
                       color: Colors.transparent,
                       child: InkWell(
@@ -81,7 +83,7 @@ class ChatList extends ConsumerWidget {
                           context.push('/chat/${chat.id}');
                         },
                         highlightColor: Colors.transparent,
-                        child: chatButton(chats, chat, userProvider, user,
+                        child: chatButton(chats, chat, userProvider, user!,
                             unseenMessagesCount, context),
                       ),
                     );
@@ -239,7 +241,7 @@ class ChatList extends ConsumerWidget {
                             ),
                             child: Center(
                               child: Text(
-                                count.toString(),
+                                "$count",
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 12,
