@@ -7,6 +7,7 @@ import 'package:chatapp/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 
 class ChatsListScreen extends ConsumerStatefulWidget {
   const ChatsListScreen({super.key});
@@ -35,7 +36,9 @@ class _ChatScreenState extends ConsumerState<ChatsListScreen> {
                   SizedBox(height: 17),
                   AppBarWidget(
                     leftButton: IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        context.push('/search');
+                      },
                       icon: SvgPicture.asset(
                         Assets.icons.search.path,
                         fit: BoxFit.scaleDown,
