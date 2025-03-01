@@ -22,6 +22,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
         backgroundColor: Color(0xFF121414),
         appBar: AppBar(
           backgroundColor: Color(0xFF121414),
+          leadingWidth: 44,
           leading: IconButton(
             icon: SvgPicture.asset(
               Assets.icons.backButton.path,
@@ -33,60 +34,62 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
               context.pop();
             },
           ),
-        ),
-        body: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 17),
-              child: Container(
-                height: 44,
-                decoration: BoxDecoration(
+          title: Container(
+            height: 44,
+            decoration: BoxDecoration(
+              color: Color(0xFF192222),
+              border: Border(
+                top: BorderSide(
                   color: Color(0xFF192222),
-                  border: Border(
-                    top: BorderSide(
-                      color: Color(0xFF192222),
-                      width: 1,
-                    ),
+                  width: 1,
+                ),
+              ),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: TextField(
+              controller: searchController,
+              onChanged: (value) {},
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 12,
+                fontFamily: FontFamily.circular,
+              ),
+              cursorColor: Colors.white,
+              autofocus: true,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    width: 0,
+                    style: BorderStyle.none,
                   ),
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: TextField(
-                  controller: searchController,
-                  onChanged: (value) {},
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 12,
-                    fontFamily: FontFamily.circular,
+                prefixIcon: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                  child: SvgPicture.asset(
+                    Assets.icons.search.path,
+                    fit: BoxFit.scaleDown,
+                    width: 20,
+                    height: 20,
                   ),
-                  cursorColor: Colors.white,
-                  autofocus: true,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        width: 0,
-                        style: BorderStyle.none,
-                      ),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    prefixIcon: SvgPicture.asset(
-                      Assets.icons.search.path,
-                      fit: BoxFit.scaleDown,
-                      width: 20,
-                      height: 20,
-                    ),
-                    filled: true,
-                    fillColor: Color(0xFF192222),
-                    hintText: 'Type to search',
-                    hintStyle: TextStyle(
-                      color: Color(0xFF797C7B),
-                      fontSize: 12,
-                      fontFamily: FontFamily.circular,
-                    ),
-                  ),
+                ),
+                filled: true,
+                fillColor: Color(0xFF192222),
+                hintText: 'Type to search',
+                hintStyle: TextStyle(
+                  color: Color(0xFF797C7B),
+                  fontSize: 12,
+                  fontFamily: FontFamily.circular,
                 ),
               ),
             ),
+          ),
+        ),
+        body: Column(
+          children: [
             // TODO: add search results
+            const SizedBox(height: 30),
           ],
         ),
       ),
