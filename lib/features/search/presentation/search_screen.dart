@@ -156,7 +156,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                           );
                         },
                       ),
-                      const SizedBox(height: 16), // 🔥 Espaçamento entre seções
+                      const SizedBox(height: 16),
                     ],
                   );
                 },
