@@ -3,6 +3,7 @@ import 'package:chatapp/features/users/domain/user_repository_interface.dart';
 
 abstract interface class ChatRepositoryInterface {
   Stream<List<ChatDTO>?> getChats();
+  Stream<List<ChatDTO>> searchChats(String query);
   Stream<ChatDTO?> getChatDetails(String chatId);
   Future<String?> getPrivateChatIdByFriendId(String friendId);
   Stream<int> getUnseenMessagesCount(String chatId);
