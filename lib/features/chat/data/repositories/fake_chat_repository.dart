@@ -114,4 +114,10 @@ class FakeChatRepository implements ChatRepositoryInterface {
     // TODO: implement getChatDetails
     throw UnimplementedError();
   }
+
+  @override
+  Stream<List<ChatDTO>> searchChats(String query) {
+    // TODO: implement searchChats
+    throw UnimplementedError();
+  }
 }

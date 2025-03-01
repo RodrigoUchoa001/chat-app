@@ -219,4 +219,22 @@ class ChatRepository implements ChatRepositoryInterface {
               : null,
         );
   }
+
+  @override
+  Stream<List<ChatDTO>> searchChats(String query) {
+    return _firestore
+        .collection('chats')
+        .where('participants', arrayContains: _userId)
+        .snapshots()
+        .map((querySnapshot) {
+      if (querySnapshot.docs.isEmpty) return [];
+      return querySnapshot.docs
+          .map((doc) => ChatDTO.fromJson(doc.data()).copyWith(id: doc.id))
+          .where((chat) =>
+              chat.type == 'group' &&
+              (chat.groupName?.toLowerCase() ?? '')
+                  .contains(query.toLowerCase()))
+          .toList();
+    });
+  }
 }
