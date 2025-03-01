@@ -1,3 +1,5 @@
+import 'package:chatapp/features/chat/data/repositories/chat_repository.dart';
+import 'package:chatapp/features/friends/data/repositories/friends_repository.dart';
 import 'package:chatapp/gen/assets.gen.dart';
 import 'package:chatapp/gen/fonts.gen.dart';
 import 'package:flutter/material.dart';
@@ -13,9 +15,16 @@ class SearchScreen extends ConsumerStatefulWidget {
 }
 
 class _SearchScreenState extends ConsumerState<SearchScreen> {
+  final _searchController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    final searchController = TextEditingController();
+    final friendsRepo = ref.watch(friendsRepositoryProvider);
+    final chatRepo = ref.watch(chatRepositoryProvider);
+    final query = _searchController.text.toLowerCase();
+
+    final friendsStream = friendsRepo.searchFriends(query);
+    final chatsStream = chatRepo.searchChats(query);
 
     return SafeArea(
       child: Scaffold(
@@ -47,8 +56,10 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
               borderRadius: BorderRadius.circular(12),
             ),
             child: TextField(
-              controller: searchController,
-              onChanged: (value) {},
+              controller: _searchController,
+              onChanged: (value) {
+                setState(() {});
+              },
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 12,
@@ -86,11 +97,121 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
             ),
           ),
         ),
-        body: Column(
-          children: [
-            // TODO: add search results
-            const SizedBox(height: 30),
-          ],
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 10),
+              StreamBuilder(
+                stream: friendsStream,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  }
+
+                  if (!snapshot.hasData) return const SizedBox();
+                  final friends = snapshot.data!;
+                  if (friends.isEmpty) return const SizedBox();
+
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+                        child: Text(
+                          'Friends',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontFamily: FontFamily.caros,
+                          ),
+                        ),
+                      ),
+                      ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: friends.length,
+                        itemBuilder: (context, index) {
+                          final friend = friends[index];
+                          return ListTile(
+                            leading: CircleAvatar(
+                              backgroundImage:
+                                  NetworkImage(friend.photoURL ?? ''),
+                            ),
+                            title: Text(friend.name ?? '',
+                                style: const TextStyle(color: Colors.white)),
+                            onTap: () async {
+                              final chatId = await chatRepo
+                                  .getPrivateChatIdByFriendId(friend.uid!);
+
+                              if (chatId != null) {
+                                context.push('/chat/$chatId');
+                              } else {
+                                await chatRepo.createPrivateChat(friend.uid!);
+                                context.push('/chat/${friend.uid}');
+                              }
+                            },
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 16), // 🔥 Espaçamento entre seções
+                    ],
+                  );
+                },
+              ),
+              const SizedBox(height: 10),
+              StreamBuilder(
+                stream: chatsStream,
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  final chats = snapshot.data!;
+                  if (chats.isEmpty) return const SizedBox();
+
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+                        child: Text(
+                          'Group Chats',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontFamily: FontFamily.caros,
+                          ),
+                        ),
+                      ),
+                      ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: chats.length,
+                        itemBuilder: (context, index) {
+                          final chat = chats[index];
+                          return ListTile(
+                            leading: CircleAvatar(
+                              backgroundImage:
+                                  NetworkImage(chat.groupPhotoURL ?? ''),
+                            ),
+                            title: Text(
+                              chat.groupName ?? 'Private Chat',
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                            onTap: () {
+                              context.push('/chat/${chat.id}');
+                            },
+                          );
+                        },
+                      ),
+                    ],
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
