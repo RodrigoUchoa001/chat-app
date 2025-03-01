@@ -1,5 +1,6 @@
 import 'package:chatapp/core/providers/firebase_auth_providers.dart';
 import 'package:chatapp/core/providers/firebase_firestore_provider.dart';
+import 'package:chatapp/features/auth/data/dto/user_dto.dart';
 import 'package:chatapp/features/friends/domain/friends_repository_interface.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -92,6 +93,26 @@ class FriendsRepository implements FriendsRepositoryInterface {
 
     return userRef.update({
       'friendRequests': FieldValue.arrayRemove([friendId]),
+    });
+  }
+
+  @override
+  Stream<List<UserDTO>> searchFriends(String query) async* {
+    final userDoc = await _firestore.collection('users').doc(_userId).get();
+    final List<String> friendIds =
+        List<String>.from(userDoc.data()?['friends'] ?? []);
+
+    yield* _firestore
+        .collection('users')
+        .where(FieldPath.documentId, whereIn: friendIds)
+        .snapshots()
+        .map((querySnapshot) {
+      return querySnapshot.docs
+          .map((doc) => UserDTO.fromJson(doc.data()).copyWith(uid: doc.id))
+          .where((friend) =>
+              friend.name!.toLowerCase().contains(query.toLowerCase()) ||
+              friend.email!.toLowerCase().contains(query.toLowerCase()))
+          .toList();
     });
   }
 }
