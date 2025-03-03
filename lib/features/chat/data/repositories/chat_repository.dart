@@ -167,8 +167,25 @@ class ChatRepository implements ChatRepositoryInterface {
   }
 
   @override
-  Future<void> deleteChat(String chatId) {
-    return _firestore.collection('chats').doc(chatId).delete();
+  Future<void> deleteChat(String chatId) async {
+    final chatDoc = await _firestore.collection('chats').doc(chatId).get();
+    final isPrivateChat = chatDoc.get('type') == 'private';
+
+    if (isPrivateChat) {
+      _firestore.collection('chats').doc(chatId).update({'lastMessage': null});
+
+      return _firestore
+          .collection('messages')
+          .doc(chatId)
+          .collection('messages')
+          .get()
+          .then((querySnapshot) {
+        for (var doc in querySnapshot.docs) {
+          doc.reference.delete();
+        }
+      });
+    }
+    // TODO: delete group chat
   }
 
   @override
