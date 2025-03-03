@@ -25,6 +25,7 @@ class HomeScreen extends ConsumerWidget {
 
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Color(0xFF24786D),
         body: pages[currentIndex],
         bottomNavigationBar: SizedBox(
           height: 90,
