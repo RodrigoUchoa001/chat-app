@@ -112,8 +112,17 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             return const Center(child: CircularProgressIndicator());
           }
 
-          // TODO: When entering a chat with a friend that doesn't exist, get a exception here
           final chat = snapshot.data!;
+
+          final friendId = (chat.type == 'private' && chat.participants != null)
+              ? chat.participants!.firstWhere(
+                  (id) => id != currentUser.value?.uid,
+                  orElse: () => '',
+                )
+              : '';
+
+          final friendDetails = userRepo.getUserDetails(friendId);
+
           return Row(
             children: [
               FutureBuilder(
@@ -123,7 +132,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                 ),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const CircularProgressIndicator();
+                    return const CircularProgressIndicator(color: Colors.white);
                   } else if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
                   }
@@ -132,10 +141,31 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                   final hasValidPhoto =
                       chatPhoto != null && chatPhoto.isNotEmpty;
 
-                  return ChatProfilePic(
-                    chatPhotoURL: hasValidPhoto ? chatPhoto : null,
-                    // TODO: If private chat, check if user is online
-                    isOnline: chat.type == 'group' ? false : true,
+                  // HAVE TO SET THE friendId twice (here and line 118).
+                  // not doing make to profile pic to load forever
+                  final friendId =
+                      (chat.type == 'private' && chat.participants != null)
+                          ? chat.participants!.firstWhere(
+                              (id) => id != currentUser.value?.uid,
+                              orElse: () => '',
+                            )
+                          : '';
+
+                  final friendDetails = userRepo.getUserDetails(friendId);
+
+                  return StreamBuilder(
+                    stream: friendDetails,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const CircularProgressIndicator();
+                      }
+
+                      final friend = snapshot.data;
+                      return ChatProfilePic(
+                        chatPhotoURL: hasValidPhoto ? chatPhoto : null,
+                        isOnline: chat.type == 'private' && friend!.isOnline!,
+                      );
+                    },
                   );
                 },
               ),
@@ -165,15 +195,43 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                       loading: () => const CircularProgressIndicator(),
                     ),
                     const SizedBox(height: 6),
-                    Text(
-                      // TODO: If private chat, check if user is online
-                      'online',
-                      style: TextStyle(
-                        color: Color(0xFF797C7B),
-                        fontSize: 12,
-                        fontFamily: FontFamily.circular,
-                      ),
-                    ),
+                    chat.type == 'private'
+                        ? StreamBuilder(
+                            stream: friendDetails,
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const Text(
+                                  'Checking...',
+                                  style: TextStyle(
+                                    color: Color(0xFF797C7B),
+                                    fontSize: 12,
+                                    fontFamily: FontFamily.circular,
+                                  ),
+                                );
+                              }
+                              final friend = snapshot.data;
+                              return Text(
+                                friend!.isOnline ?? false
+                                    ? 'online'
+                                    : 'last seen at ${DateFormat('hh:mm a').format(DateTime.parse(friend.lastSeen!))}',
+                                style: TextStyle(
+                                  color: Color(0xFF797C7B),
+                                  fontSize: 12,
+                                  fontFamily: FontFamily.circular,
+                                ),
+                              );
+                            },
+                          )
+                        : Text(
+                            // TODO: show number of participants online
+                            '${chat.participants!.length} members',
+                            style: TextStyle(
+                              color: Color(0xFF797C7B),
+                              fontSize: 12,
+                              fontFamily: FontFamily.circular,
+                            ),
+                          ),
                   ],
                 ),
               ),
