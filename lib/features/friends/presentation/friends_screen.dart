@@ -32,7 +32,9 @@ class _FriendsScreenState extends ConsumerState<FriendsScreen> {
                   SizedBox(height: 17),
                   AppBarWidget(
                     leftButton: IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        context.push('/search');
+                      },
                       icon: SvgPicture.asset(
                         Assets.icons.search.path,
                         fit: BoxFit.scaleDown,
