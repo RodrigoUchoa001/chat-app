@@ -5,6 +5,7 @@ import 'package:chatapp/features/chat/presentation/widgets/chat_profile_pic.dart
 import 'package:chatapp/features/friends/data/repositories/friends_repository.dart';
 import 'package:chatapp/features/friends/domain/friends_repository_interface.dart';
 import 'package:chatapp/features/friends/presentation/providers/friends_providers.dart';
+import 'package:chatapp/features/users/data/repositories/user_repository.dart';
 import 'package:chatapp/gen/assets.gen.dart';
 import 'package:chatapp/gen/fonts.gen.dart';
 import 'package:flutter/material.dart';
@@ -37,7 +38,7 @@ class FriendsListWidget extends ConsumerWidget {
                 const Divider(color: Colors.white),
                 const SizedBox(height: 10),
               ]),
-            friendList(friendsList, chatRepository, friendsRepository),
+            friendList(friendsList, chatRepository, friendsRepository, ref),
           ],
         ),
       ),
@@ -47,7 +48,8 @@ class FriendsListWidget extends ConsumerWidget {
   Widget friendList(
       AsyncValue<List<UserDTO?>> friendsList,
       ChatRepositoryInterface chatRepository,
-      FriendsRepositoryInterface friendsRepository) {
+      FriendsRepositoryInterface friendsRepository,
+      WidgetRef ref) {
     return friendsList.when(
       data: (friends) {
         if (friends.isEmpty) {
@@ -166,8 +168,8 @@ class FriendsListWidget extends ConsumerWidget {
                           ),
                         ],
                       ),
-                      child:
-                          friendButton(chatRepository, friends, index, context),
+                      child: friendButton(
+                          chatRepository, friends, index, context, ref),
                     ),
                   ],
                 );
@@ -343,9 +345,12 @@ class FriendsListWidget extends ConsumerWidget {
   }
 
   Widget friendButton(ChatRepositoryInterface chatRepository,
-      List<UserDTO?> friends, int index, BuildContext context) {
+      List<UserDTO?> friends, int index, BuildContext context, WidgetRef ref) {
     final friendPhoto = friends[index]!.photoURL;
     final hasValidPhoto = friendPhoto != null && friendPhoto.isNotEmpty;
+    final userProvider = ref.watch(userRepositoryProvider);
+    final friendId = friends[index]!.uid!;
+    final friendDetails = userProvider.getUserDetails(friendId);
 
     return Material(
       color: Colors.transparent,
@@ -366,9 +371,19 @@ class FriendsListWidget extends ConsumerWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              ChatProfilePic(
-                chatPhotoURL: hasValidPhoto ? friends[index]!.photoURL : null,
-                isOnline: true,
+              StreamBuilder(
+                stream: friendDetails,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator();
+                  }
+
+                  final friend = snapshot.data;
+                  return ChatProfilePic(
+                    chatPhotoURL: hasValidPhoto ? friendPhoto : null,
+                    isOnline: friend!.isOnline ?? false,
+                  );
+                },
               ),
               const SizedBox(width: 12),
               Column(
