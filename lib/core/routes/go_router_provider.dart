@@ -5,6 +5,7 @@ import 'package:chatapp/features/auth/presentation/signup_screen.dart';
 import 'package:chatapp/features/auth/presentation/onboarding_screen.dart';
 import 'package:chatapp/features/chat/presentation/chat_screen.dart';
 import 'package:chatapp/features/chat/presentation/chats_list_screen.dart';
+import 'package:chatapp/features/friends/presentation/add_friend_screen.dart';
 import 'package:chatapp/features/home/presentation/home_screen.dart';
 import 'package:chatapp/features/search/presentation/search_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -46,6 +47,11 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         path: '/friends',
         name: friendsRoute,
         builder: (context, state) => const ChatsListScreen(),
+      ),
+      GoRoute(
+        path: '/add-friends',
+        name: addFriendsRoute,
+        builder: (context, state) => const AddFriendScreen(),
       ),
       GoRoute(
         path: '/settings',
