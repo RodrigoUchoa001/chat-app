@@ -1,4 +1,5 @@
 import 'package:chatapp/features/chat/data/repositories/chat_repository.dart';
+import 'package:chatapp/features/chat/presentation/widgets/chat_profile_pic.dart';
 import 'package:chatapp/features/friends/data/repositories/friends_repository.dart';
 import 'package:chatapp/gen/assets.gen.dart';
 import 'package:chatapp/gen/fonts.gen.dart';
@@ -135,24 +136,61 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                         itemCount: friends.length,
                         itemBuilder: (context, index) {
                           final friend = friends[index];
-                          return ListTile(
-                            leading: CircleAvatar(
-                              backgroundImage:
-                                  NetworkImage(friend.photoURL ?? ''),
-                            ),
-                            title: Text(friend.name ?? '',
-                                style: const TextStyle(color: Colors.white)),
-                            onTap: () async {
-                              final chatId = await chatRepo
-                                  .getPrivateChatIdByFriendId(friend.uid!);
+                          return Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              onTap: () async {
+                                final chatId = await chatRepo
+                                    .getPrivateChatIdByFriendId(friend.uid!);
 
-                              if (chatId != null) {
-                                context.push('/chat/$chatId');
-                              } else {
-                                await chatRepo.createPrivateChat(friend.uid!);
-                                context.push('/chat/${friend.uid}');
-                              }
-                            },
+                                if (chatId != null) {
+                                  context.push('/chat/$chatId');
+                                } else {
+                                  await chatRepo.createPrivateChat(friend.uid!);
+                                  context.push('/chat/${friend.uid}');
+                                }
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 24, vertical: 10),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    ChatProfilePic(
+                                      chatPhotoURL: friend.photoURL,
+                                      isOnline: friend.isOnline ?? false,
+                                    ),
+                                    const SizedBox(width: 12),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          friend.name ?? '',
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 16,
+                                            fontFamily: FontFamily.caros,
+                                          ),
+                                        ),
+                                        if (friend.statusMessage != null &&
+                                            friend.statusMessage!.isNotEmpty)
+                                          Text(
+                                            friends[index]!.statusMessage!,
+                                            style: TextStyle(
+                                              color: Color(0xFF797C7B),
+                                              fontSize: 12,
+                                              fontFamily: FontFamily.circular,
+                                            ),
+                                          )
+                                        else
+                                          SizedBox(),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
                           );
                         },
                       ),
