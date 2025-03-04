@@ -184,8 +184,9 @@ class ChatRepository implements ChatRepositoryInterface {
           doc.reference.delete();
         }
       });
+    } else {
+      _firestore.collection('chats').doc(chatId).delete();
     }
-    // TODO: delete group chat
   }
 
   @override
