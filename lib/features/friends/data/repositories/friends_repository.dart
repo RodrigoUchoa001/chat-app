@@ -36,8 +36,14 @@ class FriendsRepository implements FriendsRepositoryInterface {
   Future<void> removeFriend(String friendId) {
     final userRef = _firestore.collection('users').doc(_userId);
 
-    return userRef.update({
+    userRef.update({
       'friends': FieldValue.arrayRemove([friendId]),
+    });
+
+    // remove the user from the friend's friends list as well
+    final friendRef = _firestore.collection('users').doc(friendId);
+    return friendRef.update({
+      'friends': FieldValue.arrayRemove([_userId]),
     });
   }
 
