@@ -179,19 +179,19 @@ class ChatList extends ConsumerWidget {
                       .firstWhere((id) => id != user.uid, orElse: () => '');
                   final friendDetails = userProvider.getUserDetails(friendId);
                   return StreamBuilder(
-                      stream: friendDetails,
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const CircularProgressIndicator();
-                        }
+                    stream: friendDetails,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const CircularProgressIndicator();
+                      }
 
-                        final friend = snapshot.data;
-                        return ChatProfilePic(
-                          chatPhotoURL: hasValidPhoto ? chatPhoto : null,
-                          isOnline: friend!.isOnline ?? false,
-                        );
-                      });
+                      final friend = snapshot.data;
+                      return ChatProfilePic(
+                        chatPhotoURL: hasValidPhoto ? chatPhoto : null,
+                        isOnline: friend!.isOnline ?? false,
+                      );
+                    },
+                  );
                 } else {
                   return ChatProfilePic(
                     chatPhotoURL: hasValidPhoto ? chatPhoto : null,
