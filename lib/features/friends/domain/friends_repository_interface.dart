@@ -8,4 +8,5 @@ abstract interface class FriendsRepositoryInterface {
   Stream<List<String>?> getFriends();
   Stream<List<UserDTO>> searchFriends(String query);
   Stream<List<String>?> getFriendsRequests();
+  Future<bool> isFriend(String friendId);
 }
