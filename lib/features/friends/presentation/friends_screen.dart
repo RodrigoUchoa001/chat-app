@@ -5,6 +5,7 @@ import 'package:chatapp/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 
 class FriendsScreen extends ConsumerStatefulWidget {
   const FriendsScreen({super.key});
@@ -44,7 +45,9 @@ class _FriendsScreenState extends ConsumerState<FriendsScreen> {
                     ),
                     title: "Friends",
                     rightButton: IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        context.push('/add-friends');
+                      },
                       icon: SvgPicture.asset(
                         Assets.icons.userAdd.path,
                         fit: BoxFit.scaleDown,
