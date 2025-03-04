@@ -33,18 +33,45 @@ class FriendsRepository implements FriendsRepositoryInterface {
   }
 
   @override
-  Future<void> removeFriend(String friendId) {
+  Future<void> removeFriend(String friendId) async {
     final userRef = _firestore.collection('users').doc(_userId);
+    final friendRef = _firestore.collection('users').doc(friendId);
+    final chatQuery = await _firestore
+        .collection('chats')
+        .where('type', isEqualTo: 'private')
+        .where('participants', arrayContains: _userId)
+        .get();
 
-    userRef.update({
+    String? chatId;
+    for (var doc in chatQuery.docs) {
+      final participants = List<String>.from(doc['participants']);
+      if (participants.contains(friendId)) {
+        chatId = doc.id;
+        break;
+      }
+    }
+
+    await userRef.update({
       'friends': FieldValue.arrayRemove([friendId]),
     });
 
-    // remove the user from the friend's friends list as well
-    final friendRef = _firestore.collection('users').doc(friendId);
-    return friendRef.update({
+    await friendRef.update({
       'friends': FieldValue.arrayRemove([_userId]),
     });
+
+    if (chatId != null) {
+      final messagesRef =
+          _firestore.collection('messages').doc(chatId).collection('messages');
+
+      final messagesSnapshot = await messagesRef.get();
+
+      for (var doc in messagesSnapshot.docs) {
+        await doc.reference.delete();
+      }
+
+      await _firestore.collection('chats').doc(chatId).delete();
+      await _firestore.collection('messages').doc(chatId).delete();
+    }
   }
 
   @override
