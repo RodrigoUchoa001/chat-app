@@ -22,4 +22,16 @@ class UserRepository implements UserRepositoryInterface {
       return UserDTO.fromJson(doc.data()!);
     });
   }
+
+  @override
+  Stream<List<UserDTO>> searchUsers(String query) {
+    return _firestore.collection('users').snapshots().map((querySnapshot) {
+      return querySnapshot.docs
+          .map((doc) => UserDTO.fromJson(doc.data()).copyWith(uid: doc.id))
+          .where((user) =>
+              user.name!.toLowerCase().contains(query.toLowerCase()) ||
+              user.email!.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+    });
+  }
 }
