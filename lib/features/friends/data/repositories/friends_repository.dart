@@ -115,4 +115,18 @@ class FriendsRepository implements FriendsRepositoryInterface {
           .toList();
     });
   }
+
+  @override
+  Future<bool> isFriend(String friendId) async {
+    final userRef = _firestore.collection('users').doc(_userId);
+
+    final userSnapshot = await userRef.get();
+
+    if (!userSnapshot.exists) return false;
+
+    final List<String> friends =
+        List<String>.from(userSnapshot.data()?['friends'] ?? []);
+
+    return friends.contains(friendId);
+  }
 }
