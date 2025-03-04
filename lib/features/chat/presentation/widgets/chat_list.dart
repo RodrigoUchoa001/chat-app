@@ -4,6 +4,7 @@ import 'package:chatapp/features/chat/data/repositories/chat_repository.dart';
 import 'package:chatapp/features/chat/domain/repositories/chat_repository_interface.dart';
 import 'package:chatapp/features/chat/presentation/utils/calculate_time_since_last_message.dart';
 import 'package:chatapp/features/chat/presentation/widgets/chat_profile_pic.dart';
+import 'package:chatapp/features/friends/data/repositories/friends_repository.dart';
 import 'package:chatapp/features/users/data/repositories/user_repository.dart';
 import 'package:chatapp/features/users/domain/user_repository_interface.dart';
 import 'package:chatapp/gen/assets.gen.dart';
@@ -84,7 +85,7 @@ class ChatList extends ConsumerWidget {
                         },
                         highlightColor: Colors.transparent,
                         child: chatButton(chats, chat, userProvider, user!,
-                            unseenMessagesCount, context),
+                            unseenMessagesCount, context, ref),
                       ),
                     );
                   },
@@ -104,6 +105,7 @@ class ChatList extends ConsumerWidget {
     User user,
     AsyncValue<int> unseenMessagesCount,
     BuildContext context,
+    WidgetRef ref,
   ) {
     return Slidable(
       endActionPane: ActionPane(
@@ -172,10 +174,30 @@ class ChatList extends ConsumerWidget {
                 final chatPhoto = snapshot.data;
                 final hasValidPhoto = chatPhoto != null && chatPhoto.isNotEmpty;
 
-                return ChatProfilePic(
-                  chatPhotoURL: hasValidPhoto ? chatPhoto : null,
-                  isOnline: true,
-                );
+                if (chat.type == 'private') {
+                  final friendId = chat.participants!
+                      .firstWhere((id) => id != user.uid, orElse: () => '');
+                  final friendDetails = userProvider.getUserDetails(friendId);
+                  return StreamBuilder(
+                      stream: friendDetails,
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const CircularProgressIndicator();
+                        }
+
+                        final friend = snapshot.data;
+                        return ChatProfilePic(
+                          chatPhotoURL: hasValidPhoto ? chatPhoto : null,
+                          isOnline: friend!.isOnline ?? false,
+                        );
+                      });
+                } else {
+                  return ChatProfilePic(
+                    chatPhotoURL: hasValidPhoto ? chatPhoto : null,
+                    isOnline: false,
+                  );
+                }
               },
             ),
             const SizedBox(width: 12),
