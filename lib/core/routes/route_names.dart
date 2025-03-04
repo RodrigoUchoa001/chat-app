@@ -6,6 +6,7 @@ String chatsList = 'chats-list';
 String chatRoute = 'chat';
 String createGroupRoute = 'create-group';
 String friendsRoute = 'friends';
+String addFriendsRoute = 'add-friends';
 String settingsRoute = 'settings';
 String profileRoute = 'profile';
 String searchRoute = 'search';
