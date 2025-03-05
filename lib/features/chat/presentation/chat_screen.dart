@@ -89,7 +89,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                 WidgetsBinding.instance
                     .addPostFrameCallback((_) => _scrollToBottom());
 
-                return messagesList(messages, currentUser);
+                return messagesList(messages, currentUser, userRepo);
               },
             ),
             ChatInputField(chatId: widget.chatId),
@@ -268,8 +268,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     );
   }
 
-  Widget messagesList(
-      List<MessageDTO> messages, AsyncValue<User?> currentUser) {
+  Widget messagesList(List<MessageDTO> messages, AsyncValue<User?> currentUser,
+      UserRepositoryInterface userRepo) {
     return Expanded(
       child: ListView.builder(
         controller: _scrollController,
@@ -317,7 +317,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                   ),
                 ),
               chatBubble(bottomPadding, isMe, isNextFromSameSender,
-                  isPreviousFromSameSender, message),
+                  isPreviousFromSameSender, message, userRepo),
             ],
           );
         },
@@ -325,8 +325,13 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     );
   }
 
-  Widget chatBubble(double bottomPadding, bool isMe, bool isNextFromSameSender,
-      bool isPreviousFromSameSender, MessageDTO message) {
+  Widget chatBubble(
+      double bottomPadding,
+      bool isMe,
+      bool isNextFromSameSender,
+      bool isPreviousFromSameSender,
+      MessageDTO message,
+      UserRepositoryInterface userProvider) {
     return Padding(
       padding: EdgeInsets.only(bottom: bottomPadding, left: 24, right: 24),
       child: Align(
@@ -335,48 +340,85 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           crossAxisAlignment:
               isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
           children: [
-            Container(
-              decoration: BoxDecoration(
-                color: isMe ? const Color(0xFF20A090) : const Color(0xFF212727),
-                borderRadius: BorderRadius.only(
-                  // If it's the FIRST message in the sequence, the bottom corner is flat
-                  bottomRight: isMe
-                      ? (isNextFromSameSender
-                          ? Radius.zero
-                          : Radius.circular(50))
-                      : Radius.circular(50),
-                  bottomLeft: isMe
-                      ? Radius.circular(50)
-                      : (isNextFromSameSender
-                          ? Radius.zero
-                          : Radius.circular(50)),
+            if (!isPreviousFromSameSender && !isMe)
+              StreamBuilder(
+                stream: userProvider.getUserDetails(message.senderId!),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator();
+                  }
 
-                  // If it's the LAST message in the sequence, the top corner is flat
-                  topRight: isMe
-                      ? (isPreviousFromSameSender
-                          ? Radius.zero
-                          : Radius.circular(50))
-                      : Radius.circular(50),
-                  topLeft: isMe
-                      ? Radius.circular(50)
-                      : (isPreviousFromSameSender
-                          ? Radius.zero
-                          : Radius.circular(50)),
-                ),
+                  final user = snapshot.data;
+                  return Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ChatProfilePic(
+                        chatPhotoURL: user!.photoURL,
+                        isOnline: user.isOnline ?? false,
+                      ),
+                      const SizedBox(width: 12),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 6),
+                        child: Text(
+                          user.name!,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontFamily: FontFamily.caros,
+                          ),
+                        ),
+                      )
+                    ],
+                  );
+                },
               ),
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              child: Text(
-                message.text ?? '',
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 12,
-                  fontFamily: FontFamily.circular,
+            Padding(
+              padding: const EdgeInsets.only(left: 74),
+              child: Container(
+                decoration: BoxDecoration(
+                  color:
+                      isMe ? const Color(0xFF20A090) : const Color(0xFF212727),
+                  borderRadius: BorderRadius.only(
+                    // If it's the FIRST message in the sequence, the bottom corner is flat
+                    bottomRight: isMe
+                        ? (isNextFromSameSender
+                            ? Radius.zero
+                            : Radius.circular(50))
+                        : Radius.circular(50),
+                    bottomLeft: isMe
+                        ? Radius.circular(50)
+                        : (isNextFromSameSender
+                            ? Radius.zero
+                            : Radius.circular(50)),
+
+                    // If it's the LAST message in the sequence, the top corner is flat
+                    topRight: isMe
+                        ? (isPreviousFromSameSender
+                            ? Radius.zero
+                            : Radius.circular(50))
+                        : Radius.circular(50),
+                    topLeft: isMe
+                        ? Radius.circular(50)
+                        : (isPreviousFromSameSender
+                            ? Radius.zero
+                            : Radius.circular(50)),
+                  ),
+                ),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                child: Text(
+                  message.text ?? '',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 12,
+                    fontFamily: FontFamily.circular,
+                  ),
                 ),
               ),
             ),
             if (!isNextFromSameSender) // Display the time only on the last message of the group
               Padding(
-                padding: const EdgeInsets.only(top: 5),
+                padding: const EdgeInsets.only(left: 74, top: 5),
                 child: Text(
                   DateFormat.jm()
                       .format(DateTime.parse(message.timestamp ?? '')),
