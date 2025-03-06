@@ -5,6 +5,7 @@ import 'package:chatapp/features/auth/presentation/signup_screen.dart';
 import 'package:chatapp/features/auth/presentation/onboarding_screen.dart';
 import 'package:chatapp/features/chat/presentation/chat_screen.dart';
 import 'package:chatapp/features/chat/presentation/chats_list_screen.dart';
+import 'package:chatapp/features/chat/presentation/create_group_screen.dart';
 import 'package:chatapp/features/friends/presentation/add_friend_screen.dart';
 import 'package:chatapp/features/home/presentation/home_screen.dart';
 import 'package:chatapp/features/search/presentation/search_screen.dart';
@@ -68,6 +69,11 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         path: '/search',
         name: searchRoute,
         builder: (context, state) => const SearchScreen(),
+      ),
+      GoRoute(
+        path: '/create-group',
+        name: createGroupRoute,
+        builder: (context, state) => const CreateGroupScreen(),
       ),
     ],
   );
