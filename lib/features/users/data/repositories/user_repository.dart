@@ -1,3 +1,4 @@
+import 'package:chatapp/core/providers/firebase_auth_providers.dart';
 import 'package:chatapp/core/providers/firebase_firestore_provider.dart';
 import 'package:chatapp/features/auth/data/dto/user_dto.dart';
 import 'package:chatapp/features/users/domain/user_repository_interface.dart';
@@ -6,13 +7,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final userRepositoryProvider = Provider<UserRepositoryInterface>((ref) {
   final firestore = ref.watch(firestoreProvider);
-  return UserRepository(firestore);
+  final currentUser = ref.watch(currentUserProvider).asData?.value;
+  return UserRepository(firestore, currentUser!.uid);
 });
 
 class UserRepository implements UserRepositoryInterface {
   final FirebaseFirestore _firestore;
+  final String _userId;
 
-  UserRepository(this._firestore);
+  UserRepository(this._firestore, this._userId);
 
   @override
   Stream<UserDTO?> getUserDetails(String userId) {
@@ -32,6 +35,16 @@ class UserRepository implements UserRepositoryInterface {
               user.name!.toLowerCase().contains(query.toLowerCase()) ||
               user.email!.toLowerCase().contains(query.toLowerCase()))
           .toList();
+    });
+  }
+
+  @override
+  Future<void> updateUserOnlineStatus({required bool isOnline}) async {
+    final userRef = FirebaseFirestore.instance.collection('users').doc(_userId);
+
+    await userRef.update({
+      'isOnline': isOnline,
+      if (!isOnline) 'lastSeen': DateTime.now().toString(),
     });
   }
 }
