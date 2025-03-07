@@ -1,7 +1,6 @@
 import 'package:chatapp/core/providers/firebase_auth_providers.dart';
 import 'package:chatapp/core/widgets/chat_text_button.dart';
-import 'package:chatapp/features/auth/data/dto/user_dto.dart';
-import 'package:chatapp/features/auth/presentation/widgets/auth_back_button.dart';
+import 'package:chatapp/features/chat/data/repositories/chat_repository.dart';
 import 'package:chatapp/features/chat/presentation/providers/friends_list_to_create_group_provider.dart';
 import 'package:chatapp/features/chat/presentation/widgets/chat_profile_pic.dart';
 import 'package:chatapp/features/users/data/repositories/user_repository.dart';
@@ -20,10 +19,14 @@ class CreateGroupScreen extends ConsumerStatefulWidget {
 }
 
 class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
+  final groupNameController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     final currentUser = ref.watch(currentUserProvider).asData?.value;
     final userRepo = ref.watch(userRepositoryProvider);
+    final chatRepo = ref.watch(chatRepositoryProvider);
+
     final friendsListToCreateGroup =
         ref.watch(friendsListToCreateGroupProvider);
 
@@ -64,6 +67,7 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
                     ),
                     const SizedBox(height: 16),
                     TextField(
+                      controller: groupNameController,
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 40,
@@ -202,7 +206,22 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
                 ),
               ),
               ChatTextButton(
-                onTap: () {},
+                onTap: friendsListToCreateGroup.isEmpty
+                    ? null
+                    : () async {
+                        final chatId = await chatRepo.createGroupChat(
+                          groupName: groupNameController.text,
+                          groupPhotoURL:
+                              'https://wallpapers.com/images/high/placeholder-profile-icon-1eyvi6hml9stfg4c-1eyvi6hml9stfg4c.png',
+                          participants: [
+                            currentUser.uid,
+                            ...friendsListToCreateGroup
+                                .map((user) => user.uid!),
+                          ],
+                        );
+                        // TODO: fix error going to chat screen to that chatid
+                        context.pushReplacement('/chat/$chatId');
+                      },
                 text: "Create",
                 buttonColor: Color(0xFF24786D),
                 textColor: Colors.white,
