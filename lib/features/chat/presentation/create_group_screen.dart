@@ -178,7 +178,7 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
                           child: InkWell(
                             borderRadius: BorderRadius.circular(50),
                             onTap: () {
-                              context.go('/select-friends-to-add-to-group');
+                              context.push('/select-friends-to-create-group');
                             },
                             child: DottedBorder(
                               dashPattern: [8, 4],
