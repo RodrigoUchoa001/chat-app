@@ -20,8 +20,10 @@ class FakeChatRepository implements ChatRepositoryInterface {
   final String _userId = "user1";
 
   @override
-  Future<void> createGroupChat(
-      String groupName, String groupPhotoURL, List<String> participants) {
+  Future<String> createGroupChat(
+      {required String groupName,
+      required String groupPhotoURL,
+      required List<String> participants}) {
     // TODO: implement createGroupChat
     throw UnimplementedError();
   }
