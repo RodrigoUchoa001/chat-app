@@ -1,12 +1,15 @@
 import 'package:chatapp/core/providers/firebase_auth_providers.dart';
 import 'package:chatapp/core/widgets/chat_text_button.dart';
+import 'package:chatapp/features/auth/data/dto/user_dto.dart';
 import 'package:chatapp/features/auth/presentation/widgets/auth_back_button.dart';
+import 'package:chatapp/features/chat/presentation/providers/friends_list_to_create_group_provider.dart';
 import 'package:chatapp/features/chat/presentation/widgets/chat_profile_pic.dart';
 import 'package:chatapp/features/users/data/repositories/user_repository.dart';
 import 'package:chatapp/gen/fonts.gen.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class CreateGroupScreen extends ConsumerStatefulWidget {
   const CreateGroupScreen({super.key});
@@ -21,6 +24,8 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
   Widget build(BuildContext context) {
     final currentUser = ref.watch(currentUserProvider).asData?.value;
     final userRepo = ref.watch(userRepositoryProvider);
+    final friendsListToCreateGroup =
+        ref.watch(friendsListToCreateGroupProvider);
 
     return SafeArea(
       child: Scaffold(
@@ -135,27 +140,63 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    // TODO: Make the button work
-                    Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                        borderRadius: BorderRadius.circular(50),
-                        onTap: () {},
-                        child: DottedBorder(
-                          dashPattern: [8, 4],
-                          borderType: BorderType.Circle,
-                          color: Color(0xFF323C37),
-                          child: SizedBox(
-                            height: 70,
-                            width: 70,
-                            child: Icon(
-                              Icons.add,
-                              size: 24,
+                    Wrap(
+                      spacing: 16,
+                      runSpacing: 20,
+                      children: [
+                        for (final friend in friendsListToCreateGroup)
+                          GestureDetector(
+                            onTap: () => _removeUserFromGroup(ref, friend.uid!),
+                            child: Stack(
+                              alignment: Alignment.bottomRight,
+                              children: [
+                                ChatProfilePic(
+                                  chatPhotoURL: friend.photoURL,
+                                  isOnline: false,
+                                  avatarRadius:
+                                      36, // half the size of the widget above, plus 1 pixel for the border
+                                ),
+                                Container(
+                                  width: 24,
+                                  height: 24,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: Color(0xFF121414),
+                                      width: 1.5,
+                                    ),
+                                    borderRadius: BorderRadius.circular(50),
+                                    color: Color(0xFFEA3736),
+                                  ),
+                                  child: Icon(Icons.close,
+                                      color: Colors.white, size: 16),
+                                ),
+                              ],
+                            ),
+                          ),
+                        Material(
+                          color: Colors.transparent,
+                          child: InkWell(
+                            borderRadius: BorderRadius.circular(50),
+                            onTap: () {
+                              context.go('/select-friends-to-add-to-group');
+                            },
+                            child: DottedBorder(
+                              dashPattern: [8, 4],
+                              borderType: BorderType.Circle,
                               color: Color(0xFF323C37),
+                              child: SizedBox(
+                                height: 70,
+                                width: 70,
+                                child: Icon(
+                                  Icons.add,
+                                  size: 24,
+                                  color: Color(0xFF323C37),
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                      ),
+                      ],
                     ),
                   ],
                 ),
@@ -172,5 +213,21 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
         ),
       ),
     );
+  }
+
+  // TODO: move to select friends screen
+  void _addUserToGroup(WidgetRef ref, UserDTO user) {
+    ref.read(friendsListToCreateGroupProvider.notifier).update((state) {
+      if (state.any((u) => u.uid == user.uid)) {
+        return state; // 🔥 Evita duplicatas
+      }
+      return [...state, user];
+    });
+  }
+
+  void _removeUserFromGroup(WidgetRef ref, String uid) {
+    ref.read(friendsListToCreateGroupProvider.notifier).update((state) {
+      return state.where((user) => user.uid != uid).toList();
+    });
   }
 }
