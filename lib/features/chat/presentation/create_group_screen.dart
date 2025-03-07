@@ -4,10 +4,12 @@ import 'package:chatapp/features/chat/data/repositories/chat_repository.dart';
 import 'package:chatapp/features/chat/presentation/providers/friends_list_to_create_group_provider.dart';
 import 'package:chatapp/features/chat/presentation/widgets/chat_profile_pic.dart';
 import 'package:chatapp/features/users/data/repositories/user_repository.dart';
+import 'package:chatapp/gen/assets.gen.dart';
 import 'package:chatapp/gen/fonts.gen.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
 class CreateGroupScreen extends ConsumerStatefulWidget {
@@ -37,7 +39,18 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
           toolbarHeight: 124,
           backgroundColor: Colors.transparent,
           elevation: 0,
-          leading: AuthBackButton(),
+          leading: IconButton(
+            icon: SvgPicture.asset(
+              Assets.icons.backButton.path,
+              fit: BoxFit.scaleDown,
+              width: 18,
+              height: 18,
+            ),
+            onPressed: () {
+              context.pop();
+              friendsListToCreateGroup.clear();
+            },
+          ),
           centerTitle: true,
           title: const Text(
             'Create Group',
