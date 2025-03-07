@@ -1,7 +1,5 @@
-import 'package:chatapp/core/providers/firebase_auth_providers.dart';
 import 'package:chatapp/features/chat/presentation/widgets/chat_profile_pic.dart';
 import 'package:chatapp/features/friends/data/repositories/friends_repository.dart';
-import 'package:chatapp/features/users/data/repositories/user_repository.dart';
 import 'package:chatapp/gen/assets.gen.dart';
 import 'package:chatapp/gen/fonts.gen.dart';
 import 'package:flutter/material.dart';
@@ -23,12 +21,10 @@ class _SelectFriendsToCreateGroupScreenState
 
   @override
   Widget build(BuildContext context) {
-    final userRepo = ref.watch(userRepositoryProvider);
-    final friendRepo = ref.watch(friendsRepositoryProvider);
-    final currentUser = ref.watch(currentUserProvider).asData?.value;
+    final friendsRepo = ref.watch(friendsRepositoryProvider);
     final query = _searchController.text.toLowerCase();
 
-    final searchResults = userRepo.searchUsers(query);
+    final friendsStream = friendsRepo.searchFriends(query);
 
     return SafeArea(
       child: Scaffold(
@@ -91,7 +87,7 @@ class _SelectFriendsToCreateGroupScreenState
                 ),
                 filled: true,
                 fillColor: Color(0xFF192222),
-                hintText: 'Type to search friends to add',
+                hintText: 'Type to search',
                 hintStyle: TextStyle(
                   color: Color(0xFF797C7B),
                   fontSize: 12,
@@ -107,7 +103,7 @@ class _SelectFriendsToCreateGroupScreenState
             children: [
               const SizedBox(height: 10),
               StreamBuilder(
-                stream: searchResults,
+                stream: friendsStream,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
@@ -116,8 +112,8 @@ class _SelectFriendsToCreateGroupScreenState
                   }
 
                   if (!snapshot.hasData) return const SizedBox();
-                  final users = snapshot.data!;
-                  if (users.isEmpty) return const SizedBox();
+                  final friends = snapshot.data!;
+                  if (friends.isEmpty) return const SizedBox();
 
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -126,7 +122,7 @@ class _SelectFriendsToCreateGroupScreenState
                         padding:
                             EdgeInsets.symmetric(horizontal: 24, vertical: 20),
                         child: Text(
-                          'Add Friends',
+                          'Select friends to create group:',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 16,
@@ -136,93 +132,55 @@ class _SelectFriendsToCreateGroupScreenState
                       ),
                       ListView.builder(
                         shrinkWrap: true,
-                        itemCount: users.length,
+                        itemCount: friends.length,
                         itemBuilder: (context, index) {
-                          final user = users[index];
-
-                          // check if the user is the current user itself
-                          if (user.uid == currentUser?.uid) {
-                            return const SizedBox();
-                          }
-
-                          return FutureBuilder(
-                              future: friendRepo.isFriend(user.uid!),
-                              builder: (context, snapshot) {
-                                if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return const SizedBox();
-                                }
-
-                                // check if the user is already a friend
-                                if (snapshot.data == true) {
-                                  return const SizedBox();
-                                }
-
-                                return Row(
+                          final friend = friends[index];
+                          return Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              onTap: () async {},
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 24, vertical: 10),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 24, vertical: 10),
-                                      child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          ChatProfilePic(
-                                            chatPhotoURL: user.photoURL,
-                                            isOnline: user.isOnline ?? false,
-                                          ),
-                                          const SizedBox(width: 12),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                user.name ?? '',
-                                                style: const TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 16,
-                                                  fontFamily: FontFamily.caros,
-                                                ),
-                                              ),
-                                              if (user.statusMessage != null &&
-                                                  user.statusMessage!
-                                                      .isNotEmpty)
-                                                Text(
-                                                  users[index].statusMessage!,
-                                                  style: TextStyle(
-                                                    color: Color(0xFF797C7B),
-                                                    fontSize: 12,
-                                                    fontFamily:
-                                                        FontFamily.circular,
-                                                  ),
-                                                )
-                                              else
-                                                SizedBox(),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
+                                    ChatProfilePic(
+                                      chatPhotoURL: friend.photoURL,
+                                      isOnline: friend.isOnline ?? false,
                                     ),
-                                    const Spacer(),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 24),
-                                      child: IconButton(
-                                        icon: SvgPicture.asset(
-                                            Assets.icons.userAdd.path,
-                                            width: 22),
-                                        padding: const EdgeInsets.all(7),
-                                        onPressed: () {},
-                                        style: ButtonStyle(
-                                          backgroundColor:
-                                              WidgetStateProperty.all(
-                                                  Color(0xFF4B9289)),
+                                    const SizedBox(width: 12),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          friend.name ?? '',
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 16,
+                                            fontFamily: FontFamily.caros,
+                                          ),
                                         ),
-                                      ),
+                                        if (friend.statusMessage != null &&
+                                            friend.statusMessage!.isNotEmpty)
+                                          Text(
+                                            friends[index]!.statusMessage!,
+                                            style: TextStyle(
+                                              color: Color(0xFF797C7B),
+                                              fontSize: 12,
+                                              fontFamily: FontFamily.circular,
+                                            ),
+                                          )
+                                        else
+                                          SizedBox(),
+                                      ],
                                     ),
                                   ],
-                                );
-                              });
+                                ),
+                              ),
+                            ),
+                          );
                         },
                       ),
                       const SizedBox(height: 16),
