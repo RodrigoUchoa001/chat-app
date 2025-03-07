@@ -5,8 +5,13 @@ import 'package:flutter_svg/svg.dart';
 
 class ChatProfilePic extends ConsumerWidget {
   final String? chatPhotoURL;
+  final double? avatarRadius;
   final bool isOnline;
-  const ChatProfilePic({this.chatPhotoURL, required this.isOnline, super.key});
+  const ChatProfilePic(
+      {this.chatPhotoURL,
+      required this.isOnline,
+      this.avatarRadius = 26,
+      super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -15,7 +20,7 @@ class ChatProfilePic extends ConsumerWidget {
       children: [
         chatPhotoURL != null
             ? CircleAvatar(
-                radius: 26,
+                radius: avatarRadius,
                 backgroundImage: NetworkImage(
                   chatPhotoURL ?? '',
                 ),
