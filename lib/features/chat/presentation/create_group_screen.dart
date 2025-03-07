@@ -154,7 +154,7 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
                                   chatPhotoURL: friend.photoURL,
                                   isOnline: false,
                                   avatarRadius:
-                                      36, // half the size of the widget above, plus 1 pixel for the border
+                                      36, // half the size of the material widget above (70/2), plus 1 pixel for the border
                                 ),
                                 Container(
                                   width: 24,
