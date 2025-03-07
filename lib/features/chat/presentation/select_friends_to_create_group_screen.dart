@@ -101,99 +101,160 @@ class _SelectFriendsToCreateGroupScreenState
             ),
           ),
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 10),
-              StreamBuilder(
-                stream: friendsStream,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
-                  }
-
-                  if (!snapshot.hasData) return const SizedBox();
-                  final friends = snapshot.data!;
-                  if (friends.isEmpty) return const SizedBox();
-
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 24, vertical: 20),
-                        child: Text(
-                          'Select friends to create group:',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontFamily: FontFamily.caros,
-                          ),
-                        ),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 20),
+            if (friendsListToCreateGroup.isNotEmpty)
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Text(
+                      '${friendsListToCreateGroup.length} friend${friendsListToCreateGroup.length > 1 ? 's' : ''} selected:',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontFamily: FontFamily.caros,
                       ),
-                      ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: friends.length,
-                        itemBuilder: (context, index) {
-                          final friend = friends[index];
-                          return Material(
-                            color: Colors.transparent,
-                            child: InkWell(
-                              onTap: () async {},
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 24, vertical: 10),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    ChatProfilePic(
-                                      chatPhotoURL: friend.photoURL,
-                                      isOnline: friend.isOnline ?? false,
-                                    ),
-                                    const SizedBox(width: 12),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          friend.name ?? '',
-                                          style: const TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 16,
-                                            fontFamily: FontFamily.caros,
-                                          ),
-                                        ),
-                                        if (friend.statusMessage != null &&
-                                            friend.statusMessage!.isNotEmpty)
-                                          Text(
-                                            friends[index]!.statusMessage!,
-                                            style: TextStyle(
-                                              color: Color(0xFF797C7B),
-                                              fontSize: 12,
-                                              fontFamily: FontFamily.circular,
-                                            ),
-                                          )
-                                        else
-                                          SizedBox(),
-                                      ],
-                                    ),
-                                  ],
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Row(
+                    children: friendsListToCreateGroup.map(
+                      (friend) {
+                        return Padding(
+                          padding: const EdgeInsets.only(left: 20),
+                          child: GestureDetector(
+                            onTap: () => _removeUserFromGroup(ref, friend.uid!),
+                            child: Stack(
+                              alignment: Alignment.bottomRight,
+                              children: [
+                                ChatProfilePic(
+                                  chatPhotoURL: friend.photoURL,
+                                  isOnline: false,
                                 ),
+                                Container(
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: Color(0xFF121414),
+                                      width: 1.5,
+                                    ),
+                                    borderRadius: BorderRadius.circular(50),
+                                    color: Color(0xFFEA3736),
+                                  ),
+                                  child: Icon(Icons.close,
+                                      color: Colors.white, size: 12),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ).toList(),
+                  ),
+                ],
+              ),
+            // const SizedBox(height: 10),
+            SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 10),
+                  StreamBuilder(
+                    stream: friendsStream,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      }
+
+                      if (!snapshot.hasData) return const SizedBox();
+                      final friends = snapshot.data!;
+                      if (friends.isEmpty) return const SizedBox();
+
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 24, vertical: 20),
+                            child: Text(
+                              'Select friends to create group:',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontFamily: FontFamily.caros,
                               ),
                             ),
-                          );
-                        },
-                      ),
-                      const SizedBox(height: 16),
-                    ],
-                  );
-                },
+                          ),
+                          ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: friends.length,
+                            itemBuilder: (context, index) {
+                              final friend = friends[index];
+                              return Material(
+                                color: Colors.transparent,
+                                child: InkWell(
+                                  onTap: () async {},
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 24, vertical: 10),
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        ChatProfilePic(
+                                          chatPhotoURL: friend.photoURL,
+                                          isOnline: friend.isOnline ?? false,
+                                        ),
+                                        const SizedBox(width: 12),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              friend.name ?? '',
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 16,
+                                                fontFamily: FontFamily.caros,
+                                              ),
+                                            ),
+                                            if (friend.statusMessage != null &&
+                                                friend
+                                                    .statusMessage!.isNotEmpty)
+                                              Text(
+                                                friends[index]!.statusMessage!,
+                                                style: TextStyle(
+                                                  color: Color(0xFF797C7B),
+                                                  fontSize: 12,
+                                                  fontFamily:
+                                                      FontFamily.circular,
+                                                ),
+                                              )
+                                            else
+                                              SizedBox(),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                          const SizedBox(height: 16),
+                        ],
+                      );
+                    },
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
