@@ -45,7 +45,6 @@ class _SelectFriendsToCreateGroupScreenState
             ),
             onPressed: () {
               context.pop();
-              friendsListToCreateGroup.clear();
             },
           ),
           title: Container(
@@ -258,7 +257,7 @@ class _SelectFriendsToCreateGroupScreenState
                                                 friend
                                                     .statusMessage!.isNotEmpty)
                                               Text(
-                                                friends[index]!.statusMessage!,
+                                                friends[index].statusMessage!,
                                                 style: TextStyle(
                                                   color: Color(0xFF797C7B),
                                                   fontSize: 12,
