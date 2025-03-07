@@ -45,6 +45,7 @@ class _SelectFriendsToCreateGroupScreenState
             ),
             onPressed: () {
               context.pop();
+              friendsListToCreateGroup.clear();
             },
           ),
           title: Container(
@@ -196,9 +197,13 @@ class _SelectFriendsToCreateGroupScreenState
                             itemBuilder: (context, index) {
                               final friend = friends[index];
                               return Material(
-                                color: Colors.transparent,
+                                color: _isFriendSelected(ref, friend.uid!)
+                                    ? Color.fromARGB(118, 36, 120, 109)
+                                    : Colors.transparent,
                                 child: InkWell(
-                                  onTap: () async {},
+                                  onTap: () async {
+                                    _addUserToGroup(ref, friend);
+                                  },
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 24, vertical: 10),
@@ -206,9 +211,35 @@ class _SelectFriendsToCreateGroupScreenState
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
                                       children: [
-                                        ChatProfilePic(
-                                          chatPhotoURL: friend.photoURL,
-                                          isOnline: friend.isOnline ?? false,
+                                        Stack(
+                                          alignment: Alignment.bottomRight,
+                                          children: [
+                                            ChatProfilePic(
+                                              chatPhotoURL: friend.photoURL,
+                                              isOnline:
+                                                  friend.isOnline ?? false,
+                                            ),
+                                            _isFriendSelected(ref, friend.uid!)
+                                                ? Container(
+                                                    decoration: BoxDecoration(
+                                                      border: Border.all(
+                                                        color:
+                                                            Color(0xFF24786D),
+                                                        width: 1.5,
+                                                      ),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              50),
+                                                      color: Color(0xFF24786D),
+                                                    ),
+                                                    child: Icon(
+                                                      Icons.done,
+                                                      color: Colors.white,
+                                                      size: 12,
+                                                    ),
+                                                  )
+                                                : SizedBox(),
+                                          ],
                                         ),
                                         const SizedBox(width: 12),
                                         Column(
