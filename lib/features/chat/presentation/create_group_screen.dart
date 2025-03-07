@@ -136,7 +136,7 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
                                   ),
                             const SizedBox(width: 12),
                             Text(
-                              user.name ?? '',
+                              user.name != null ? '${user.name} (You)' : '',
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 16,
@@ -247,7 +247,6 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
     );
   }
 
-  // TODO: move to select friends screen
   void _removeUserFromGroup(WidgetRef ref, String uid) {
     ref.read(friendsListToCreateGroupProvider.notifier).update((state) {
       return state.where((user) => user.uid != uid).toList();
