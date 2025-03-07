@@ -9,16 +9,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 
-class SelectFriendsToAddCreateScreen extends ConsumerStatefulWidget {
-  const SelectFriendsToAddCreateScreen({super.key});
+class SelectFriendsToCreateGroupScreen extends ConsumerStatefulWidget {
+  const SelectFriendsToCreateGroupScreen({super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
-      _SelectFriendsToAddCreateScreenState();
+      _SelectFriendsToCreateGroupScreenState();
 }
 
-class _SelectFriendsToAddCreateScreenState
-    extends ConsumerState<SelectFriendsToAddCreateScreen> {
+class _SelectFriendsToCreateGroupScreenState
+    extends ConsumerState<SelectFriendsToCreateGroupScreen> {
   final _searchController = TextEditingController();
 
   @override
