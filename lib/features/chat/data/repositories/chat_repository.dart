@@ -154,7 +154,9 @@ class ChatRepository implements ChatRepositoryInterface {
 
   @override
   Future<String> createGroupChat(
-      String groupName, String groupPhotoURL, List<String> participants) async {
+      {required String groupName,
+      required String groupPhotoURL,
+      required List<String> participants}) async {
     final docRef = await _firestore.collection('chats').add({
       'type': "group",
       'groupName': groupName,

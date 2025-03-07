@@ -12,7 +12,9 @@ abstract interface class ChatRepositoryInterface {
   Future<void> markMessageAsSeen(String chatId, String messageId);
   Future<void> createPrivateChat(String friendId);
   Future<String> createGroupChat(
-      String groupName, String groupPhotoURL, List<String> participants);
+      {required String groupName,
+      required String groupPhotoURL,
+      required List<String> participants});
   Future<void> deleteChat(String chatId);
   Future<String?> getChatPhotoURL(
       ChatDTO chat, UserRepositoryInterface userRepo);
