@@ -234,6 +234,7 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
                         );
                         // TODO: fix error going to chat screen to that chatid
                         context.pushReplacement('/chat/$chatId');
+                        friendsListToCreateGroup.clear();
                       },
                 text: "Create",
                 buttonColor: Color(0xFF24786D),
