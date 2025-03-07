@@ -286,6 +286,14 @@ class _SelectFriendsToCreateGroupScreenState
             ),
           ],
         ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () => context.pop(),
+          backgroundColor: Color(0xFF24786D),
+          child: const Icon(
+            Icons.arrow_forward_rounded,
+            color: Colors.white,
+          ),
+        ),
       ),
     );
   }
