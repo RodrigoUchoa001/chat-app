@@ -153,9 +153,9 @@ class ChatRepository implements ChatRepositoryInterface {
   }
 
   @override
-  Future<void> createGroupChat(
-      String groupName, String groupPhotoURL, List<String> participants) {
-    return _firestore.collection('chats').add({
+  Future<String> createGroupChat(
+      String groupName, String groupPhotoURL, List<String> participants) async {
+    final docRef = await _firestore.collection('chats').add({
       'type': "group",
       'groupName': groupName,
       'groupPhotoURL': groupPhotoURL,
@@ -164,6 +164,8 @@ class ChatRepository implements ChatRepositoryInterface {
       'createdAt': DateTime.now().toString(),
       'lastMessage': null,
     });
+
+    return docRef.id;
   }
 
   @override

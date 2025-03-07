@@ -11,7 +11,7 @@ abstract interface class ChatRepositoryInterface {
   Future<MessageDTO?> sendMessage(String chatId, String message);
   Future<void> markMessageAsSeen(String chatId, String messageId);
   Future<void> createPrivateChat(String friendId);
-  Future<void> createGroupChat(
+  Future<String> createGroupChat(
       String groupName, String groupPhotoURL, List<String> participants);
   Future<void> deleteChat(String chatId);
   Future<String?> getChatPhotoURL(
