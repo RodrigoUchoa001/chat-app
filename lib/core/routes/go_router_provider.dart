@@ -79,7 +79,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/select-friends-to-create-group',
         name: selectFriendsToCreateGroupRoute,
-        builder: (context, state) => const SelectFriendsToAddCreateScreen(),
+        builder: (context, state) => const SelectFriendsToCreateGroupScreen(),
       )
     ],
   );
