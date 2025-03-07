@@ -216,15 +216,6 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
   }
 
   // TODO: move to select friends screen
-  void _addUserToGroup(WidgetRef ref, UserDTO user) {
-    ref.read(friendsListToCreateGroupProvider.notifier).update((state) {
-      if (state.any((u) => u.uid == user.uid)) {
-        return state; // 🔥 Evita duplicatas
-      }
-      return [...state, user];
-    });
-  }
-
   void _removeUserFromGroup(WidgetRef ref, String uid) {
     ref.read(friendsListToCreateGroupProvider.notifier).update((state) {
       return state.where((user) => user.uid != uid).toList();
