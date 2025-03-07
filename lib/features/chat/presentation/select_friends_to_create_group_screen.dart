@@ -1,3 +1,5 @@
+import 'package:chatapp/features/auth/data/dto/user_dto.dart';
+import 'package:chatapp/features/chat/presentation/providers/friends_list_to_create_group_provider.dart';
 import 'package:chatapp/features/chat/presentation/widgets/chat_profile_pic.dart';
 import 'package:chatapp/features/friends/data/repositories/friends_repository.dart';
 import 'package:chatapp/gen/assets.gen.dart';
@@ -22,6 +24,8 @@ class _SelectFriendsToCreateGroupScreenState
   @override
   Widget build(BuildContext context) {
     final friendsRepo = ref.watch(friendsRepositoryProvider);
+    final friendsListToCreateGroup =
+        ref.watch(friendsListToCreateGroupProvider);
     final query = _searchController.text.toLowerCase();
 
     final friendsStream = friendsRepo.searchFriends(query);
@@ -193,5 +197,27 @@ class _SelectFriendsToCreateGroupScreenState
         ),
       ),
     );
+  }
+
+  void _addUserToGroup(WidgetRef ref, UserDTO user) {
+    ref.read(friendsListToCreateGroupProvider.notifier).update((state) {
+      if (state.any((u) => u.uid == user.uid)) {
+        return state; // 🔥 Evita duplicatas
+      }
+      return [...state, user];
+    });
+  }
+
+  void _removeUserFromGroup(WidgetRef ref, String uid) {
+    ref.read(friendsListToCreateGroupProvider.notifier).update((state) {
+      return state.where((user) => user.uid != uid).toList();
+    });
+  }
+
+  bool _isFriendSelected(WidgetRef ref, String uid) {
+    return ref
+        .read(friendsListToCreateGroupProvider.notifier)
+        .state
+        .any((user) => user.uid == uid);
   }
 }
