@@ -34,14 +34,32 @@ class ChatRepository implements ChatRepositoryInterface {
     return _firestore
         .collection('chats')
         .where('participants', arrayContains: _userId)
-        .where('lastMessage', isNull: false)
-        .orderBy('lastMessage.timestamp', descending: true)
         .snapshots()
         .map((querySnapshot) {
       if (querySnapshot.docs.isEmpty) return [];
-      return querySnapshot.docs.map((doc) {
-        return ChatDTO.fromJson(doc.data()).copyWith(id: doc.id);
-      }).toList();
+
+      final chats = querySnapshot.docs
+          .map((doc) {
+            final chat = ChatDTO.fromJson(doc.data()).copyWith(id: doc.id);
+
+            // remove only private chats, that dont have last message
+            if (chat.type == 'private' && chat.lastMessage == null) {
+              return null;
+            }
+
+            return chat;
+          })
+          .whereType<ChatDTO>()
+          .toList();
+
+      chats.sort((a, b) {
+        final aTimestamp = a.lastMessage?.timestamp ?? '';
+        final bTimestamp = b.lastMessage?.timestamp ?? '';
+        return bTimestamp
+            .compareTo(aTimestamp); // Sorts from most recent to oldest
+      });
+
+      return chats;
     });
   }
 
