@@ -33,8 +33,15 @@ class $AssetsIconsGen {
   /// File path: assets/icons/Call.svg
   SvgGenImage get call => const SvgGenImage('assets/icons/Call.svg');
 
+  /// File path: assets/icons/Keys.svg
+  SvgGenImage get keys => const SvgGenImage('assets/icons/Keys.svg');
+
   /// File path: assets/icons/Message.svg
   SvgGenImage get message => const SvgGenImage('assets/icons/Message.svg');
+
+  /// File path: assets/icons/Notification.svg
+  SvgGenImage get notification =>
+      const SvgGenImage('assets/icons/Notification.svg');
 
   /// File path: assets/icons/Send.svg
   SvgGenImage get send => const SvgGenImage('assets/icons/Send.svg');
@@ -57,6 +64,10 @@ class $AssetsIconsGen {
 
   /// File path: assets/icons/facebook.svg
   SvgGenImage get facebook => const SvgGenImage('assets/icons/facebook.svg');
+
+  /// File path: assets/icons/github_icon.svg
+  SvgGenImage get githubIcon =>
+      const SvgGenImage('assets/icons/github_icon.svg');
 
   /// File path: assets/icons/google.svg
   SvgGenImage get google => const SvgGenImage('assets/icons/google.svg');
@@ -91,7 +102,9 @@ class $AssetsIconsGen {
   /// List of all assets
   List<SvgGenImage> get values => [
         call,
+        keys,
         message,
+        notification,
         send,
         video,
         apple,
@@ -99,6 +112,7 @@ class $AssetsIconsGen {
         camera,
         clip,
         facebook,
+        githubIcon,
         google,
         logoForBlackBack,
         logoForWhiteBack,
