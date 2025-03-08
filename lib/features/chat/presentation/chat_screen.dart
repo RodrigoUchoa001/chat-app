@@ -173,8 +173,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
-                            return const CircularProgressIndicator(
-                                color: Colors.white);
+                            return const Text('');
                           } else if (snapshot.hasError) {
                             return Text('Error: ${snapshot.error}');
                           }
