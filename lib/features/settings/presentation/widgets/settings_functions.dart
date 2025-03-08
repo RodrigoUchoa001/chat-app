@@ -1,6 +1,8 @@
 import 'package:chatapp/core/providers/firebase_auth_providers.dart';
 import 'package:chatapp/features/chat/presentation/widgets/chat_profile_pic.dart';
+import 'package:chatapp/features/settings/presentation/widgets/setting_button.dart';
 import 'package:chatapp/features/users/data/repositories/user_repository.dart';
+import 'package:chatapp/gen/assets.gen.dart';
 import 'package:chatapp/gen/fonts.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -67,9 +69,30 @@ class _SettingsFunctionsState extends ConsumerState<SettingsFunctions> {
         ),
         const SizedBox(height: 20),
         const Divider(height: 1, color: Color(0xFF2D2F2E)),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: Column(),
+        const SizedBox(height: 18),
+        SettingButton(
+          iconPath: Assets.icons.keys.path,
+          title: "Account",
+          subtitle: "Privacy, security, change number",
+          onTap: () {},
+        ),
+        SettingButton(
+          iconPath: Assets.icons.message.path,
+          title: "Chat",
+          subtitle: "Chat history,theme,wallpapers",
+          onTap: () {},
+        ),
+        SettingButton(
+          iconPath: Assets.icons.notification.path,
+          title: "Notifications",
+          subtitle: "Messages, group and others",
+          onTap: () {},
+        ),
+        SettingButton(
+          iconPath: Assets.icons.githubIcon.path,
+          title: "Meet the dev",
+          subtitle: "Click to see my github",
+          onTap: () {},
         ),
       ],
     );
