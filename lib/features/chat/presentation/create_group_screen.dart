@@ -232,7 +232,6 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
                                 .map((user) => user.uid!),
                           ],
                         );
-                        // TODO: fix error going to chat screen to that chatid
                         context.pushReplacement('/chat/$chatId');
                         friendsListToCreateGroup.clear();
                       },
