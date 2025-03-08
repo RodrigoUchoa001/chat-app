@@ -1,5 +1,6 @@
 import 'package:chatapp/core/widgets/app_bar_widget.dart';
 import 'package:chatapp/core/widgets/home_content_background_widget.dart';
+import 'package:chatapp/features/settings/presentation/widgets/settings_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -28,9 +29,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 children: [
                   SizedBox(height: 17),
                   AppBarWidget(
-                    leftButton: SizedBox(),
                     title: "Settings",
-                    rightButton: SizedBox(),
                   ),
                   SizedBox(height: 30),
                 ],
@@ -38,7 +37,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             ),
             HomeContentBackground(
               height: screenHeight - 190, //CHUTEI ESSE NUMERO
-              child: Container(),
+              child: SettingsFunctions(),
             ),
           ],
         ),
