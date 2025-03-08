@@ -80,7 +80,7 @@ class _SettingsFunctionsState extends ConsumerState<SettingsFunctions> {
         SettingButton(
           iconPath: Assets.icons.message.path,
           title: "Chat",
-          subtitle: "Chat history,theme,wallpapers",
+          subtitle: "Chat history, theme, wallpapers",
           onTap: () {},
         ),
         SettingButton(
@@ -102,7 +102,7 @@ class _SettingsFunctionsState extends ConsumerState<SettingsFunctions> {
         ),
         SettingButton(
           imagePath: "https://avatars.githubusercontent.com/u/85903922?v=4",
-          title: "Check my portfolio",
+          title: "Dev portfolio",
           subtitle: "Click to see my portfolio",
           onTap: () {
             final Uri uri = Uri.parse("https://github.com/RodrigoUchoa001");
