@@ -4,12 +4,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 
 class SettingButton extends ConsumerWidget {
-  final String iconPath;
+  final String? iconPath;
+  final String? imagePath;
   final String title;
   final String subtitle;
   final Function()? onTap;
   const SettingButton(
-      {required this.iconPath,
+      {this.iconPath,
+      this.imagePath,
       required this.title,
       required this.subtitle,
       required this.onTap,
@@ -32,16 +34,20 @@ class SettingButton extends ConsumerWidget {
                   color: const Color(0xFF1D2525),
                   borderRadius: BorderRadius.circular(50),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: SvgPicture.asset(
-                    iconPath,
-                    colorFilter: ColorFilter.mode(
-                      Color(0xFF797C7B),
-                      BlendMode.srcIn,
-                    ),
-                  ),
-                ),
+                child: iconPath != null
+                    ? Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: SvgPicture.asset(
+                          iconPath!,
+                          colorFilter: ColorFilter.mode(
+                            Color(0xFF797C7B),
+                            BlendMode.srcIn,
+                          ),
+                        ),
+                      )
+                    : CircleAvatar(
+                        backgroundImage: NetworkImage(imagePath!),
+                      ),
               ),
               const SizedBox(width: 12),
               Column(
