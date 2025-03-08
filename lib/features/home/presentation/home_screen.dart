@@ -2,6 +2,7 @@ import 'package:chatapp/core/providers/bottom_nav_index_provider.dart';
 import 'package:chatapp/features/chat/presentation/chats_list_screen.dart';
 import 'package:chatapp/features/friends/presentation/friends_screen.dart';
 import 'package:chatapp/features/friends/presentation/providers/friends_providers.dart';
+import 'package:chatapp/features/settings/presentation/settings_screen.dart';
 import 'package:chatapp/gen/assets.gen.dart';
 import 'package:chatapp/gen/fonts.gen.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,7 @@ class HomeScreen extends ConsumerWidget {
     final List<Widget> pages = [
       const ChatsListScreen(),
       const FriendsScreen(),
-      const ChatsListScreen(),
+      const SettingsScreen(),
     ];
 
     return SafeArea(
