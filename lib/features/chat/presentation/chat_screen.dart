@@ -166,14 +166,29 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                         loading: () => const CircularProgressIndicator(),
                       ),
                       const SizedBox(height: 6),
-                      Text(
-                        // TODO: show number of online members
-                        '${chat.participants!.length} members, X online',
-                        style: TextStyle(
-                          color: Color(0xFF797C7B),
-                          fontSize: 12,
-                          fontFamily: FontFamily.circular,
+                      StreamBuilder(
+                        stream: chatProvider.getNumberOfOnlineMembers(
+                          widget.chatId,
                         ),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const CircularProgressIndicator(
+                                color: Colors.white);
+                          } else if (snapshot.hasError) {
+                            return Text('Error: ${snapshot.error}');
+                          }
+
+                          final onlineMembers = snapshot.data ?? 0;
+                          return Text(
+                            '${chat.participants!.length} members ${onlineMembers > 0 ? ', $onlineMembers online' : ''}',
+                            style: TextStyle(
+                              color: Color(0xFF797C7B),
+                              fontSize: 12,
+                              fontFamily: FontFamily.circular,
+                            ),
+                          );
+                        },
                       ),
                     ],
                   ),
