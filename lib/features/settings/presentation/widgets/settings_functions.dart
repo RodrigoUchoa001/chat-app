@@ -90,8 +90,14 @@ class _SettingsFunctionsState extends ConsumerState<SettingsFunctions> {
         ),
         SettingButton(
           iconPath: Assets.icons.githubIcon.path,
-          title: "Meet the dev",
-          subtitle: "Click to see my github",
+          title: "See the source code",
+          subtitle: "Click to see the ChatBox source code",
+          onTap: () {},
+        ),
+        SettingButton(
+          imagePath: "https://avatars.githubusercontent.com/u/85903922?v=4",
+          title: "Check my portfolio",
+          subtitle: "Click to see my portfolio",
           onTap: () {},
         ),
       ],
