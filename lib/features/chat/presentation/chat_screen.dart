@@ -114,129 +114,189 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
           final chat = snapshot.data!;
 
-          final friendId = (chat.type == 'private' && chat.participants != null)
-              ? chat.participants!.firstWhere(
-                  (id) => id != currentUser.value?.uid,
-                  orElse: () => '',
-                )
-              : '';
+          if (chat.type == 'group') {
+            return Row(
+              children: [
+                FutureBuilder(
+                  future: chatProvider.getChatPhotoURL(
+                    chat,
+                    userRepo,
+                  ),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const CircularProgressIndicator(
+                          color: Colors.white);
+                    } else if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    }
 
-          final friendDetails = userRepo.getUserDetails(friendId);
+                    final chatPhoto = snapshot.data;
+                    final hasValidPhoto =
+                        chatPhoto != null && chatPhoto.isNotEmpty;
 
-          return Row(
-            children: [
-              FutureBuilder(
-                future: chatProvider.getChatPhotoURL(
-                  chat,
-                  userRepo,
+                    return ChatProfilePic(
+                      chatPhotoURL: hasValidPhoto ? chatPhoto : '',
+                      isOnline: false,
+                    );
+                  },
                 ),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const CircularProgressIndicator(color: Colors.white);
-                  } else if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
-                  }
-
-                  final chatPhoto = snapshot.data;
-                  final hasValidPhoto =
-                      chatPhoto != null && chatPhoto.isNotEmpty;
-
-                  // HAVE TO SET THE friendId twice (here and line 118).
-                  // not doing make to profile pic to load forever
-                  final friendId =
-                      (chat.type == 'private' && chat.participants != null)
-                          ? chat.participants!.firstWhere(
-                              (id) => id != currentUser.value?.uid,
-                              orElse: () => '',
-                            )
-                          : '';
-
-                  final friendDetails = userRepo.getUserDetails(friendId);
-
-                  return StreamBuilder(
-                    stream: friendDetails,
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const CircularProgressIndicator();
-                      }
-
-                      final friend = snapshot.data;
-                      return ChatProfilePic(
-                        chatPhotoURL: hasValidPhoto ? chatPhoto : null,
-                        isOnline: chat.type == 'private' && friend!.isOnline!,
-                      );
-                    },
-                  );
-                },
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    currentUser.when(
-                      data: (user) {
-                        return FutureBuilder(
-                          future: _getChatTitle(chat, user!.uid, userRepo),
-                          builder: (context, snapshot) {
-                            return Text(
-                              snapshot.data ?? 'No title',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontFamily: FontFamily.caros,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            );
-                          },
-                        );
-                      },
-                      error: (error, stackTrace) => Text('Error: $error'),
-                      loading: () => const CircularProgressIndicator(),
-                    ),
-                    const SizedBox(height: 6),
-                    chat.type == 'private'
-                        ? StreamBuilder(
-                            stream: friendDetails,
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      currentUser.when(
+                        data: (user) {
+                          return FutureBuilder(
+                            future: _getChatTitle(chat, user!.uid, userRepo),
                             builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return const Text(
-                                  'Checking...',
-                                  style: TextStyle(
-                                    color: Color(0xFF797C7B),
-                                    fontSize: 12,
-                                    fontFamily: FontFamily.circular,
-                                  ),
-                                );
-                              }
-                              final friend = snapshot.data;
                               return Text(
-                                friend!.isOnline ?? false
-                                    ? 'online'
-                                    : 'last seen at ${DateFormat('hh:mm a').format(DateTime.parse(friend.lastSeen!))}',
+                                snapshot.data ?? 'No title',
                                 style: TextStyle(
-                                  color: Color(0xFF797C7B),
-                                  fontSize: 12,
-                                  fontFamily: FontFamily.circular,
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontFamily: FontFamily.caros,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                               );
                             },
-                          )
-                        : Text(
-                            // TODO: show number of participants online
-                            '${chat.participants!.length} members',
+                          );
+                        },
+                        error: (error, stackTrace) => Text('Error: $error'),
+                        loading: () => const CircularProgressIndicator(),
+                      ),
+                      const SizedBox(height: 6),
+                      Text(
+                        '${chat.participants!.length} members',
+                        style: TextStyle(
+                          color: Color(0xFF797C7B),
+                          fontSize: 12,
+                          fontFamily: FontFamily.circular,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            );
+            // if it's a private chat
+          } else {
+            final friendId = chat.participants != null
+                ? chat.participants!.firstWhere(
+                    (id) => id != currentUser.value?.uid,
+                    orElse: () => '',
+                  )
+                : '';
+
+            final friendDetails = userRepo.getUserDetails(friendId);
+
+            return Row(
+              children: [
+                FutureBuilder(
+                  future: chatProvider.getChatPhotoURL(
+                    chat,
+                    userRepo,
+                  ),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const CircularProgressIndicator(
+                          color: Colors.white);
+                    } else if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    }
+
+                    final chatPhoto = snapshot.data;
+                    final hasValidPhoto =
+                        chatPhoto != null && chatPhoto.isNotEmpty;
+
+                    final friendId =
+                        (chat.type == 'private' && chat.participants != null)
+                            ? chat.participants!.firstWhere(
+                                (id) => id != currentUser.value?.uid,
+                                orElse: () => '',
+                              )
+                            : '';
+
+                    final friendDetails = userRepo.getUserDetails(friendId);
+
+                    return StreamBuilder(
+                      stream: friendDetails,
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const CircularProgressIndicator(
+                              color: Colors.white);
+                        } else if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
+                        }
+
+                        final friend = snapshot.data!;
+
+                        return ChatProfilePic(
+                          chatPhotoURL: hasValidPhoto ? chatPhoto : null,
+                          isOnline: friend.isOnline!,
+                        );
+                      },
+                    );
+                  },
+                ),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      currentUser.when(
+                        data: (user) {
+                          return FutureBuilder(
+                            future: _getChatTitle(chat, user!.uid, userRepo),
+                            builder: (context, snapshot) {
+                              return Text(
+                                snapshot.data ?? 'No title',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontFamily: FontFamily.caros,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              );
+                            },
+                          );
+                        },
+                        error: (error, stackTrace) => Text('Error: $error'),
+                        loading: () => const CircularProgressIndicator(),
+                      ),
+                      const SizedBox(height: 6),
+                      StreamBuilder(
+                        stream: friendDetails,
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Text(
+                              'Checking...',
+                              style: TextStyle(
+                                color: Color(0xFF797C7B),
+                                fontSize: 12,
+                                fontFamily: FontFamily.circular,
+                              ),
+                            );
+                          }
+                          final friend = snapshot.data;
+                          return Text(
+                            friend!.isOnline ?? false
+                                ? 'online'
+                                : 'last seen at ${DateFormat('hh:mm a').format(DateTime.parse(friend.lastSeen!))}',
                             style: TextStyle(
                               color: Color(0xFF797C7B),
                               fontSize: 12,
                               fontFamily: FontFamily.circular,
                             ),
-                          ),
-                  ],
+                          );
+                        },
+                      )
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          );
+              ],
+            );
+          }
         },
       ),
       actions: [
