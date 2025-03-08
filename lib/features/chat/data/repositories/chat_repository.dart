@@ -277,4 +277,27 @@ class ChatRepository implements ChatRepositoryInterface {
           .toList();
     });
   }
+
+  @override
+  Stream<int> getNumberOfOnlineMembers(String chatId) {
+    return _firestore
+        .collection('chats')
+        .doc(chatId)
+        .snapshots()
+        .asyncMap((chatSnapshot) async {
+      if (!chatSnapshot.exists) return 0;
+
+      final List<String> participants =
+          List<String>.from(chatSnapshot.data()?['participants'] ?? []);
+
+      if (participants.isEmpty) return 0;
+
+      final onlineUsers = await Future.wait(participants.map((userId) async {
+        final userDoc = await _firestore.collection('users').doc(userId).get();
+        return userDoc.exists && (userDoc.data()?['isOnline'] == true);
+      }));
+
+      return onlineUsers.where((isOnline) => isOnline).length;
+    });
+  }
 }

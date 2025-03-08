@@ -122,4 +122,10 @@ class FakeChatRepository implements ChatRepositoryInterface {
     // TODO: implement searchChats
     throw UnimplementedError();
   }
+
+  @override
+  Stream<int> getNumberOfOnlineMembers(String chatId) {
+    // TODO: implement getNumberOfOnlineMembers
+    throw UnimplementedError();
+  }
 }
