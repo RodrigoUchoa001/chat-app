@@ -4,7 +4,6 @@ import 'package:chatapp/features/chat/data/repositories/chat_repository.dart';
 import 'package:chatapp/features/chat/domain/repositories/chat_repository_interface.dart';
 import 'package:chatapp/features/chat/presentation/utils/calculate_time_since_last_message.dart';
 import 'package:chatapp/features/chat/presentation/widgets/chat_profile_pic.dart';
-import 'package:chatapp/features/friends/data/repositories/friends_repository.dart';
 import 'package:chatapp/features/users/data/repositories/user_repository.dart';
 import 'package:chatapp/features/users/domain/user_repository_interface.dart';
 import 'package:chatapp/gen/assets.gen.dart';
@@ -224,7 +223,7 @@ class ChatList extends ConsumerWidget {
                   Text(
                     chat.lastMessage != null
                         ? chat.lastMessage!.text ?? ''
-                        : '',
+                        : 'No message yet',
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                     style: TextStyle(
