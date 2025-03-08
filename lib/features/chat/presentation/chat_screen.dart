@@ -140,6 +140,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                     );
                   },
                 ),
+                const SizedBox(width: 12),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -166,7 +167,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                       ),
                       const SizedBox(height: 6),
                       Text(
-                        '${chat.participants!.length} members',
+                        // TODO: show number of online members
+                        '${chat.participants!.length} members, X online',
                         style: TextStyle(
                           color: Color(0xFF797C7B),
                           fontSize: 12,
@@ -239,6 +241,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                     );
                   },
                 ),
+                const SizedBox(width: 12),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
