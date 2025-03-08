@@ -6,6 +6,7 @@ import 'package:chatapp/gen/assets.gen.dart';
 import 'package:chatapp/gen/fonts.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingsFunctions extends ConsumerStatefulWidget {
   const SettingsFunctions({super.key});
@@ -92,13 +93,22 @@ class _SettingsFunctionsState extends ConsumerState<SettingsFunctions> {
           iconPath: Assets.icons.githubIcon.path,
           title: "See the source code",
           subtitle: "Click to see the ChatBox source code",
-          onTap: () {},
+          onTap: () {
+            final Uri uri =
+                Uri.parse("https://github.com/RodrigoUchoa001/chat-app");
+
+            launchUrl(uri);
+          },
         ),
         SettingButton(
           imagePath: "https://avatars.githubusercontent.com/u/85903922?v=4",
           title: "Check my portfolio",
           subtitle: "Click to see my portfolio",
-          onTap: () {},
+          onTap: () {
+            final Uri uri = Uri.parse("https://github.com/RodrigoUchoa001");
+
+            launchUrl(uri);
+          },
         ),
       ],
     );
