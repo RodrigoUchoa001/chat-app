@@ -22,7 +22,7 @@ Inspired by the design of Alex Hylton, design available at [Chatting App UI kit 
 - ❗Chats
     - ✅✅ Send and receive text privately with friend.
     - ✅✅ Create groups with your friends.
-    - ✅ Send and receive text messages in groups with friends.
+    - ✅✅ Send and receive text messages in groups with friends.
     - ✖️ Send media in private chats or groups. *(firebase storage is now paid)*
 - Messages
     - See if your friend saw your private message.
