@@ -27,29 +27,31 @@ class SettingButton extends ConsumerWidget {
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 15),
           child: Row(
             children: [
-              Container(
-                height: 44,
-                width: 44,
-                decoration: BoxDecoration(
-                  color: const Color(0xFF1D2525),
-                  borderRadius: BorderRadius.circular(50),
-                ),
-                child: iconPath != null
-                    ? Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: SvgPicture.asset(
-                          iconPath!,
-                          colorFilter: ColorFilter.mode(
-                            Color(0xFF797C7B),
-                            BlendMode.srcIn,
+              if (iconPath != null || imagePath != null)
+                Container(
+                  height: 44,
+                  width: 44,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF1D2525),
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  child: iconPath != null
+                      ? Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: SvgPicture.asset(
+                            iconPath!,
+                            colorFilter: ColorFilter.mode(
+                              Color(0xFF797C7B),
+                              BlendMode.srcIn,
+                            ),
                           ),
+                        )
+                      : CircleAvatar(
+                          backgroundImage: NetworkImage(imagePath!),
                         ),
-                      )
-                    : CircleAvatar(
-                        backgroundImage: NetworkImage(imagePath!),
-                      ),
-              ),
-              const SizedBox(width: 12),
+                ),
+              if (iconPath != null || imagePath != null)
+                const SizedBox(width: 12),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
