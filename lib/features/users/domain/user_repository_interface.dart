@@ -4,4 +4,6 @@ abstract interface class UserRepositoryInterface {
   Stream<UserDTO?> getUserDetails(String userId);
   Stream<List<UserDTO>> searchUsers(String query);
   Future<void> updateUserOnlineStatus({required bool isOnline});
+  Future<void> updateUserName({required String name});
+  Future<void> updateUserStatusMessage({required String statusMessage});
 }
