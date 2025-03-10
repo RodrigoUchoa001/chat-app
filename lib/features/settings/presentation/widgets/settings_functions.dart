@@ -84,7 +84,9 @@ class _SettingsFunctionsState extends ConsumerState<SettingsFunctions> {
           iconPath: Assets.icons.message.path,
           title: "Chat",
           subtitle: "Delete chats, groups",
-          onTap: () {},
+          onTap: () {
+            context.push('/settings/chat-settings');
+          },
         ),
         SettingButton(
           iconPath: Assets.icons.settings.path,
