@@ -8,6 +8,7 @@ class SettingButton extends ConsumerWidget {
   final String? imagePath;
   final String title;
   final String subtitle;
+  final Widget? trailing;
   final Function()? onTap;
   const SettingButton(
       {this.iconPath,
@@ -15,6 +16,7 @@ class SettingButton extends ConsumerWidget {
       required this.title,
       required this.subtitle,
       required this.onTap,
+      this.trailing,
       super.key});
 
   @override
@@ -74,6 +76,8 @@ class SettingButton extends ConsumerWidget {
                   ),
                 ],
               ),
+              const Spacer(),
+              if (trailing != null) trailing!,
             ],
           ),
         ),
