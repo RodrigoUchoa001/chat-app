@@ -47,4 +47,17 @@ class UserRepository implements UserRepositoryInterface {
       if (!isOnline) 'lastSeen': DateTime.now().toString(),
     });
   }
+
+  @override
+  Future<void> updateUserName({required String name}) {
+    return _firestore.collection('users').doc(_userId).update({'name': name});
+  }
+
+  @override
+  Future<void> updateUserStatusMessage({required String statusMessage}) {
+    return _firestore
+        .collection('users')
+        .doc(_userId)
+        .update({'statusMessage': statusMessage});
+  }
 }
