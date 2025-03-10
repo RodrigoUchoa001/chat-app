@@ -19,4 +19,6 @@ abstract interface class ChatRepositoryInterface {
   Future<String?> getChatPhotoURL(
       ChatDTO chat, UserRepositoryInterface userRepo);
   Stream<int> getNumberOfOnlineMembers(String chatId);
+  Future<void> deleteAllPrivateChats();
+  Future<void> leftAllGroupChats();
 }
