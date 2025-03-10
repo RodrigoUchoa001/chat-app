@@ -6,6 +6,7 @@ import 'package:chatapp/gen/assets.gen.dart';
 import 'package:chatapp/gen/fonts.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SettingsFunctions extends ConsumerStatefulWidget {
@@ -74,19 +75,21 @@ class _SettingsFunctionsState extends ConsumerState<SettingsFunctions> {
         SettingButton(
           iconPath: Assets.icons.keys.path,
           title: "Account",
-          subtitle: "Privacy, security, change number",
-          onTap: () {},
+          subtitle: "Name, status message",
+          onTap: () {
+            context.push('/settings/account-settings');
+          },
         ),
         SettingButton(
           iconPath: Assets.icons.message.path,
           title: "Chat",
-          subtitle: "Chat history, theme, wallpapers",
+          subtitle: "Delete chats, groups",
           onTap: () {},
         ),
         SettingButton(
-          iconPath: Assets.icons.notification.path,
-          title: "Notifications",
-          subtitle: "Messages, group and others",
+          iconPath: Assets.icons.settings.path,
+          title: "App",
+          subtitle: "Theme, language",
           onTap: () {},
         ),
         SettingButton(
