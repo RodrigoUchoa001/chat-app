@@ -69,14 +69,30 @@ class _AccountSettingsScreenState extends ConsumerState<AccountSettingsScreen> {
                         builder: (context) {
                           String tempName = user.name ?? "";
                           return AlertDialog(
-                            title: const Text("Change Name"),
+                            backgroundColor: Color(0xFF121414),
+                            title: const Text(
+                              "Change Name",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontFamily: FontFamily.caros,
+                                color: Colors.white,
+                              ),
+                            ),
                             content: TextField(
                               onChanged: (value) {
                                 tempName = value;
                               },
                               controller: TextEditingController(text: tempName),
+                              style: TextStyle(
+                                fontFamily: FontFamily.circular,
+                                color: Colors.white,
+                              ),
                               decoration: const InputDecoration(
                                 labelText: "Enter new name",
+                                labelStyle: TextStyle(
+                                  fontFamily: FontFamily.circular,
+                                  color: Color(0xFF797C7B),
+                                ),
                               ),
                             ),
                             actions: [
@@ -84,7 +100,7 @@ class _AccountSettingsScreenState extends ConsumerState<AccountSettingsScreen> {
                                 child: const Text("Cancel"),
                                 onPressed: () => Navigator.of(context).pop(),
                               ),
-                              TextButton(
+                              FilledButton(
                                 child: const Text("Save"),
                                 onPressed: () {
                                   Navigator.of(context).pop(tempName);
@@ -118,15 +134,31 @@ class _AccountSettingsScreenState extends ConsumerState<AccountSettingsScreen> {
                         builder: (context) {
                           String tempStatus = user.statusMessage ?? "";
                           return AlertDialog(
-                            title: const Text("Change status message"),
+                            backgroundColor: Color(0xFF121414),
+                            title: const Text(
+                              "Change status message",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontFamily: FontFamily.caros,
+                                color: Colors.white,
+                              ),
+                            ),
                             content: TextField(
                               onChanged: (value) {
                                 tempStatus = value;
                               },
                               controller:
                                   TextEditingController(text: tempStatus),
+                              style: TextStyle(
+                                fontFamily: FontFamily.circular,
+                                color: Colors.white,
+                              ),
                               decoration: const InputDecoration(
                                 labelText: "Enter new status message",
+                                labelStyle: TextStyle(
+                                  fontFamily: FontFamily.circular,
+                                  color: Color(0xFF797C7B),
+                                ),
                               ),
                             ),
                             actions: [
@@ -134,7 +166,7 @@ class _AccountSettingsScreenState extends ConsumerState<AccountSettingsScreen> {
                                 child: const Text("Cancel"),
                                 onPressed: () => Navigator.of(context).pop(),
                               ),
-                              TextButton(
+                              FilledButton(
                                 child: const Text("Save"),
                                 onPressed: () {
                                   Navigator.of(context).pop(tempStatus);
