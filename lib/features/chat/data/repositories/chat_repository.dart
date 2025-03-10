@@ -300,4 +300,42 @@ class ChatRepository implements ChatRepositoryInterface {
       return onlineUsers.where((isOnline) => isOnline).length;
     });
   }
+
+  @override
+  Future<void> deleteAllPrivateChats() {
+    return _firestore
+        .collection('chats')
+        .where('type', isEqualTo: "private")
+        .where('participants', arrayContains: _userId)
+        .get()
+        .then((querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        deleteChat(doc.id);
+      }
+    });
+  }
+
+  @override
+  Future<void> leftAllGroupChats() async {
+    final groupChatsQuery = await _firestore
+        .collection('chats')
+        .where('participants', arrayContains: _userId)
+        .where('type', isEqualTo: 'group')
+        .get();
+
+    for (var chatDoc in groupChatsQuery.docs) {
+      final chatRef = chatDoc.reference;
+
+      await chatRef.update({
+        'participants': FieldValue.arrayRemove([_userId]),
+      });
+
+      final updatedChat = await chatRef.get();
+      final List<dynamic> updatedParticipants =
+          updatedChat.data()?['participants'] ?? [];
+      if (updatedParticipants.isEmpty) {
+        await chatRef.delete();
+      }
+    }
+  }
 }

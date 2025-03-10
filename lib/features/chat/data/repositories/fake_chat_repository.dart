@@ -128,4 +128,16 @@ class FakeChatRepository implements ChatRepositoryInterface {
     // TODO: implement getNumberOfOnlineMembers
     throw UnimplementedError();
   }
+
+  @override
+  Future<void> deleteAllPrivateChats() {
+    // TODO: implement deleteAllPrivateChats
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> leftAllGroupChats() {
+    // TODO: implement leftAllGroupChats
+    throw UnimplementedError();
+  }
 }
