@@ -1,5 +1,4 @@
 import 'package:chatapp/core/providers/firebase_auth_providers.dart';
-import 'package:chatapp/core/widgets/app_bar_widget.dart';
 import 'package:chatapp/features/settings/presentation/widgets/setting_button.dart';
 import 'package:chatapp/features/users/data/repositories/user_repository.dart';
 import 'package:chatapp/gen/assets.gen.dart';
