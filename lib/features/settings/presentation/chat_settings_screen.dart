@@ -1,3 +1,4 @@
+import 'package:chatapp/core/theme/theme_provider.dart';
 import 'package:chatapp/features/chat/data/repositories/chat_repository.dart';
 import 'package:chatapp/features/settings/presentation/widgets/setting_button.dart';
 import 'package:chatapp/gen/assets.gen.dart';
@@ -21,25 +22,29 @@ class _ChatSettingsScreenState extends ConsumerState<ChatSettingsScreen> {
   Widget build(BuildContext context) {
     final chatRepo = ref.watch(chatRepositoryProvider);
 
+    final themeMode = ref.watch(themeProvider);
+
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Color(0xFF121414),
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           leading: IconButton(
             icon: SvgPicture.asset(
               Assets.icons.backButton.path,
+              colorFilter: ColorFilter.mode(
+                themeMode == ThemeMode.light ? Colors.black : Colors.white,
+                BlendMode.srcIn,
+              ),
             ),
             onPressed: () => context.pop(),
           ),
           centerTitle: true,
           title: Text(
             "Chat Settings",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 20,
-              fontFamily: FontFamily.caros,
-            ),
+            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                  fontSize: 20,
+                ),
           ),
         ),
         body: Padding(
@@ -115,14 +120,12 @@ class _ChatSettingsScreenState extends ConsumerState<ChatSettingsScreen> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          backgroundColor: Color(0xFF121414),
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           title: Text(
             title,
-            style: TextStyle(
-              fontSize: 16,
-              fontFamily: FontFamily.caros,
-              color: Colors.white,
-            ),
+            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                  fontSize: 16,
+                ),
           ),
           content: Text(
             subtitle,
