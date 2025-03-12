@@ -1,4 +1,5 @@
 import 'package:chatapp/core/providers/firebase_auth_providers.dart';
+import 'package:chatapp/core/theme/theme_provider.dart';
 import 'package:chatapp/features/auth/presentation/widgets/auth_back_button.dart';
 import 'package:chatapp/features/chat/data/dto/chat_dto.dart';
 import 'package:chatapp/features/chat/data/repositories/chat_repository.dart';
@@ -56,8 +57,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Color(0xFF121414),
-        appBar: chatAppBar(chatProvider, userRepo, currentUser),
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        appBar: chatAppBar(chatProvider, userRepo, currentUser, context, ref),
         body: Column(
           children: [
             StreamBuilder(
@@ -89,7 +90,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                 WidgetsBinding.instance
                     .addPostFrameCallback((_) => _scrollToBottom());
 
-                return messagesList(messages, currentUser, userRepo);
+                return messagesList(messages, currentUser, userRepo, ref);
               },
             ),
             ChatInputField(chatId: widget.chatId),
@@ -99,8 +100,14 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     );
   }
 
-  AppBar chatAppBar(ChatRepositoryInterface chatProvider,
-      UserRepositoryInterface userRepo, AsyncValue<User?> currentUser) {
+  AppBar chatAppBar(
+      ChatRepositoryInterface chatProvider,
+      UserRepositoryInterface userRepo,
+      AsyncValue<User?> currentUser,
+      BuildContext context,
+      WidgetRef ref) {
+    final themeMode = ref.watch(themeProvider);
+
     return AppBar(
       toolbarHeight: 124,
       backgroundColor: Colors.transparent,
@@ -152,12 +159,13 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                             builder: (context, snapshot) {
                               return Text(
                                 snapshot.data ?? 'No title',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                  fontFamily: FontFamily.caros,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium!
+                                    .copyWith(
+                                      fontSize: 20,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
                               );
                             },
                           );
@@ -267,12 +275,13 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                             builder: (context, snapshot) {
                               return Text(
                                 snapshot.data ?? 'No title',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                  fontFamily: FontFamily.caros,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium!
+                                    .copyWith(
+                                      fontSize: 20,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
                               );
                             },
                           );
@@ -325,6 +334,12 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                   onPressed: () {},
                   icon: SvgPicture.asset(
                     Assets.icons.call.path,
+                    colorFilter: ColorFilter.mode(
+                      themeMode == ThemeMode.light
+                          ? Colors.black
+                          : Colors.white,
+                      BlendMode.srcIn,
+                    ),
                     height: 24,
                   ),
                 ),
@@ -333,6 +348,12 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                   onPressed: () {},
                   icon: SvgPicture.asset(
                     Assets.icons.video.path,
+                    colorFilter: ColorFilter.mode(
+                      themeMode == ThemeMode.light
+                          ? Colors.black
+                          : Colors.white,
+                      BlendMode.srcIn,
+                    ),
                     height: 24,
                   ),
                 ),
@@ -346,7 +367,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   }
 
   Widget messagesList(List<MessageDTO> messages, AsyncValue<User?> currentUser,
-      UserRepositoryInterface userRepo) {
+      UserRepositoryInterface userRepo, WidgetRef ref) {
+    final themeMode = ref.watch(themeProvider);
+
     return Expanded(
       child: ListView.builder(
         controller: _scrollController,
@@ -378,23 +401,26 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                   padding: const EdgeInsets.symmetric(vertical: 20),
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Color(0xFF1D2525),
+                      color: themeMode == ThemeMode.light
+                          ? Color(0xFFF2F7FB)
+                          : Color(0xFF1D2525),
                       borderRadius: BorderRadius.circular(22),
                     ),
                     padding:
                         const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
                     child: Text(
                       messageDate(messages[index].timestamp!),
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 12,
-                        fontFamily: FontFamily.circular,
-                      ),
+                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                            fontSize: 12,
+                            color: themeMode == ThemeMode.light
+                                ? Colors.black
+                                : Colors.white,
+                          ),
                     ),
                   ),
                 ),
               chatBubble(bottomPadding, isMe, isNextFromSameSender,
-                  isPreviousFromSameSender, message, userRepo),
+                  isPreviousFromSameSender, message, userRepo, ref),
             ],
           );
         },
@@ -408,7 +434,10 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       bool isNextFromSameSender,
       bool isPreviousFromSameSender,
       MessageDTO message,
-      UserRepositoryInterface userProvider) {
+      UserRepositoryInterface userProvider,
+      WidgetRef ref) {
+    final themeMode = ref.watch(themeProvider);
+
     return Padding(
       padding: EdgeInsets.only(bottom: bottomPadding, left: 24, right: 24),
       child: Align(
@@ -438,11 +467,10 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                         padding: const EdgeInsets.only(top: 6),
                         child: Text(
                           user.name!,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
-                            fontFamily: FontFamily.caros,
-                          ),
+                          style:
+                              Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                    fontSize: 14,
+                                  ),
                         ),
                       )
                     ],
@@ -453,8 +481,11 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
               padding: const EdgeInsets.only(left: 74),
               child: Container(
                 decoration: BoxDecoration(
-                  color:
-                      isMe ? const Color(0xFF20A090) : const Color(0xFF212727),
+                  color: isMe
+                      ? const Color(0xFF20A090)
+                      : themeMode == ThemeMode.light
+                          ? Color(0xFFF2F7FB)
+                          : Color(0xFF1D2525),
                   borderRadius: BorderRadius.only(
                     // If it's the FIRST message in the sequence, the bottom corner is flat
                     bottomRight: isMe
@@ -485,11 +516,14 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                     const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 child: Text(
                   message.text ?? '',
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 12,
-                    fontFamily: FontFamily.circular,
-                  ),
+                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                        fontSize: 12,
+                        color: themeMode == ThemeMode.light
+                            ? isMe
+                                ? Colors.white
+                                : Colors.black
+                            : Colors.white,
+                      ),
                 ),
               ),
             ),
