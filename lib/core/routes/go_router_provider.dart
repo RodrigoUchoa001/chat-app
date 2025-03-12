@@ -11,6 +11,7 @@ import 'package:chatapp/features/friends/presentation/add_friend_screen.dart';
 import 'package:chatapp/features/home/presentation/home_screen.dart';
 import 'package:chatapp/features/search/presentation/search_screen.dart';
 import 'package:chatapp/features/settings/presentation/account_settings_screen.dart';
+import 'package:chatapp/features/settings/presentation/app_settings_screen.dart';
 import 'package:chatapp/features/settings/presentation/chat_settings_screen.dart';
 import 'package:chatapp/features/settings/presentation/settings_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -72,6 +73,11 @@ final goRouterProvider = Provider<GoRouter>((ref) {
             path: 'chat-settings',
             name: chatSettingsRoute,
             builder: (context, state) => const ChatSettingsScreen(),
+          ),
+          GoRoute(
+            path: 'app-settings',
+            name: appSettingsRoute,
+            builder: (context, state) => const AppSettingsScreen(),
           ),
         ],
       ),
