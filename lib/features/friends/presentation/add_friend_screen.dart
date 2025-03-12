@@ -1,4 +1,5 @@
 import 'package:chatapp/core/providers/firebase_auth_providers.dart';
+import 'package:chatapp/core/theme/theme_provider.dart';
 import 'package:chatapp/features/chat/presentation/widgets/chat_profile_pic.dart';
 import 'package:chatapp/features/friends/data/repositories/friends_repository.dart';
 import 'package:chatapp/features/users/data/repositories/user_repository.dart';
@@ -31,15 +32,21 @@ class _AddFriendScreenState extends ConsumerState<AddFriendScreen> {
 
     final searchResults = userRepo.searchUsers(query);
 
+    final themeMode = ref.watch(themeProvider);
+
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Color(0xFF121414),
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: AppBar(
-          backgroundColor: Color(0xFF121414),
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           leadingWidth: 44,
           leading: IconButton(
             icon: SvgPicture.asset(
               Assets.icons.backButton.path,
+              colorFilter: ColorFilter.mode(
+                themeMode == ThemeMode.light ? Colors.black : Colors.white,
+                BlendMode.srcIn,
+              ),
               fit: BoxFit.scaleDown,
               width: 18,
               height: 18,
@@ -51,13 +58,14 @@ class _AddFriendScreenState extends ConsumerState<AddFriendScreen> {
           title: Container(
             height: 44,
             decoration: BoxDecoration(
-              color: Color(0xFF192222),
-              border: Border(
-                top: BorderSide(
-                  color: Color(0xFF192222),
-                  width: 1,
-                ),
-              ),
+              border: themeMode == ThemeMode.light
+                  ? null
+                  : Border(
+                      top: BorderSide(
+                        color: Color(0xFF192222),
+                        width: 1,
+                      ),
+                    ),
               borderRadius: BorderRadius.circular(12),
             ),
             child: TextField(
@@ -65,12 +73,14 @@ class _AddFriendScreenState extends ConsumerState<AddFriendScreen> {
               onChanged: (value) {
                 setState(() {});
               },
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 12,
-                fontFamily: FontFamily.circular,
-              ),
-              cursorColor: Colors.white,
+              style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                    fontSize: 12,
+                    color: themeMode == ThemeMode.light
+                        ? Colors.black
+                        : Colors.white,
+                  ),
+              cursorColor:
+                  themeMode == ThemeMode.light ? Colors.black : Colors.white,
               autofocus: true,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
@@ -85,13 +95,21 @@ class _AddFriendScreenState extends ConsumerState<AddFriendScreen> {
                       const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
                   child: SvgPicture.asset(
                     Assets.icons.search.path,
+                    colorFilter: ColorFilter.mode(
+                      themeMode == ThemeMode.light
+                          ? Colors.black
+                          : Colors.white,
+                      BlendMode.srcIn,
+                    ),
                     fit: BoxFit.scaleDown,
                     width: 20,
                     height: 20,
                   ),
                 ),
                 filled: true,
-                fillColor: Color(0xFF192222),
+                fillColor: themeMode == ThemeMode.light
+                    ? Color(0xFFF3F6F6)
+                    : Color(0xFF192222),
                 hintText: 'Type to search friends to add',
                 hintStyle: TextStyle(
                   color: Color(0xFF797C7B),
@@ -123,16 +141,15 @@ class _AddFriendScreenState extends ConsumerState<AddFriendScreen> {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Padding(
+                      Padding(
                         padding:
                             EdgeInsets.symmetric(horizontal: 24, vertical: 20),
                         child: Text(
                           'Add Friends',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontFamily: FontFamily.caros,
-                          ),
+                          style:
+                              Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                    fontSize: 16,
+                                  ),
                         ),
                       ),
                       ListView.builder(
@@ -179,11 +196,12 @@ class _AddFriendScreenState extends ConsumerState<AddFriendScreen> {
                                             children: [
                                               Text(
                                                 user.name ?? '',
-                                                style: const TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 16,
-                                                  fontFamily: FontFamily.caros,
-                                                ),
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyMedium!
+                                                    .copyWith(
+                                                      fontSize: 16,
+                                                    ),
                                               ),
                                               if (user.statusMessage != null &&
                                                   user.statusMessage!
