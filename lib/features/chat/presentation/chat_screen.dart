@@ -72,15 +72,13 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
                 final messages = snapshot.data!;
                 if (messages.isEmpty) {
-                  return const Expanded(
+                  return Expanded(
                     child: Center(
                       child: Text(
                         'No messages yet!',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 24,
-                          fontFamily: FontFamily.circular,
-                        ),
+                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                              fontSize: 24,
+                            ),
                       ),
                     ),
                   );
