@@ -1,3 +1,4 @@
+import 'package:chatapp/core/theme/theme_provider.dart';
 import 'package:chatapp/features/settings/presentation/widgets/setting_button.dart';
 import 'package:chatapp/gen/assets.gen.dart';
 import 'package:chatapp/gen/fonts.gen.dart';
@@ -17,25 +18,30 @@ class AppSettingsScreen extends ConsumerStatefulWidget {
 class _AppSettingsScreenState extends ConsumerState<AppSettingsScreen> {
   @override
   Widget build(BuildContext context) {
+    final themeNotifier = ref.read(themeProvider.notifier);
+    final themeMode = ref.watch(themeProvider);
+
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Color(0xFF121414),
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           leading: IconButton(
             icon: SvgPicture.asset(
               Assets.icons.backButton.path,
+              colorFilter: ColorFilter.mode(
+                themeMode == ThemeMode.light ? Colors.black : Colors.white,
+                BlendMode.srcIn,
+              ),
             ),
             onPressed: () => context.pop(),
           ),
           centerTitle: true,
           title: Text(
             "App Settings",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 20,
-              fontFamily: FontFamily.caros,
-            ),
+            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                  fontSize: 20,
+                ),
           ),
         ),
         body: Padding(
@@ -44,31 +50,38 @@ class _AppSettingsScreenState extends ConsumerState<AppSettingsScreen> {
             children: [
               SettingButton(
                 title: "App theme",
-                subtitle: "Select your preferred theme",
+                subtitle: "Select the theme for your app",
                 onTap: null,
                 trailing: DropdownButton(
-                  value: "System",
+                  value: _getThemePreference(themeMode),
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 16,
                     fontFamily: FontFamily.caros,
                   ),
-                  dropdownColor: Color(0xFF121414),
-                  items: const [
+                  dropdownColor: Theme.of(context).scaffoldBackgroundColor,
+                  onChanged: (value) {
+                    if (value != null) {
+                      themeNotifier.setTheme(value);
+                    }
+                  },
+                  items: [
                     DropdownMenuItem(
-                      value: "System",
-                      child: Text("System"),
+                      value: ThemePreference.system,
+                      child: Text("System",
+                          style: Theme.of(context).textTheme.bodyMedium),
                     ),
                     DropdownMenuItem(
-                      value: "Light",
-                      child: Text("Light"),
+                      value: ThemePreference.light,
+                      child: Text("Light",
+                          style: Theme.of(context).textTheme.bodyMedium),
                     ),
                     DropdownMenuItem(
-                      value: "Dark",
-                      child: Text("Dark"),
+                      value: ThemePreference.dark,
+                      child: Text("Dark",
+                          style: Theme.of(context).textTheme.bodyMedium),
                     ),
                   ],
-                  onChanged: (value) {},
                 ),
               ),
               SettingButton(
@@ -82,19 +95,22 @@ class _AppSettingsScreenState extends ConsumerState<AppSettingsScreen> {
                     fontSize: 16,
                     fontFamily: FontFamily.caros,
                   ),
-                  dropdownColor: Color(0xFF121414),
-                  items: const [
+                  dropdownColor: Theme.of(context).scaffoldBackgroundColor,
+                  items: [
                     DropdownMenuItem(
                       value: "System",
-                      child: Text("System"),
+                      child: Text("System",
+                          style: Theme.of(context).textTheme.bodyMedium),
                     ),
                     DropdownMenuItem(
                       value: "English",
-                      child: Text("English"),
+                      child: Text("English",
+                          style: Theme.of(context).textTheme.bodyMedium),
                     ),
                     DropdownMenuItem(
                       value: "Português",
-                      child: Text("Português"),
+                      child: Text("Português",
+                          style: Theme.of(context).textTheme.bodyMedium),
                     ),
                   ],
                   onChanged: (value) {},
@@ -105,5 +121,16 @@ class _AppSettingsScreenState extends ConsumerState<AppSettingsScreen> {
         ),
       ),
     );
+  }
+
+  ThemePreference _getThemePreference(ThemeMode themeMode) {
+    switch (themeMode) {
+      case ThemeMode.light:
+        return ThemePreference.light;
+      case ThemeMode.dark:
+        return ThemePreference.dark;
+      case ThemeMode.system:
+        return ThemePreference.system;
+    }
   }
 }
