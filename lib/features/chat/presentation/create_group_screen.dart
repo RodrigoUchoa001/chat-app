@@ -1,4 +1,5 @@
 import 'package:chatapp/core/providers/firebase_auth_providers.dart';
+import 'package:chatapp/core/theme/theme_provider.dart';
 import 'package:chatapp/core/widgets/chat_text_button.dart';
 import 'package:chatapp/features/chat/data/repositories/chat_repository.dart';
 import 'package:chatapp/features/chat/presentation/providers/friends_list_to_create_group_provider.dart';
@@ -32,9 +33,11 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
     final friendsListToCreateGroup =
         ref.watch(friendsListToCreateGroupProvider);
 
+    final themeMode = ref.watch(themeProvider);
+
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Color(0xFF121414),
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: AppBar(
           toolbarHeight: 124,
           backgroundColor: Colors.transparent,
@@ -42,6 +45,10 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
           leading: IconButton(
             icon: SvgPicture.asset(
               Assets.icons.backButton.path,
+              colorFilter: ColorFilter.mode(
+                themeMode == ThemeMode.light ? Colors.black : Colors.white,
+                BlendMode.srcIn,
+              ),
               fit: BoxFit.scaleDown,
               width: 18,
               height: 18,
@@ -52,13 +59,11 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
             },
           ),
           centerTitle: true,
-          title: const Text(
+          title: Text(
             'Create Group',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 16,
-              fontFamily: FontFamily.caros,
-            ),
+            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                  fontSize: 16,
+                ),
           ),
         ),
         body: Padding(
@@ -81,11 +86,9 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
                     const SizedBox(height: 16),
                     TextField(
                       controller: groupNameController,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 40,
-                        fontFamily: FontFamily.caros,
-                      ),
+                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                            fontSize: 40,
+                          ),
                       maxLines: 1,
                       decoration: InputDecoration(
                         border: InputBorder.none,
@@ -137,11 +140,12 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
                             const SizedBox(width: 12),
                             Text(
                               user.name != null ? '${user.name} (You)' : '',
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontFamily: FontFamily.caros,
-                              ),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium!
+                                  .copyWith(
+                                    fontSize: 16,
+                                  ),
                             ),
                           ],
                         );
@@ -178,7 +182,9 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
                                   height: 24,
                                   decoration: BoxDecoration(
                                     border: Border.all(
-                                      color: Color(0xFF121414),
+                                      color: themeMode == ThemeMode.light
+                                          ? Colors.white
+                                          : Color(0xFF121414),
                                       width: 1.5,
                                     ),
                                     borderRadius: BorderRadius.circular(50),
@@ -200,14 +206,18 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
                             child: DottedBorder(
                               dashPattern: [8, 4],
                               borderType: BorderType.Circle,
-                              color: Color(0xFF323C37),
+                              color: themeMode == ThemeMode.dark
+                                  ? Color(0xFF323C37)
+                                  : Color(0xFFCFD3D2),
                               child: SizedBox(
                                 height: 70,
                                 width: 70,
                                 child: Icon(
                                   Icons.add,
                                   size: 24,
-                                  color: Color(0xFF323C37),
+                                  color: themeMode == ThemeMode.dark
+                                      ? Color(0xFF323C37)
+                                      : Color(0xFFCFD3D2),
                                 ),
                               ),
                             ),
