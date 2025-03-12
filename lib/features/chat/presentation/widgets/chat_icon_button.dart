@@ -1,3 +1,4 @@
+import 'package:chatapp/core/theme/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -14,6 +15,8 @@ class ChatIconButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final themeMode = ref.watch(themeProvider);
+
     return IconButton(
       style: ButtonStyle(
         backgroundColor:
@@ -22,6 +25,10 @@ class ChatIconButton extends ConsumerWidget {
       onPressed: onPressed,
       icon: SvgPicture.asset(
         iconPath,
+        colorFilter: ColorFilter.mode(
+          themeMode == ThemeMode.light ? Colors.black : Colors.white,
+          BlendMode.srcIn,
+        ),
         height: 24,
       ),
     );
