@@ -1,5 +1,6 @@
 import 'package:chatapp/core/providers/firebase_auth_providers.dart';
 import 'package:chatapp/core/theme/theme_provider.dart';
+import 'package:chatapp/features/auth/data/repositories/auth_repository.dart';
 import 'package:chatapp/features/settings/presentation/widgets/setting_button.dart';
 import 'package:chatapp/features/users/data/repositories/user_repository.dart';
 import 'package:chatapp/gen/assets.gen.dart';
@@ -24,6 +25,8 @@ class _AccountSettingsScreenState extends ConsumerState<AccountSettingsScreen> {
     final currentUser = ref.watch(currentUserProvider).asData?.value;
 
     final themeMode = ref.watch(themeProvider);
+
+    final authRepo = ref.watch(authRepositoryProvider);
 
     return SafeArea(
       child: Scaffold(
@@ -204,6 +207,27 @@ class _AccountSettingsScreenState extends ConsumerState<AccountSettingsScreen> {
                       color: themeMode == ThemeMode.dark
                           ? Colors.white
                           : Colors.black,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Material(
+                      color: Color(0xFFEA3736).withAlpha(100),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      child: SettingButton(
+                        title: "Log out",
+                        subtitle: "Log out of your account",
+                        onTap: () async {
+                          try {
+                            await authRepo.logout();
+                            context.go("/onboarding");
+                          } on Exception catch (e) {
+                            Fluttertoast.showToast(msg: "Error: $e");
+                          }
+                        },
+                      ),
                     ),
                   ),
                 ],
