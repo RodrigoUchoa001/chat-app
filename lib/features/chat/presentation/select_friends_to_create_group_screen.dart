@@ -1,3 +1,4 @@
+import 'package:chatapp/core/theme/theme_provider.dart';
 import 'package:chatapp/features/auth/data/dto/user_dto.dart';
 import 'package:chatapp/features/chat/presentation/providers/friends_list_to_create_group_provider.dart';
 import 'package:chatapp/features/chat/presentation/widgets/chat_profile_pic.dart';
@@ -30,15 +31,21 @@ class _SelectFriendsToCreateGroupScreenState
 
     final friendsStream = friendsRepo.searchFriends(query);
 
+    final themeMode = ref.watch(themeProvider);
+
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Color(0xFF121414),
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: AppBar(
-          backgroundColor: Color(0xFF121414),
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           leadingWidth: 44,
           leading: IconButton(
             icon: SvgPicture.asset(
               Assets.icons.backButton.path,
+              colorFilter: ColorFilter.mode(
+                themeMode == ThemeMode.light ? Colors.black : Colors.white,
+                BlendMode.srcIn,
+              ),
               fit: BoxFit.scaleDown,
               width: 18,
               height: 18,
@@ -50,13 +57,14 @@ class _SelectFriendsToCreateGroupScreenState
           title: Container(
             height: 44,
             decoration: BoxDecoration(
-              color: Color(0xFF192222),
-              border: Border(
-                top: BorderSide(
-                  color: Color(0xFF192222),
-                  width: 1,
-                ),
-              ),
+              border: themeMode == ThemeMode.light
+                  ? null
+                  : Border(
+                      top: BorderSide(
+                        color: Color(0xFF192222),
+                        width: 1,
+                      ),
+                    ),
               borderRadius: BorderRadius.circular(12),
             ),
             child: TextField(
@@ -64,12 +72,14 @@ class _SelectFriendsToCreateGroupScreenState
               onChanged: (value) {
                 setState(() {});
               },
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 12,
-                fontFamily: FontFamily.circular,
-              ),
-              cursorColor: Colors.white,
+              style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                    fontSize: 12,
+                    color: themeMode == ThemeMode.light
+                        ? Colors.black
+                        : Colors.white,
+                  ),
+              cursorColor:
+                  themeMode == ThemeMode.light ? Colors.black : Colors.white,
               autofocus: true,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
@@ -84,13 +94,21 @@ class _SelectFriendsToCreateGroupScreenState
                       const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
                   child: SvgPicture.asset(
                     Assets.icons.search.path,
+                    colorFilter: ColorFilter.mode(
+                      themeMode == ThemeMode.light
+                          ? Colors.black
+                          : Colors.white,
+                      BlendMode.srcIn,
+                    ),
                     fit: BoxFit.scaleDown,
                     width: 20,
                     height: 20,
                   ),
                 ),
                 filled: true,
-                fillColor: Color(0xFF192222),
+                fillColor: themeMode == ThemeMode.light
+                    ? Color(0xFFF3F6F6)
+                    : Color(0xFF192222),
                 hintText: 'Type to search',
                 hintStyle: TextStyle(
                   color: Color(0xFF797C7B),
@@ -113,11 +131,9 @@ class _SelectFriendsToCreateGroupScreenState
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Text(
                       '${friendsListToCreateGroup.length} friend${friendsListToCreateGroup.length > 1 ? 's' : ''} selected:',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                        fontFamily: FontFamily.caros,
-                      ),
+                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                            fontSize: 14,
+                          ),
                     ),
                   ),
                   const SizedBox(height: 10),
@@ -138,7 +154,9 @@ class _SelectFriendsToCreateGroupScreenState
                                 Container(
                                   decoration: BoxDecoration(
                                     border: Border.all(
-                                      color: Color(0xFF121414),
+                                      color: themeMode == ThemeMode.light
+                                          ? Colors.white
+                                          : Color(0xFF121414),
                                       width: 1.5,
                                     ),
                                     borderRadius: BorderRadius.circular(50),
@@ -178,16 +196,17 @@ class _SelectFriendsToCreateGroupScreenState
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Padding(
+                          Padding(
                             padding: EdgeInsets.symmetric(
                                 horizontal: 24, vertical: 20),
                             child: Text(
                               'Select friends to create group:',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontFamily: FontFamily.caros,
-                              ),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium!
+                                  .copyWith(
+                                    fontSize: 16,
+                                  ),
                             ),
                           ),
                           ListView.builder(
@@ -247,11 +266,12 @@ class _SelectFriendsToCreateGroupScreenState
                                           children: [
                                             Text(
                                               friend.name ?? '',
-                                              style: const TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 16,
-                                                fontFamily: FontFamily.caros,
-                                              ),
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyMedium!
+                                                  .copyWith(
+                                                    fontSize: 16,
+                                                  ),
                                             ),
                                             if (friend.statusMessage != null &&
                                                 friend
