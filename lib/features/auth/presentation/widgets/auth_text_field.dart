@@ -1,7 +1,9 @@
+import 'package:chatapp/core/theme/theme_provider.dart';
 import 'package:chatapp/gen/fonts.gen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class AuthTextField extends StatelessWidget {
+class AuthTextField extends ConsumerWidget {
   final TextEditingController controller;
   final bool obscureText;
   final String labelText;
@@ -16,7 +18,9 @@ class AuthTextField extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final themeMode = ref.watch(themeProvider);
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: TextFormField(
@@ -31,13 +35,21 @@ class AuthTextField extends StatelessWidget {
             fontSize: 14,
           ),
           enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Color(0xFF595E5C)),
+            borderSide: BorderSide(
+              color: themeMode == ThemeMode.light
+                  ? Color(0xFFCDD1D0)
+                  : Color(0xFF595E5C),
+            ),
           ),
           focusedBorder: UnderlineInputBorder(
             borderSide: BorderSide(color: Color(0xFF5EBAAE)),
           ),
           border: UnderlineInputBorder(
-            borderSide: BorderSide(color: Color(0xFF595E5C)),
+            borderSide: BorderSide(
+              color: themeMode == ThemeMode.light
+                  ? Color(0xFFCDD1D0)
+                  : Color(0xFF595E5C),
+            ),
           ),
           errorStyle: TextStyle(
             fontFamily: FontFamily.circular,
@@ -45,10 +57,9 @@ class AuthTextField extends StatelessWidget {
             color: Color(0xFFFF2D1B),
           ),
         ),
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 16,
-        ),
+        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+              fontSize: 16,
+            ),
       ),
     );
   }
