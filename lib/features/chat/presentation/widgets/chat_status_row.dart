@@ -1,3 +1,4 @@
+import 'package:chatapp/core/theme/theme_provider.dart';
 import 'package:chatapp/gen/fonts.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,6 +8,8 @@ class ChatStatusRow extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final themeMode = ref.watch(themeProvider);
+
     return SizedBox(
       height: 100,
       child: ListView(
@@ -24,7 +27,9 @@ class ChatStatusRow extends ConsumerWidget {
                       width: 58,
                       decoration: BoxDecoration(
                         border: Border.all(
-                          color: Color(0xFF4B9289),
+                          color: themeMode == ThemeMode.dark
+                              ? Color(0xFF4B9289)
+                              : Color(0xFF363F3B),
                           width: 1,
                         ),
                         borderRadius: BorderRadius.circular(50),
@@ -44,7 +49,9 @@ class ChatStatusRow extends ConsumerWidget {
                       width: 16,
                       decoration: BoxDecoration(
                         border: Border.all(
-                          color: Color(0xFF24786D),
+                          color: themeMode == ThemeMode.dark
+                              ? Color(0xFF4B9289)
+                              : Color(0xFF363F3B),
                           width: 1,
                         ),
                         borderRadius: BorderRadius.circular(50),
@@ -81,7 +88,9 @@ class ChatStatusRow extends ConsumerWidget {
                       width: 58,
                       decoration: BoxDecoration(
                         border: Border.all(
-                          color: Color(0xFF4B9289),
+                          color: themeMode == ThemeMode.dark
+                              ? Color(0xFF4B9289)
+                              : Color(0xFF363F3B),
                           width: 1,
                         ),
                         borderRadius: BorderRadius.circular(50),
