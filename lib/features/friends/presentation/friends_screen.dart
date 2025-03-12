@@ -25,8 +25,8 @@ class _FriendsScreenState extends ConsumerState<FriendsScreen> {
           alignment: Alignment.bottomCenter,
           children: [
             Container(
-              decoration: const BoxDecoration(
-                color: Color(0xFF24786D),
+              decoration: BoxDecoration(
+                color: Theme.of(context).canvasColor,
               ),
               child: Column(
                 children: [
