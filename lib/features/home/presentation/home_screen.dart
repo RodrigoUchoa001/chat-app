@@ -1,4 +1,5 @@
 import 'package:chatapp/core/providers/bottom_nav_index_provider.dart';
+import 'package:chatapp/core/theme/theme_provider.dart';
 import 'package:chatapp/features/chat/presentation/chats_list_screen.dart';
 import 'package:chatapp/features/friends/presentation/friends_screen.dart';
 import 'package:chatapp/features/friends/presentation/providers/friends_providers.dart';
@@ -15,8 +16,9 @@ class HomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentIndex = ref.watch(bottomNavIndexProvider);
-
     final friendsRequestsCount = ref.watch(friendsRequestCountProvider);
+
+    final themeMode = ref.watch(themeProvider);
 
     final List<Widget> pages = [
       const ChatsListScreen(),
@@ -32,40 +34,46 @@ class HomeScreen extends ConsumerWidget {
           height: 90,
           child: Container(
             decoration: BoxDecoration(
-              border: Border.all(
-                color: const Color(0xFF242E2E),
-                width: 1,
+              border: Border(
+                top: BorderSide(
+                  color: themeMode == ThemeMode.dark
+                      ? const Color(0xFF242E2E)
+                      : Color(0xFFEEFAF8),
+                  width: 1,
+                ),
               ),
             ),
             child: BottomNavigationBar(
-              backgroundColor: const Color(0xFF121414),
-              selectedItemColor: Colors.white,
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+              selectedItemColor: themeMode == ThemeMode.dark
+                  ? Colors.white
+                  : Theme.of(context).primaryColor,
               unselectedItemColor: const Color(0xFF797C7B),
-              selectedLabelStyle: const TextStyle(
-                fontFamily: FontFamily.caros,
-                fontSize: 16,
-                color: Colors.white,
-              ),
-              unselectedLabelStyle: const TextStyle(
-                fontFamily: FontFamily.caros,
-                fontSize: 16,
-                color: Color(0xFF797C7B),
-              ),
+              selectedLabelStyle:
+                  Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        fontSize: 16,
+                      ),
+              unselectedLabelStyle:
+                  Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        fontSize: 16,
+                        color: Color(0xFF797C7B),
+                      ),
               showSelectedLabels: true,
               currentIndex: currentIndex,
               onTap: (index) =>
                   ref.read(bottomNavIndexProvider.notifier).state = index,
               items: [
                 BottomNavigationBarItem(
-                  icon: _buildSvgIcon(
-                      Assets.icons.message.path, currentIndex == 0),
+                  icon: _buildSvgIcon(Assets.icons.message.path,
+                      currentIndex == 0, context, themeMode),
                   label: 'Chats',
                 ),
                 BottomNavigationBarItem(
                   icon: Stack(
                     alignment: Alignment.topRight,
                     children: [
-                      _buildSvgIcon(Assets.icons.user.path, currentIndex == 1),
+                      _buildSvgIcon(Assets.icons.user.path, currentIndex == 1,
+                          context, themeMode),
                       friendsRequestsCount.when(
                         data: (friendsRequests) => friendsRequests > 0
                             ? Container(
@@ -95,8 +103,8 @@ class HomeScreen extends ConsumerWidget {
                   label: 'Friends',
                 ),
                 BottomNavigationBarItem(
-                  icon: _buildSvgIcon(
-                      Assets.icons.settings.path, currentIndex == 2),
+                  icon: _buildSvgIcon(Assets.icons.settings.path,
+                      currentIndex == 2, context, themeMode),
                   label: 'Settings',
                 ),
               ],
@@ -107,10 +115,15 @@ class HomeScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildSvgIcon(String assetPath, bool isSelected) {
+  Widget _buildSvgIcon(String assetPath, bool isSelected, BuildContext context,
+      ThemeMode themeMode) {
     return ColorFiltered(
       colorFilter: ColorFilter.mode(
-        isSelected ? Colors.white : const Color(0xFF797C7B),
+        isSelected
+            ? themeMode == ThemeMode.dark
+                ? Colors.white
+                : Theme.of(context).primaryColor
+            : Color(0xFF797C7B),
         BlendMode.srcIn,
       ),
       child: Padding(
