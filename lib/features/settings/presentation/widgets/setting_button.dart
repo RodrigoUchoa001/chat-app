@@ -34,7 +34,7 @@ class SettingButton extends ConsumerWidget {
                   height: 44,
                   width: 44,
                   decoration: BoxDecoration(
-                    color: const Color(0xFF1D2525),
+                    color: Theme.of(context).cardColor,
                     borderRadius: BorderRadius.circular(50),
                   ),
                   child: iconPath != null
@@ -59,11 +59,9 @@ class SettingButton extends ConsumerWidget {
                 children: [
                   Text(
                     title,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontFamily: FontFamily.caros,
-                      color: Colors.white,
-                    ),
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                          fontSize: 16,
+                        ),
                   ),
                   const SizedBox(height: 6),
                   Text(
