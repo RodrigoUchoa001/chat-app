@@ -27,6 +27,8 @@ class FriendsListWidget extends ConsumerWidget {
     final chatRepository = ref.watch(chatRepositoryProvider);
     final friendsRepository = ref.watch(friendsRepositoryProvider);
 
+    final themeMode = ref.watch(themeProvider);
+
     return Padding(
       padding: const EdgeInsets.only(top: 26),
       child: SingleChildScrollView(
@@ -36,10 +38,15 @@ class FriendsListWidget extends ConsumerWidget {
             if (friendRequestCount.value! > 0)
               Column(children: [
                 const SizedBox(height: 10),
-                const Divider(color: Colors.white),
+                Divider(
+                    height: 1,
+                    color: themeMode == ThemeMode.dark
+                        ? Color(0xFF2D2F2E)
+                        : Color(0xFFF5F6F6)),
                 const SizedBox(height: 10),
               ]),
-            friendList(friendsList, chatRepository, friendsRepository, ref),
+            friendList(
+                friendsList, chatRepository, friendsRepository, context, ref),
           ],
         ),
       ),
@@ -50,18 +57,17 @@ class FriendsListWidget extends ConsumerWidget {
       AsyncValue<List<UserDTO?>> friendsList,
       ChatRepositoryInterface chatRepository,
       FriendsRepositoryInterface friendsRepository,
+      BuildContext context,
       WidgetRef ref) {
     return friendsList.when(
       data: (friends) {
         if (friends.isEmpty) {
           return Center(
-            child: const Text(
+            child: Text(
               'You have no friends, pathetic!',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 24,
-                fontFamily: FontFamily.circular,
-              ),
+              style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                    fontSize: 24,
+                  ),
             ),
           );
         }
@@ -70,13 +76,11 @@ class FriendsListWidget extends ConsumerWidget {
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: const Text(
+              child: Text(
                 'My friends',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                  fontFamily: FontFamily.caros,
-                ),
+                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                      fontSize: 16,
+                    ),
               ),
             ),
             const SizedBox(height: 20),
@@ -100,11 +104,12 @@ class FriendsListWidget extends ConsumerWidget {
                           alignment: Alignment.centerLeft,
                           child: Text(
                             friends[index]!.name![0],
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontFamily: FontFamily.caros,
-                            ),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium!
+                                .copyWith(
+                                  fontSize: 16,
+                                ),
                           ),
                         ),
                       ),
@@ -122,22 +127,25 @@ class FriendsListWidget extends ConsumerWidget {
                                 context: context,
                                 builder: (context) {
                                   return AlertDialog(
-                                    backgroundColor: const Color(0xFF121414),
-                                    title: const Text(
+                                    backgroundColor: Theme.of(context)
+                                        .scaffoldBackgroundColor,
+                                    title: Text(
                                       'Remove friend?',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 24,
-                                        fontFamily: FontFamily.caros,
-                                      ),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium!
+                                          .copyWith(
+                                            fontSize: 24,
+                                          ),
                                     ),
-                                    content: const Text(
+                                    content: Text(
                                       'You sure you want to remove this friend?',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 12,
-                                        fontFamily: FontFamily.caros,
-                                      ),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall!
+                                          .copyWith(
+                                            fontSize: 12,
+                                          ),
                                     ),
                                     actions: [
                                       TextButton(
@@ -401,11 +409,9 @@ class FriendsListWidget extends ConsumerWidget {
                 children: [
                   Text(
                     friends[index]!.name ?? 'No name',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontFamily: FontFamily.caros,
-                    ),
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                          fontSize: 18,
+                        ),
                   ),
                   if (friends[index]!.statusMessage != null &&
                       friends[index]!.statusMessage!.isNotEmpty)
