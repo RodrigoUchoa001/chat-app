@@ -1,8 +1,8 @@
 import 'package:chatapp/core/providers/firebase_auth_providers.dart';
+import 'package:chatapp/core/theme/theme_provider.dart';
 import 'package:chatapp/features/settings/presentation/widgets/setting_button.dart';
 import 'package:chatapp/features/users/data/repositories/user_repository.dart';
 import 'package:chatapp/gen/assets.gen.dart';
-import 'package:chatapp/gen/fonts.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -23,25 +23,29 @@ class _AccountSettingsScreenState extends ConsumerState<AccountSettingsScreen> {
     final userRepo = ref.watch(userRepositoryProvider);
     final currentUser = ref.watch(currentUserProvider).asData?.value;
 
+    final themeMode = ref.watch(themeProvider);
+
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Color(0xFF121414),
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           leading: IconButton(
             icon: SvgPicture.asset(
               Assets.icons.backButton.path,
+              colorFilter: ColorFilter.mode(
+                themeMode == ThemeMode.light ? Colors.black : Colors.white,
+                BlendMode.srcIn,
+              ),
             ),
             onPressed: () => context.pop(),
           ),
           centerTitle: true,
           title: Text(
             "Account Settings",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 20,
-              fontFamily: FontFamily.caros,
-            ),
+            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                  fontSize: 20,
+                ),
           ),
         ),
         body: Padding(
@@ -69,30 +73,33 @@ class _AccountSettingsScreenState extends ConsumerState<AccountSettingsScreen> {
                         builder: (context) {
                           String tempName = user.name ?? "";
                           return AlertDialog(
-                            backgroundColor: Color(0xFF121414),
-                            title: const Text(
+                            backgroundColor:
+                                Theme.of(context).scaffoldBackgroundColor,
+                            title: Text(
                               "Change Name",
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontFamily: FontFamily.caros,
-                                color: Colors.white,
-                              ),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium!
+                                  .copyWith(
+                                    fontSize: 16,
+                                  ),
                             ),
                             content: TextField(
                               onChanged: (value) {
                                 tempName = value;
                               },
                               controller: TextEditingController(text: tempName),
-                              style: TextStyle(
-                                fontFamily: FontFamily.circular,
-                                color: Colors.white,
-                              ),
-                              decoration: const InputDecoration(
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall!
+                                  .copyWith(
+                                      color: themeMode == ThemeMode.dark
+                                          ? Colors.white
+                                          : Colors.black),
+                              decoration: InputDecoration(
                                 labelText: "Enter new name",
-                                labelStyle: TextStyle(
-                                  fontFamily: FontFamily.circular,
-                                  color: Color(0xFF797C7B),
-                                ),
+                                labelStyle:
+                                    Theme.of(context).textTheme.bodySmall,
                               ),
                             ),
                             actions: [
@@ -120,9 +127,11 @@ class _AccountSettingsScreenState extends ConsumerState<AccountSettingsScreen> {
                         }
                       }
                     },
-                    trailing: const Icon(
+                    trailing: Icon(
                       Icons.arrow_forward_ios,
-                      color: Colors.white,
+                      color: themeMode == ThemeMode.dark
+                          ? Colors.white
+                          : Colors.black,
                     ),
                   ),
                   SettingButton(
@@ -134,14 +143,16 @@ class _AccountSettingsScreenState extends ConsumerState<AccountSettingsScreen> {
                         builder: (context) {
                           String tempStatus = user.statusMessage ?? "";
                           return AlertDialog(
-                            backgroundColor: Color(0xFF121414),
-                            title: const Text(
+                            backgroundColor:
+                                Theme.of(context).scaffoldBackgroundColor,
+                            title: Text(
                               "Change status message",
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontFamily: FontFamily.caros,
-                                color: Colors.white,
-                              ),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium!
+                                  .copyWith(
+                                    fontSize: 16,
+                                  ),
                             ),
                             content: TextField(
                               onChanged: (value) {
@@ -149,16 +160,17 @@ class _AccountSettingsScreenState extends ConsumerState<AccountSettingsScreen> {
                               },
                               controller:
                                   TextEditingController(text: tempStatus),
-                              style: TextStyle(
-                                fontFamily: FontFamily.circular,
-                                color: Colors.white,
-                              ),
-                              decoration: const InputDecoration(
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall!
+                                  .copyWith(
+                                      color: themeMode == ThemeMode.dark
+                                          ? Colors.white
+                                          : Colors.black),
+                              decoration: InputDecoration(
                                 labelText: "Enter new status message",
-                                labelStyle: TextStyle(
-                                  fontFamily: FontFamily.circular,
-                                  color: Color(0xFF797C7B),
-                                ),
+                                labelStyle:
+                                    Theme.of(context).textTheme.bodySmall,
                               ),
                             ),
                             actions: [
@@ -187,9 +199,11 @@ class _AccountSettingsScreenState extends ConsumerState<AccountSettingsScreen> {
                         }
                       }
                     },
-                    trailing: const Icon(
+                    trailing: Icon(
                       Icons.arrow_forward_ios,
-                      color: Colors.white,
+                      color: themeMode == ThemeMode.dark
+                          ? Colors.white
+                          : Colors.black,
                     ),
                   ),
                 ],
