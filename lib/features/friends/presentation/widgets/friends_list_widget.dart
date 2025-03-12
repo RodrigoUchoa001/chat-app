@@ -1,3 +1,4 @@
+import 'package:chatapp/core/theme/theme_provider.dart';
 import 'package:chatapp/features/auth/data/dto/user_dto.dart';
 import 'package:chatapp/features/chat/data/repositories/chat_repository.dart';
 import 'package:chatapp/features/chat/domain/repositories/chat_repository_interface.dart';
@@ -31,7 +32,7 @@ class FriendsListWidget extends ConsumerWidget {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            friendRequestsList(friendRequests, friendsRepository),
+            friendRequestsList(friendRequests, friendsRepository, context, ref),
             if (friendRequestCount.value! > 0)
               Column(children: [
                 const SizedBox(height: 10),
@@ -187,8 +188,12 @@ class FriendsListWidget extends ConsumerWidget {
     );
   }
 
-  Widget friendRequestsList(AsyncValue<List<UserDTO?>> friendRequests,
-      FriendsRepositoryInterface friendsRepository) {
+  Widget friendRequestsList(
+      AsyncValue<List<UserDTO?>> friendRequests,
+      FriendsRepositoryInterface friendsRepository,
+      BuildContext context,
+      WidgetRef ref) {
+    final themeMode = ref.watch(themeProvider);
     return friendRequests.when(
       data: (friendRequests) {
         if (friendRequests.isNotEmpty) {
@@ -199,11 +204,9 @@ class FriendsListWidget extends ConsumerWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: Text(
                   'You have ${friendRequests.length} friend request${friendRequests.length > 1 ? 's' : ''}:',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontFamily: FontFamily.caros,
-                  ),
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        fontSize: 16,
+                      ),
                 ),
               ),
               const SizedBox(height: 10),
@@ -218,7 +221,7 @@ class FriendsListWidget extends ConsumerWidget {
                   return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 24),
                     child: Card(
-                      color: const Color(0xFF242E2E),
+                      color: Theme.of(context).cardColor,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Column(
@@ -238,11 +241,12 @@ class FriendsListWidget extends ConsumerWidget {
                                   children: [
                                     Text(
                                       friendRequests[index]!.name ?? 'No name',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18,
-                                        fontFamily: FontFamily.caros,
-                                      ),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium!
+                                          .copyWith(
+                                            fontSize: 18,
+                                          ),
                                     ),
                                   ],
                                 ),
@@ -307,16 +311,22 @@ class FriendsListWidget extends ConsumerWidget {
                                       },
                                       style: TextButton.styleFrom(
                                         side: BorderSide(
-                                          color: Colors.white.withAlpha(50),
+                                          color: Theme.of(context)
+                                              .cardColor
+                                              .withAlpha(50),
                                         ),
                                       ),
-                                      child: const Text(
+                                      child: Text(
                                         'Decline',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 12,
-                                          fontFamily: FontFamily.circular,
-                                        ),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall!
+                                            .copyWith(
+                                              fontSize: 12,
+                                              color: themeMode == ThemeMode.dark
+                                                  ? Colors.white
+                                                  : Colors.black,
+                                            ),
                                       ),
                                     ),
                                   ),
