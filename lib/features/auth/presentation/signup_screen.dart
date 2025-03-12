@@ -69,7 +69,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF121414),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         leading: AuthBackButton(),
@@ -123,23 +123,20 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                 ),
               ),
             ),
-            Container(
-              color: Color(0xFF121414),
-              child: ListView(
-                shrinkWrap: true,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
-                    child: ChatTextButton(
-                      onTap: () => _validate(),
-                      text: 'Create a account',
-                      buttonColor: Color(0xFF24786D),
-                      textColor: Colors.white,
-                    ),
+            ListView(
+              shrinkWrap: true,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: ChatTextButton(
+                    onTap: () => _validate(),
+                    text: 'Create a account',
+                    buttonColor: Color(0xFF24786D),
+                    textColor: Colors.white,
                   ),
-                  const SizedBox(height: 40),
-                ],
-              ),
+                ),
+                const SizedBox(height: 40),
+              ],
             ),
           ],
         ),
