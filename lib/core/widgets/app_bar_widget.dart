@@ -1,4 +1,3 @@
-import 'package:chatapp/gen/fonts.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -35,11 +34,9 @@ class AppBarWidget extends ConsumerWidget {
               const SizedBox(),
             Text(
               title,
-              style: TextStyle(
-                color: Colors.white,
-                fontFamily: FontFamily.caros,
-                fontSize: 20,
-              ),
+              style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                    fontSize: 20,
+                  ),
             ),
             if (rightButton != null)
               Container(
