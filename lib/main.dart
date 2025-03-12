@@ -92,6 +92,9 @@ class _MainAppState extends ConsumerState<MainApp> with WidgetsBindingObserver {
       builder: (context, snapshot) {
         if (!snapshot.hasData || !_isInitialized) {
           return MaterialApp.router(
+            theme: AppTheme.lightTheme,
+            darkTheme: AppTheme.darkTheme,
+            themeMode: themeMode,
             debugShowCheckedModeBanner: false,
             routerConfig: goRouter,
           );
