@@ -230,16 +230,15 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Padding(
+                      Padding(
                         padding:
                             EdgeInsets.symmetric(horizontal: 24, vertical: 20),
                         child: Text(
                           'Group Chats',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontFamily: FontFamily.caros,
-                          ),
+                          style:
+                              Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                    fontSize: 16,
+                                  ),
                         ),
                       ),
                       ListView.builder(
@@ -247,23 +246,54 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                         itemCount: chats.length,
                         itemBuilder: (context, index) {
                           final chat = chats[index];
-                          return ListTile(
-                            leading: CircleAvatar(
-                              backgroundImage:
-                                  NetworkImage(chat.groupPhotoURL ?? ''),
+                          return Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              onTap: () {
+                                context.push('/chat/${chat.id}');
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 24, vertical: 10),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    ChatProfilePic(
+                                      chatPhotoURL: chat.groupPhotoURL,
+                                      isOnline: false,
+                                    ),
+                                    const SizedBox(width: 12),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          chat.groupName ?? '',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyMedium!
+                                              .copyWith(
+                                                fontSize: 16,
+                                              ),
+                                        ),
+                                        if (chat.lastMessage!.text != null &&
+                                            chat.lastMessage!.text!.isNotEmpty)
+                                          Text(
+                                            chat.lastMessage!.text!,
+                                            style: TextStyle(
+                                              color: Color(0xFF797C7B),
+                                              fontSize: 12,
+                                              fontFamily: FontFamily.circular,
+                                            ),
+                                          )
+                                        else
+                                          SizedBox(),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
-                            title: Text(
-                              chat.groupName ?? 'Private Chat',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium!
-                                  .copyWith(
-                                    fontSize: 16,
-                                  ),
-                            ),
-                            onTap: () {
-                              context.push('/chat/${chat.id}');
-                            },
                           );
                         },
                       ),
