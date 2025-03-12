@@ -1,5 +1,7 @@
 import 'package:chatapp/core/providers/firebase_auth_providers.dart';
 import 'package:chatapp/core/routes/go_router_provider.dart';
+import 'package:chatapp/core/theme/app_theme.dart';
+import 'package:chatapp/core/theme/theme_provider.dart';
 import 'package:chatapp/features/users/data/repositories/user_repository.dart';
 import 'package:chatapp/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -82,6 +84,7 @@ class _MainAppState extends ConsumerState<MainApp> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     final goRouter = ref.watch(goRouterProvider);
+    final themeMode = ref.watch(themeProvider);
 
     // TODO: fix online status thing
     return FutureBuilder(
@@ -94,6 +97,9 @@ class _MainAppState extends ConsumerState<MainApp> with WidgetsBindingObserver {
           );
         }
         return MaterialApp.router(
+          theme: AppTheme.lightTheme,
+          darkTheme: AppTheme.darkTheme,
+          themeMode: themeMode,
           debugShowCheckedModeBanner: false,
           routerConfig: goRouter,
         );
