@@ -11,5 +11,6 @@ String addFriendsRoute = 'add-friends';
 String settingsRoute = 'settings';
 String accountSettingsRoute = 'account-settings';
 String chatSettingsRoute = 'chat-settings';
+String appSettingsRoute = 'app-settings';
 String profileRoute = 'profile';
 String searchRoute = 'search';
