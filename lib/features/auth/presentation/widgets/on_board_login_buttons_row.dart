@@ -31,6 +31,7 @@ class OnBoardLoginButtonsRow extends ConsumerWidget {
 
             if (await auth.loginWithGoogle()) {
               Fluttertoast.showToast(msg: 'Login successful!');
+              // exception here trying the user online thing
               context.go('/home');
               ref.read(isLogingInProvider.notifier).state = false;
             } else {
