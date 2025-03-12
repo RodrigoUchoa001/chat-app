@@ -1,3 +1,4 @@
+import 'package:chatapp/core/theme/theme_provider.dart';
 import 'package:chatapp/gen/fonts.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,20 +8,24 @@ class OnBoardDivider extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final themeMode = ref.watch(themeProvider);
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Expanded(
           child: Divider(
-            color: Color(0xFFCDD1D0).withAlpha(51),
+            color: Color(0xFFCDD1D0),
           ),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 7),
-          child: const Text(
+          child: Text(
             "OR",
             style: TextStyle(
-              color: Color(0xFFD6E4E0),
+              color: themeMode == ThemeMode.light
+                  ? Color(0xFF797C7B)
+                  : Color(0xFFD6E4E0),
               fontSize: 14,
               fontFamily: FontFamily.circular,
               fontWeight: FontWeight.w100,
@@ -29,7 +34,7 @@ class OnBoardDivider extends ConsumerWidget {
         ),
         Expanded(
           child: Divider(
-            color: Color(0xFFCDD1D0).withAlpha(51),
+            color: Color(0xFFCDD1D0),
           ),
         ),
       ],
