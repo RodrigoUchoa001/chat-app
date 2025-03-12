@@ -1,4 +1,5 @@
 import 'package:chatapp/core/providers/firebase_auth_providers.dart';
+import 'package:chatapp/core/theme/theme_provider.dart';
 import 'package:chatapp/features/chat/presentation/widgets/chat_profile_pic.dart';
 import 'package:chatapp/features/settings/presentation/widgets/setting_button.dart';
 import 'package:chatapp/features/users/data/repositories/user_repository.dart';
@@ -23,6 +24,8 @@ class _SettingsFunctionsState extends ConsumerState<SettingsFunctions> {
     final userRepo = ref.watch(userRepositoryProvider);
     final currentUser = ref.watch(currentUserProvider).asData?.value;
 
+    final themeMode = ref.watch(themeProvider);
+
     return Column(
       children: [
         const SizedBox(height: 41),
@@ -46,12 +49,10 @@ class _SettingsFunctionsState extends ConsumerState<SettingsFunctions> {
                     children: [
                       Text(
                         snapshot.data!.name ?? '',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: FontFamily.caros,
-                        ),
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
                       ),
                       const SizedBox(height: 6),
                       Text(
@@ -70,7 +71,11 @@ class _SettingsFunctionsState extends ConsumerState<SettingsFunctions> {
           ),
         ),
         const SizedBox(height: 20),
-        const Divider(height: 1, color: Color(0xFF2D2F2E)),
+        Divider(
+            height: 1,
+            color: themeMode == ThemeMode.dark
+                ? Color(0xFF2D2F2E)
+                : Color(0xFFF5F6F6)),
         const SizedBox(height: 18),
         SettingButton(
           iconPath: Assets.icons.keys.path,
