@@ -83,19 +83,21 @@ class _MainAppState extends ConsumerState<MainApp> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     final goRouter = ref.watch(goRouterProvider);
 
+    // TODO: fix online status thing
     return FutureBuilder(
-        future: _initializeUser(),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData || !_isInitialized) {
-            return MaterialApp.router(
-              debugShowCheckedModeBanner: false,
-              routerConfig: goRouter,
-            );
-          }
+      future: _initializeUser(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData || !_isInitialized) {
           return MaterialApp.router(
             debugShowCheckedModeBanner: false,
             routerConfig: goRouter,
           );
-        });
+        }
+        return MaterialApp.router(
+          debugShowCheckedModeBanner: false,
+          routerConfig: goRouter,
+        );
+      },
+    );
   }
 }
