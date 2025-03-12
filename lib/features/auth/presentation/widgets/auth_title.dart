@@ -31,12 +31,10 @@ class AuthTitle extends ConsumerWidget {
             Text(
               title1,
               textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.white,
-                fontFamily: FontFamily.caros,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
             ),
           ],
         ),
@@ -44,12 +42,10 @@ class AuthTitle extends ConsumerWidget {
         Text(
           title2,
           textAlign: TextAlign.center,
-          style: TextStyle(
-            color: Colors.white,
-            fontFamily: FontFamily.caros,
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
+          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
         ),
       ],
     );
