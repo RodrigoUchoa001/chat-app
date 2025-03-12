@@ -41,13 +41,11 @@ class ChatList extends ConsumerWidget {
           final data = snapshot.data;
           if (data!.isEmpty) {
             return Center(
-              child: const Text(
+              child: Text(
                 'No chats yet!',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontFamily: FontFamily.circular,
-                ),
+                style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                      fontSize: 24,
+                    ),
               ),
             );
           }
@@ -57,13 +55,11 @@ class ChatList extends ConsumerWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: const Text(
+                child: Text(
                   'My chats',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontFamily: FontFamily.caros,
-                  ),
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        fontSize: 16,
+                      ),
                 ),
               ),
               const SizedBox(height: 20),
@@ -119,22 +115,18 @@ class ChatList extends ConsumerWidget {
                 context: context,
                 builder: (context) {
                   return AlertDialog(
-                    backgroundColor: const Color(0xFF121414),
-                    title: const Text(
+                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                    title: Text(
                       'Delete chat?',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 24,
-                        fontFamily: FontFamily.caros,
-                      ),
+                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                            fontSize: 24,
+                          ),
                     ),
-                    content: const Text(
+                    content: Text(
                       'You sure you want to delete this chat?',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 12,
-                        fontFamily: FontFamily.caros,
-                      ),
+                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                            fontSize: 12,
+                          ),
                     ),
                     actions: [
                       TextButton(
@@ -212,11 +204,10 @@ class ChatList extends ConsumerWidget {
                           chatTitle ?? '',
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontFamily: FontFamily.caros,
-                          ),
+                          style:
+                              Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                    fontSize: 20,
+                                  ),
                         );
                       }),
                   const SizedBox(height: 6),
