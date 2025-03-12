@@ -1,3 +1,4 @@
+import 'package:chatapp/core/theme/theme_provider.dart';
 import 'package:chatapp/features/chat/data/repositories/chat_repository.dart';
 import 'package:chatapp/features/chat/presentation/providers/show_send_message_icon_provider.dart';
 import 'package:chatapp/features/chat/presentation/widgets/chat_icon_button.dart';
@@ -28,16 +29,25 @@ class _ChatInputFieldState extends ConsumerState<ChatInputField> {
   Widget build(BuildContext context) {
     final showSendMessageIcon = ref.watch(showSendMessageIconProvider);
 
+    final themeMode = ref.watch(themeProvider);
+
     return Container(
       height: 90,
       decoration: BoxDecoration(
-        color: Color(0xFF121414),
-        border: Border(
-          top: BorderSide(
-            color: Color(0xFF192222),
-            width: 1,
-          ),
-        ),
+        color: Theme.of(context).scaffoldBackgroundColor,
+        border: themeMode == ThemeMode.light
+            ? Border(
+                top: BorderSide(
+                  color: Color(0xFFEEFAF8),
+                  width: 1,
+                ),
+              )
+            : Border(
+                top: BorderSide(
+                  color: Color(0xFF192222),
+                  width: 1,
+                ),
+              ),
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24),
