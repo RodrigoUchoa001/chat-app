@@ -1,3 +1,4 @@
+import 'package:chatapp/core/theme/theme_provider.dart';
 import 'package:chatapp/core/widgets/chat_text_button.dart';
 import 'package:chatapp/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:chatapp/features/auth/presentation/widgets/auth_back_button.dart';
@@ -5,11 +6,14 @@ import 'package:chatapp/features/auth/presentation/widgets/auth_subtitle.dart';
 import 'package:chatapp/features/auth/presentation/widgets/auth_text_field.dart';
 import 'package:chatapp/features/auth/presentation/widgets/auth_title.dart';
 import 'package:chatapp/features/auth/presentation/providers/is_loging_in_provider.dart';
+import 'package:chatapp/features/auth/presentation/widgets/login_icon_button.dart';
 import 'package:chatapp/features/auth/presentation/widgets/on_board_divider.dart';
 import 'package:chatapp/features/auth/presentation/widgets/on_board_login_buttons_row.dart';
+import 'package:chatapp/gen/assets.gen.dart';
 import 'package:chatapp/gen/fonts.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
@@ -58,10 +62,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final auth = ref.watch(authControllerProvider);
     final isLogingIn = ref.watch(isLogingInProvider);
 
+    final themeMode = ref.watch(themeProvider);
+
     return Scaffold(
-      backgroundColor: Color(0xFF121414),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         leading: AuthBackButton(),
@@ -88,7 +95,67 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             'Welcome back! Sign in using your social account or email to continue with us.',
                       ),
                       const SizedBox(height: 30),
-                      OnBoardLoginButtonsRow(),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          LoginIconButton(
+                            iconPath: Assets.icons.facebook.path,
+                            onTap: () {
+                              Fluttertoast.showToast(
+                                  msg: 'Not implemented yet!');
+                            },
+                          ),
+                          const SizedBox(width: 20),
+                          LoginIconButton(
+                            iconPath: Assets.icons.google.path,
+                            onTap: () async {
+                              ref.read(isLogingInProvider.notifier).state =
+                                  true;
+
+                              if (await auth.loginWithGoogle()) {
+                                Fluttertoast.showToast(
+                                    msg: 'Login successful!');
+                                // exception here trying the user online thing
+                                context.go('/home');
+                                ref.read(isLogingInProvider.notifier).state =
+                                    false;
+                              } else {
+                                Fluttertoast.showToast(msg: 'Login failed!');
+                                ref.read(isLogingInProvider.notifier).state =
+                                    false;
+                              }
+                            },
+                          ),
+                          const SizedBox(width: 20),
+                          InkWell(
+                            borderRadius: BorderRadius.circular(50),
+                            splashColor: Color(0xFF24786D).withAlpha(150),
+                            onTap: () {
+                              Fluttertoast.showToast(
+                                  msg: 'Not implemented yet!');
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Color(0xFFA8B0AF),
+                                ),
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              width: 48,
+                              height: 48,
+                              child: SvgPicture.asset(
+                                Assets.icons.apple.path,
+                                colorFilter: ColorFilter.mode(
+                                  themeMode == ThemeMode.light
+                                      ? Colors.black
+                                      : Colors.white,
+                                  BlendMode.srcIn,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                       const SizedBox(height: 30),
                       OnBoardDivider(),
                       const SizedBox(height: 30),
@@ -110,7 +177,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               ),
             ),
             Container(
-              color: Color(0xFF121414),
+              color: Colors.transparent,
               child: ListView(
                 shrinkWrap: true,
                 children: [
@@ -127,14 +194,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text(
+                      Text(
                         "Don't have account? ",
                         textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: FontFamily.circular,
-                          fontSize: 14,
-                        ),
+                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                              fontSize: 14,
+                            ),
                       ),
                       GestureDetector(
                         onTap: () => context.push('/signup'),
