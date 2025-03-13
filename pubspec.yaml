@@ -45,6 +45,7 @@ flutter:
   assets:
     - assets/background/
     - assets/icons/
+    - assets/lang/
   
   fonts:
     - family: Caros
