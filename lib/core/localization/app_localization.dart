@@ -25,6 +25,10 @@ class AppLocalization {
         jsonMap.map((key, value) => MapEntry(key, value.toString()));
   }
 
+  String translate(String key) {
+    return _localizedStrings[key] ?? key;
+  }
+
   String _getLocalePath() {
     switch (locale.languageCode) {
       case 'pt':
