@@ -8,6 +8,7 @@ import 'package:chatapp/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -99,6 +100,11 @@ class _MainAppState extends ConsumerState<MainApp> with WidgetsBindingObserver {
             themeMode: themeMode,
             debugShowCheckedModeBanner: false,
             locale: locale,
+            localizationsDelegates: const [
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
             supportedLocales: [
               const Locale('en', 'US'),
               const Locale('pt', 'BR'),
@@ -111,6 +117,16 @@ class _MainAppState extends ConsumerState<MainApp> with WidgetsBindingObserver {
           darkTheme: AppTheme.darkTheme,
           themeMode: themeMode,
           debugShowCheckedModeBanner: false,
+          locale: locale,
+          localizationsDelegates: const [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: [
+            const Locale('en', 'US'),
+            const Locale('pt', 'BR'),
+          ],
           routerConfig: goRouter,
         );
       },
