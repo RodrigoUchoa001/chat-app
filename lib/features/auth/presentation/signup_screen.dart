@@ -1,3 +1,5 @@
+import 'package:chatapp/core/localization/app_localization.dart';
+import 'package:chatapp/core/localization/locale_provider.dart';
 import 'package:chatapp/core/widgets/chat_text_button.dart';
 import 'package:chatapp/features/auth/presentation/controllers/auth_controller.dart';
 import 'package:chatapp/features/auth/presentation/widgets/auth_back_button.dart';
@@ -68,6 +70,9 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final locale = ref.watch(localeProvider);
+    final localization = ref.watch(localizationProvider(locale)).value;
+
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
@@ -84,38 +89,41 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                 child: ListView(
                   children: [
                     AuthTitle(
-                      title1: 'Sign up',
-                      title2: 'with Email',
+                      title1: localization?.translate("sign-up-title1") ?? "",
+                      title2: localization?.translate("sign-up-title2") ?? "",
                       containerWidth: 68.6,
                     ),
                     const SizedBox(height: 17),
                     AuthSubtitle(
                       subtitle:
-                          'Get chatting with friends and family today by signing up for our chat app!',
+                          localization?.translate("sign-up-subtitle") ?? "",
                     ),
                     const SizedBox(height: 60),
                     AuthTextField(
                       controller: nameController,
-                      labelText: 'Your name',
+                      labelText: localization?.translate("sign-up-name") ?? "",
                       validator: _textValidator,
                     ),
                     const SizedBox(height: 30),
                     AuthTextField(
                       controller: emailController,
-                      labelText: 'Your email',
+                      labelText: localization?.translate("sign-up-email") ?? "",
                       validator: _emailValidator,
                     ),
                     const SizedBox(height: 30),
                     AuthTextField(
                       controller: passwordController,
-                      labelText: 'Password',
+                      labelText:
+                          localization?.translate("sign-up-password") ?? "",
                       validator: _textValidator,
                       obscureText: true,
                     ),
                     const SizedBox(height: 30),
                     AuthTextField(
                       controller: confirmPasswordController,
-                      labelText: 'Confirm Password',
+                      labelText:
+                          localization?.translate("sign-up-confirm-password") ??
+                              "",
                       validator: _textValidator,
                       obscureText: true,
                     ),
@@ -130,7 +138,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 24),
                   child: ChatTextButton(
                     onTap: () => _validate(),
-                    text: 'Create a account',
+                    text: localization?.translate("sign-up-button-text") ?? "",
                     buttonColor: Color(0xFF24786D),
                     textColor: Colors.white,
                   ),
