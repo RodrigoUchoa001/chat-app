@@ -24,6 +24,7 @@ class _AppSettingsScreenState extends ConsumerState<AppSettingsScreen> {
     final themeMode = ref.watch(themeProvider);
     final localeNotifier = ref.read(localeProvider.notifier);
     final locale = ref.watch(localeProvider);
+    final localization = ref.watch(localizationProvider(locale)).value;
 
     return SafeArea(
       child: Scaffold(
@@ -42,7 +43,7 @@ class _AppSettingsScreenState extends ConsumerState<AppSettingsScreen> {
           ),
           centerTitle: true,
           title: Text(
-            "App Settings",
+            localization?.translate("settings-app-title") ?? "",
             style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                   fontSize: 20,
                 ),
@@ -53,8 +54,11 @@ class _AppSettingsScreenState extends ConsumerState<AppSettingsScreen> {
           child: ListView(
             children: [
               SettingButton(
-                title: "App theme",
-                subtitle: "Select the theme for your app",
+                title:
+                    localization?.translate("settings-app-theme-title") ?? "",
+                subtitle:
+                    localization?.translate("settings-app-theme-subtitle") ??
+                        "",
                 onTap: null,
                 trailing: DropdownButton(
                   value: _getThemePreference(themeMode),
@@ -72,25 +76,35 @@ class _AppSettingsScreenState extends ConsumerState<AppSettingsScreen> {
                   items: [
                     DropdownMenuItem(
                       value: ThemePreference.system,
-                      child: Text("System",
+                      child: Text(
+                          localization
+                                  ?.translate("settings-app-theme-system") ??
+                              "",
                           style: Theme.of(context).textTheme.bodyMedium),
                     ),
                     DropdownMenuItem(
                       value: ThemePreference.light,
-                      child: Text("Light",
+                      child: Text(
+                          localization?.translate("settings-app-theme-light") ??
+                              "",
                           style: Theme.of(context).textTheme.bodyMedium),
                     ),
                     DropdownMenuItem(
                       value: ThemePreference.dark,
-                      child: Text("Dark",
+                      child: Text(
+                          localization?.translate("settings-app-theme-dark") ??
+                              "",
                           style: Theme.of(context).textTheme.bodyMedium),
                     ),
                   ],
                 ),
               ),
               SettingButton(
-                title: "App language",
-                subtitle: "Select your preferred language",
+                title: localization?.translate("settings-app-language-title") ??
+                    "",
+                subtitle:
+                    localization?.translate("settings-app-language-subtitle") ??
+                        "",
                 onTap: null,
                 trailing: DropdownButton(
                   value: _getAppLocale(locale),
@@ -108,12 +122,18 @@ class _AppSettingsScreenState extends ConsumerState<AppSettingsScreen> {
                   items: [
                     DropdownMenuItem(
                       value: AppLocale.en,
-                      child: Text("English",
+                      child: Text(
+                          localization?.translate(
+                                  "settings-app-language-english") ??
+                              "",
                           style: Theme.of(context).textTheme.bodyMedium),
                     ),
                     DropdownMenuItem(
                       value: AppLocale.pt,
-                      child: Text("Português",
+                      child: Text(
+                          localization?.translate(
+                                  "settings-app-language-portuguese") ??
+                              "",
                           style: Theme.of(context).textTheme.bodyMedium),
                     ),
                   ],
