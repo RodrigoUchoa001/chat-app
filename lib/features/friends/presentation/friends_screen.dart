@@ -1,3 +1,5 @@
+import 'package:chatapp/core/localization/app_localization.dart';
+import 'package:chatapp/core/localization/locale_provider.dart';
 import 'package:chatapp/core/widgets/app_bar_widget.dart';
 import 'package:chatapp/core/widgets/home_content_background_widget.dart';
 import 'package:chatapp/features/friends/presentation/widgets/friends_list_widget.dart';
@@ -18,6 +20,9 @@ class _FriendsScreenState extends ConsumerState<FriendsScreen> {
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
+
+    final locale = ref.watch(localeProvider);
+    final localization = ref.watch(localizationProvider(locale)).value;
 
     return SafeArea(
       child: Scaffold(
@@ -43,7 +48,7 @@ class _FriendsScreenState extends ConsumerState<FriendsScreen> {
                         width: 18.33,
                       ),
                     ),
-                    title: "Friends",
+                    title: localization?.translate("friends") ?? "",
                     rightButton: IconButton(
                       onPressed: () {
                         context.push('/add-friends');

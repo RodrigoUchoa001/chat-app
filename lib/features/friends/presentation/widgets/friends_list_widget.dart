@@ -1,3 +1,5 @@
+import 'package:chatapp/core/localization/app_localization.dart';
+import 'package:chatapp/core/localization/locale_provider.dart';
 import 'package:chatapp/core/theme/theme_provider.dart';
 import 'package:chatapp/features/auth/data/dto/user_dto.dart';
 import 'package:chatapp/features/chat/data/repositories/chat_repository.dart';
@@ -59,12 +61,15 @@ class FriendsListWidget extends ConsumerWidget {
       FriendsRepositoryInterface friendsRepository,
       BuildContext context,
       WidgetRef ref) {
+    final locale = ref.watch(localeProvider);
+    final localization = ref.watch(localizationProvider(locale)).value;
+
     return friendsList.when(
       data: (friends) {
         if (friends.isEmpty) {
           return Center(
             child: Text(
-              'You have no friends, pathetic!',
+              localization?.translate("no-friends-yet") ?? "",
               style: Theme.of(context).textTheme.bodySmall!.copyWith(
                     fontSize: 24,
                   ),
@@ -77,7 +82,7 @@ class FriendsListWidget extends ConsumerWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Text(
-                'My friends',
+                localization?.translate("friends") ?? "",
                 style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                       fontSize: 16,
                     ),
@@ -130,6 +135,7 @@ class FriendsListWidget extends ConsumerWidget {
                                     backgroundColor: Theme.of(context)
                                         .scaffoldBackgroundColor,
                                     title: Text(
+                                      // TODO: create translations here
                                       'Remove friend?',
                                       style: Theme.of(context)
                                           .textTheme
@@ -149,13 +155,17 @@ class FriendsListWidget extends ConsumerWidget {
                                     ),
                                     actions: [
                                       TextButton(
-                                        child: const Text('Cancel'),
+                                        child: Text(
+                                          localization?.translate(
+                                                  "settings-account-cancel") ??
+                                              "",
+                                        ),
                                         onPressed: () {
                                           Navigator.of(context).pop();
                                         },
                                       ),
                                       FilledButton(
-                                        child: const Text('Remove'),
+                                        child: Text('Remove'),
                                         onPressed: () {
                                           Navigator.of(context).pop();
                                           friendsRepository.removeFriend(
@@ -210,6 +220,7 @@ class FriendsListWidget extends ConsumerWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
+                // TODO: create translation
                 child: Text(
                   'You have ${friendRequests.length} friend request${friendRequests.length > 1 ? 's' : ''}:',
                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(
