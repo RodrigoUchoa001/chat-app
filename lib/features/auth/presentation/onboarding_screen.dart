@@ -77,8 +77,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                     text: isLogingIn
                         ? localization?.translate("signing-in-button-text") ??
                             ""
-                        : localization?.translate("onboarding-login-text") ??
-                            "",
+                        : localization?.translate("sign-in-button-text") ?? "",
                     buttonColor: Color(0xFF24786D),
                     textColor: Colors.white,
                   ),
