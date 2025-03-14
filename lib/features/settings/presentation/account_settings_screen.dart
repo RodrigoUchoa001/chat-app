@@ -1,3 +1,5 @@
+import 'package:chatapp/core/localization/app_localization.dart';
+import 'package:chatapp/core/localization/locale_provider.dart';
 import 'package:chatapp/core/providers/firebase_auth_providers.dart';
 import 'package:chatapp/core/theme/theme_provider.dart';
 import 'package:chatapp/features/auth/data/repositories/auth_repository.dart';
@@ -28,6 +30,9 @@ class _AccountSettingsScreenState extends ConsumerState<AccountSettingsScreen> {
 
     final authRepo = ref.watch(authRepositoryProvider);
 
+    final locale = ref.watch(localeProvider);
+    final localization = ref.watch(localizationProvider(locale)).value;
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -45,7 +50,7 @@ class _AccountSettingsScreenState extends ConsumerState<AccountSettingsScreen> {
           ),
           centerTitle: true,
           title: Text(
-            "Account Settings",
+            localization?.translate("settings-account-title") ?? "",
             style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                   fontSize: 20,
                 ),
@@ -68,7 +73,9 @@ class _AccountSettingsScreenState extends ConsumerState<AccountSettingsScreen> {
               return ListView(
                 children: [
                   SettingButton(
-                    title: "Change name",
+                    title: localization
+                            ?.translate("settings-account-change-name") ??
+                        "",
                     subtitle: user.name ?? "",
                     onTap: () async {
                       final newName = await showDialog(
@@ -79,7 +86,9 @@ class _AccountSettingsScreenState extends ConsumerState<AccountSettingsScreen> {
                             backgroundColor:
                                 Theme.of(context).scaffoldBackgroundColor,
                             title: Text(
-                              "Change Name",
+                              localization?.translate(
+                                      "settings-account-change-name") ??
+                                  "",
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium!
@@ -100,18 +109,28 @@ class _AccountSettingsScreenState extends ConsumerState<AccountSettingsScreen> {
                                           ? Colors.white
                                           : Colors.black),
                               decoration: InputDecoration(
-                                labelText: "Enter new name",
+                                labelText: localization?.translate(
+                                        "settings-account-change-name-placeholder") ??
+                                    "",
                                 labelStyle:
                                     Theme.of(context).textTheme.bodySmall,
                               ),
                             ),
                             actions: [
                               TextButton(
-                                child: const Text("Cancel"),
+                                child: Text(
+                                  localization?.translate(
+                                          "settings-account-cancel") ??
+                                      "",
+                                ),
                                 onPressed: () => Navigator.of(context).pop(),
                               ),
                               FilledButton(
-                                child: const Text("Save"),
+                                child: Text(
+                                  localization?.translate(
+                                          "settings-account-save") ??
+                                      "",
+                                ),
                                 onPressed: () {
                                   Navigator.of(context).pop(tempName);
                                 },
@@ -124,6 +143,7 @@ class _AccountSettingsScreenState extends ConsumerState<AccountSettingsScreen> {
                       if (newName != null && newName.isNotEmpty) {
                         try {
                           await userRepo.updateUserName(name: newName);
+                          // TODO: create translation
                           Fluttertoast.showToast(msg: "Name updated");
                         } on Exception catch (e) {
                           Fluttertoast.showToast(msg: e.toString());
@@ -138,7 +158,9 @@ class _AccountSettingsScreenState extends ConsumerState<AccountSettingsScreen> {
                     ),
                   ),
                   SettingButton(
-                    title: "Change status message",
+                    title: localization
+                            ?.translate("settings-account-change-status") ??
+                        "",
                     subtitle: user.statusMessage ?? "",
                     onTap: () async {
                       final newStatus = await showDialog(
@@ -149,7 +171,9 @@ class _AccountSettingsScreenState extends ConsumerState<AccountSettingsScreen> {
                             backgroundColor:
                                 Theme.of(context).scaffoldBackgroundColor,
                             title: Text(
-                              "Change status message",
+                              localization?.translate(
+                                      "settings-account-change-status") ??
+                                  "",
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium!
@@ -171,18 +195,24 @@ class _AccountSettingsScreenState extends ConsumerState<AccountSettingsScreen> {
                                           ? Colors.white
                                           : Colors.black),
                               decoration: InputDecoration(
-                                labelText: "Enter new status message",
+                                labelText: localization?.translate(
+                                        "settings-account-change-status-placeholder") ??
+                                    "",
                                 labelStyle:
                                     Theme.of(context).textTheme.bodySmall,
                               ),
                             ),
                             actions: [
                               TextButton(
-                                child: const Text("Cancel"),
+                                child: Text(localization?.translate(
+                                        "settings-account-cancel") ??
+                                    ""),
                                 onPressed: () => Navigator.of(context).pop(),
                               ),
                               FilledButton(
-                                child: const Text("Save"),
+                                child: Text(localization
+                                        ?.translate("settings-account-save") ??
+                                    ""),
                                 onPressed: () {
                                   Navigator.of(context).pop(tempStatus);
                                 },
@@ -217,8 +247,12 @@ class _AccountSettingsScreenState extends ConsumerState<AccountSettingsScreen> {
                         borderRadius: BorderRadius.circular(12.0),
                       ),
                       child: SettingButton(
-                        title: "Log out",
-                        subtitle: "Log out of your account",
+                        title: localization?.translate(
+                                "settings-account-sign-out-title") ??
+                            "",
+                        subtitle: localization?.translate(
+                                "settings-account-sign-out-subtitle") ??
+                            "",
                         onTap: () async {
                           try {
                             await authRepo.logout();
