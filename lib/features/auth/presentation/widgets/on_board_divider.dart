@@ -1,3 +1,5 @@
+import 'package:chatapp/core/localization/app_localization.dart';
+import 'package:chatapp/core/localization/locale_provider.dart';
 import 'package:chatapp/core/theme/theme_provider.dart';
 import 'package:chatapp/gen/fonts.gen.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +12,9 @@ class OnBoardDivider extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final themeMode = ref.watch(themeProvider);
 
+    final locale = ref.watch(localeProvider);
+    final localization = ref.watch(localizationProvider(locale)).value;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -21,7 +26,7 @@ class OnBoardDivider extends ConsumerWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 7),
           child: Text(
-            "OR",
+            localization?.translate("or") ?? "",
             style: TextStyle(
               color: themeMode == ThemeMode.light
                   ? Color(0xFF797C7B)

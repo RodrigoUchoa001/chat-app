@@ -1,3 +1,5 @@
+import 'package:chatapp/core/localization/app_localization.dart';
+import 'package:chatapp/core/localization/locale_provider.dart';
 import 'package:chatapp/core/widgets/chat_text_button.dart';
 import 'package:chatapp/features/auth/presentation/providers/is_loging_in_provider.dart';
 import 'package:chatapp/features/auth/presentation/widgets/on_board_appbar.dart';
@@ -22,6 +24,8 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     final isLogingIn = ref.watch(isLogingInProvider);
+    final locale = ref.watch(localeProvider);
+    final localization = ref.watch(localizationProvider(locale)).value;
 
     return Scaffold(
       backgroundColor: Color(0xFF1A1A1A),
@@ -43,7 +47,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                   OnBoardAppbar(),
                   const SizedBox(height: 43.8),
                   Text(
-                    'Connect friends',
+                    localization?.translate("onboarding-title1") ?? "",
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 68,
@@ -52,7 +56,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                     ),
                   ),
                   Text(
-                    'easily & quickly',
+                    localization?.translate("onboarding-title2") ?? "",
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 68,
@@ -70,7 +74,11 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                   const SizedBox(height: 20),
                   ChatTextButton(
                     onTap: isLogingIn ? null : () => context.push('/signup'),
-                    text: isLogingIn ? "Logging in..." : "Sign up with email",
+                    text: isLogingIn
+                        ? localization?.translate("signing-in-button-text") ??
+                            ""
+                        : localization?.translate("onboarding-login-text") ??
+                            "",
                     buttonColor: Color(0xFF24786D),
                     textColor: Colors.white,
                   ),
