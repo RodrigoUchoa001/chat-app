@@ -1,3 +1,5 @@
+import 'package:chatapp/core/localization/app_localization.dart';
+import 'package:chatapp/core/localization/locale_provider.dart';
 import 'package:chatapp/core/theme/theme_provider.dart';
 import 'package:chatapp/gen/fonts.gen.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +22,9 @@ class AuthTextField extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final themeMode = ref.watch(themeProvider);
+
+    final locale = ref.watch(localeProvider);
+    final localization = ref.watch(localizationProvider(locale)).value;
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
@@ -56,6 +61,7 @@ class AuthTextField extends ConsumerWidget {
             fontSize: 12,
             color: Color(0xFFFF2D1B),
           ),
+          // TODO: fix error message
         ),
         style: Theme.of(context).textTheme.bodyMedium!.copyWith(
               fontSize: 16,
