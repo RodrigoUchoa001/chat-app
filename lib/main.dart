@@ -1,3 +1,4 @@
+import 'package:chatapp/core/localization/locale_provider.dart';
 import 'package:chatapp/core/providers/firebase_auth_providers.dart';
 import 'package:chatapp/core/routes/go_router_provider.dart';
 import 'package:chatapp/core/theme/app_theme.dart';
@@ -85,6 +86,7 @@ class _MainAppState extends ConsumerState<MainApp> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     final goRouter = ref.watch(goRouterProvider);
     final themeMode = ref.watch(themeProvider);
+    final locale = ref.watch(localeProvider);
 
     // TODO: fix online status thing
     return FutureBuilder(
@@ -96,6 +98,11 @@ class _MainAppState extends ConsumerState<MainApp> with WidgetsBindingObserver {
             darkTheme: AppTheme.darkTheme,
             themeMode: themeMode,
             debugShowCheckedModeBanner: false,
+            locale: locale,
+            supportedLocales: [
+              const Locale('en', 'US'),
+              const Locale('pt', 'BR'),
+            ],
             routerConfig: goRouter,
           );
         }
