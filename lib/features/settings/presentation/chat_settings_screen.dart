@@ -1,3 +1,5 @@
+import 'package:chatapp/core/localization/app_localization.dart';
+import 'package:chatapp/core/localization/locale_provider.dart';
 import 'package:chatapp/core/theme/theme_provider.dart';
 import 'package:chatapp/features/chat/data/repositories/chat_repository.dart';
 import 'package:chatapp/features/settings/presentation/widgets/setting_button.dart';
@@ -24,6 +26,9 @@ class _ChatSettingsScreenState extends ConsumerState<ChatSettingsScreen> {
 
     final themeMode = ref.watch(themeProvider);
 
+    final locale = ref.watch(localeProvider);
+    final localization = ref.watch(localizationProvider(locale)).value;
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -41,7 +46,7 @@ class _ChatSettingsScreenState extends ConsumerState<ChatSettingsScreen> {
           ),
           centerTitle: true,
           title: Text(
-            "Chat Settings",
+            localization?.translate("settings-chat-title") ?? "",
             style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                   fontSize: 20,
                 ),
@@ -52,13 +57,18 @@ class _ChatSettingsScreenState extends ConsumerState<ChatSettingsScreen> {
           child: ListView(
             children: [
               SettingButton(
-                title: "Delete all private chats",
-                subtitle: "This can't be undone",
+                title: localization
+                        ?.translate("settings-chat-delete-all-chats-title") ??
+                    "",
+                subtitle: localization?.translate(
+                        "settings-chat-delete-all-chats-subtitle") ??
+                    "",
                 onTap: () async {
                   await _showDialog(
                     () {
                       try {
                         chatRepo.deleteAllPrivateChats();
+                        // TODO: create translations
                         Fluttertoast.showToast(
                             msg: "Deleted all private chats");
                         context.pop();
@@ -66,10 +76,14 @@ class _ChatSettingsScreenState extends ConsumerState<ChatSettingsScreen> {
                         Fluttertoast.showToast(msg: e.toString());
                       }
                     },
-                    "Delete all private chats",
-                    "You sure you want to delete all private chats? This can't be undone.",
-                    "Cancel",
-                    "Delete",
+                    localization?.translate(
+                            "settings-chat-delete-all-chats-title") ??
+                        "",
+                    localization?.translate(
+                            "settings-chat-delete-all-chats-you-sure") ??
+                        "",
+                    localization?.translate("settings-chat-cancel") ?? "",
+                    localization?.translate("settings-chat-delete") ?? "",
                   );
                 },
                 trailing: const Icon(
@@ -78,22 +92,32 @@ class _ChatSettingsScreenState extends ConsumerState<ChatSettingsScreen> {
                 ),
               ),
               SettingButton(
-                title: "Left all groups",
-                subtitle: "This can't be undone",
+                title: localization
+                        ?.translate("settings-chat-left-all-groups-title") ??
+                    "",
+                subtitle: localization
+                        ?.translate("settings-chat-left-all-groups-subtitle") ??
+                    "",
                 onTap: () async {
                   await _showDialog(
                     () {
                       try {
                         chatRepo.leftAllGroupChats();
+                        // TODO: create translations
                         Fluttertoast.showToast(msg: "Left all groups");
                         context.pop();
                       } on Exception catch (e) {
                         Fluttertoast.showToast(msg: e.toString());
                       }
                     },
-                    "Left all groups",
-                    "You sure you want to left all groups? This can't be undone.",
-                    "Cancel",
+                    localization?.translate(
+                            "settings-chat-left-all-groups-title") ??
+                        "",
+                    localization?.translate(
+                            "settings-chat-left-all-groups-you-sure") ??
+                        "",
+                    localization?.translate("settings-chat-cancel") ?? "",
+                    // TODO: create translations
                     "Left",
                   );
                 },
