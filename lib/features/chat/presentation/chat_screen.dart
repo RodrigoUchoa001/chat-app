@@ -1,3 +1,5 @@
+import 'package:chatapp/core/localization/app_localization.dart';
+import 'package:chatapp/core/localization/locale_provider.dart';
 import 'package:chatapp/core/providers/firebase_auth_providers.dart';
 import 'package:chatapp/core/theme/theme_provider.dart';
 import 'package:chatapp/features/auth/presentation/widgets/auth_back_button.dart';
@@ -55,6 +57,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     final userRepo = ref.watch(userRepositoryProvider);
     final currentUser = ref.watch(currentUserProvider);
 
+    final locale = ref.watch(localeProvider);
+    final localization = ref.watch(localizationProvider(locale)).value;
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -75,7 +80,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                   return Expanded(
                     child: Center(
                       child: Text(
-                        'No messages yet!',
+                        localization?.translate("no-messages-yet") ?? "",
                         style: Theme.of(context).textTheme.bodySmall!.copyWith(
                               fontSize: 24,
                             ),
@@ -105,6 +110,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       BuildContext context,
       WidgetRef ref) {
     final themeMode = ref.watch(themeProvider);
+
+    final locale = ref.watch(localeProvider);
+    final localization = ref.watch(localizationProvider(locale)).value;
 
     return AppBar(
       toolbarHeight: 124,
@@ -186,7 +194,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
                           final onlineMembers = snapshot.data ?? 0;
                           return Text(
-                            '${chat.participants!.length} members ${onlineMembers > 0 ? ', $onlineMembers online' : ''}',
+                            '${chat.participants!.length} ${localization?.translate("members") ?? ""} ${onlineMembers > 0 ? ', $onlineMembers ${localization?.translate("online") ?? ""}' : ''}',
                             style: TextStyle(
                               color: Color(0xFF797C7B),
                               fontSize: 12,
@@ -305,6 +313,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                           final friend = snapshot.data;
                           return Text(
                             friend!.isOnline ?? false
+                                // TODO: create translation here
                                 ? 'online'
                                 : 'last seen at ${DateFormat('hh:mm a').format(DateTime.parse(friend.lastSeen!))}',
                             style: TextStyle(
@@ -407,7 +416,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
                     child: Text(
-                      messageDate(messages[index].timestamp!),
+                      messageDate(messages[index].timestamp!, ref),
                       style: Theme.of(context).textTheme.bodySmall!.copyWith(
                             fontSize: 12,
                             color: themeMode == ThemeMode.light
@@ -560,14 +569,18 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     }
   }
 
-  String messageDate(String timestamp) {
+  String messageDate(String timestamp, WidgetRef ref) {
+    final locale = ref.watch(localeProvider);
+    final localization = ref.watch(localizationProvider(locale)).value;
+
     final messageDate = DateTime.parse(timestamp);
 
     if (messageDate.day == DateTime.now().day) {
-      return 'Today';
+      return localization?.translate("today") ?? "";
     } else if (messageDate.day ==
         DateTime.now().subtract(const Duration(days: 1)).day) {
-      return 'Yesterday';
+      return localization?.translate("yesterday") ?? "";
+      ;
     } else {
       return DateFormat('dd/MM/yyyy').format(
         DateTime.parse(timestamp),

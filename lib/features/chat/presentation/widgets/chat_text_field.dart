@@ -1,3 +1,5 @@
+import 'package:chatapp/core/localization/app_localization.dart';
+import 'package:chatapp/core/localization/locale_provider.dart';
 import 'package:chatapp/core/theme/theme_provider.dart';
 import 'package:chatapp/gen/fonts.gen.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +13,10 @@ class ChatTextField extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final themeMode = ref.watch(themeProvider);
+
+    final locale = ref.watch(localeProvider);
+    final localization = ref.watch(localizationProvider(locale)).value;
+
     return TextField(
       controller: controller,
       onChanged: onChanged,
@@ -31,7 +37,7 @@ class ChatTextField extends ConsumerWidget {
         fillColor: themeMode == ThemeMode.light
             ? Color(0xFFF3F6F6)
             : Color(0xFF192222),
-        hintText: 'Write your message',
+        hintText: localization?.translate("write-your-message") ?? "",
         hintStyle: TextStyle(
           color: Color(0xFF797C7B),
           fontSize: 12,
