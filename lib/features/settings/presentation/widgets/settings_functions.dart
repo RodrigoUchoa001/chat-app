@@ -1,3 +1,5 @@
+import 'package:chatapp/core/localization/app_localization.dart';
+import 'package:chatapp/core/localization/locale_provider.dart';
 import 'package:chatapp/core/providers/firebase_auth_providers.dart';
 import 'package:chatapp/core/theme/theme_provider.dart';
 import 'package:chatapp/features/chat/presentation/widgets/chat_profile_pic.dart';
@@ -25,6 +27,9 @@ class _SettingsFunctionsState extends ConsumerState<SettingsFunctions> {
     final currentUser = ref.watch(currentUserProvider).asData?.value;
 
     final themeMode = ref.watch(themeProvider);
+
+    final locale = ref.watch(localeProvider);
+    final localization = ref.watch(localizationProvider(locale)).value;
 
     return Column(
       children: [
@@ -79,32 +84,33 @@ class _SettingsFunctionsState extends ConsumerState<SettingsFunctions> {
         const SizedBox(height: 18),
         SettingButton(
           iconPath: Assets.icons.keys.path,
-          title: "Account",
-          subtitle: "Name, status message",
+          title: localization?.translate("settings-account-title") ?? "",
+          subtitle: localization?.translate("settings-account-subtitle") ?? "",
           onTap: () {
             context.push('/settings/account-settings');
           },
         ),
         SettingButton(
           iconPath: Assets.icons.message.path,
-          title: "Chat",
-          subtitle: "Delete chats, groups",
+          title: localization?.translate("settings-chat-title") ?? "",
+          subtitle: localization?.translate("settings-chat-subtitle") ?? "",
           onTap: () {
             context.push('/settings/chat-settings');
           },
         ),
         SettingButton(
           iconPath: Assets.icons.settings.path,
-          title: "App",
-          subtitle: "Theme, language",
+          title: localization?.translate("settings-app-title") ?? "",
+          subtitle: localization?.translate("settings-app-subtitle") ?? "",
           onTap: () {
             context.push('/settings/app-settings');
           },
         ),
         SettingButton(
           iconPath: Assets.icons.githubIcon.path,
-          title: "See the source code",
-          subtitle: "Click to see the ChatBox source code",
+          title: localization?.translate("settings-source-code-title") ?? "",
+          subtitle:
+              localization?.translate("settings-source-code-subtitle") ?? "",
           onTap: () {
             final Uri uri =
                 Uri.parse("https://github.com/RodrigoUchoa001/chat-app");
@@ -114,8 +120,9 @@ class _SettingsFunctionsState extends ConsumerState<SettingsFunctions> {
         ),
         SettingButton(
           imagePath: "https://avatars.githubusercontent.com/u/85903922?v=4",
-          title: "Dev portfolio",
-          subtitle: "Click to see my portfolio",
+          title: localization?.translate("settings-portifolio-title") ?? "",
+          subtitle:
+              localization?.translate("settings-portifolio-subtitle") ?? "",
           onTap: () {
             final Uri uri = Uri.parse("https://github.com/RodrigoUchoa001");
 
