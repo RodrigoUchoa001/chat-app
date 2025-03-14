@@ -1,3 +1,5 @@
+import 'package:chatapp/core/localization/app_localization.dart';
+import 'package:chatapp/core/localization/locale_provider.dart';
 import 'package:chatapp/core/widgets/app_bar_widget.dart';
 import 'package:chatapp/core/widgets/home_content_background_widget.dart';
 import 'package:chatapp/features/settings/presentation/widgets/settings_functions.dart';
@@ -16,6 +18,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
 
+    final locale = ref.watch(localeProvider);
+    final localization = ref.watch(localizationProvider(locale)).value;
+
     return SafeArea(
       child: Scaffold(
         body: Stack(
@@ -29,7 +34,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 children: [
                   SizedBox(height: 17),
                   AppBarWidget(
-                    title: "Settings",
+                    title: localization?.translate("settings") ?? "",
                   ),
                   SizedBox(height: 30),
                 ],
