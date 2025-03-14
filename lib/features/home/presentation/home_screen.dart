@@ -1,3 +1,5 @@
+import 'package:chatapp/core/localization/app_localization.dart';
+import 'package:chatapp/core/localization/locale_provider.dart';
 import 'package:chatapp/core/providers/bottom_nav_index_provider.dart';
 import 'package:chatapp/core/theme/theme_provider.dart';
 import 'package:chatapp/features/chat/presentation/chats_list_screen.dart';
@@ -19,6 +21,9 @@ class HomeScreen extends ConsumerWidget {
     final friendsRequestsCount = ref.watch(friendsRequestCountProvider);
 
     final themeMode = ref.watch(themeProvider);
+
+    final locale = ref.watch(localeProvider);
+    final localization = ref.watch(localizationProvider(locale)).value;
 
     final List<Widget> pages = [
       const ChatsListScreen(),
@@ -66,7 +71,7 @@ class HomeScreen extends ConsumerWidget {
                 BottomNavigationBarItem(
                   icon: _buildSvgIcon(Assets.icons.message.path,
                       currentIndex == 0, context, themeMode),
-                  label: 'Chats',
+                  label: localization?.translate("chats") ?? "",
                 ),
                 BottomNavigationBarItem(
                   icon: Stack(
@@ -100,12 +105,12 @@ class HomeScreen extends ConsumerWidget {
                       ),
                     ],
                   ),
-                  label: 'Friends',
+                  label: localization?.translate("friends") ?? "",
                 ),
                 BottomNavigationBarItem(
                   icon: _buildSvgIcon(Assets.icons.settings.path,
                       currentIndex == 2, context, themeMode),
-                  label: 'Settings',
+                  label: localization?.translate("settings") ?? "",
                 ),
               ],
             ),
