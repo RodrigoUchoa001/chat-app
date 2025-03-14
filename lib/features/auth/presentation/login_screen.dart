@@ -1,3 +1,5 @@
+import 'package:chatapp/core/localization/app_localization.dart';
+import 'package:chatapp/core/localization/locale_provider.dart';
 import 'package:chatapp/core/theme/theme_provider.dart';
 import 'package:chatapp/core/widgets/chat_text_button.dart';
 import 'package:chatapp/features/auth/presentation/controllers/auth_controller.dart';
@@ -8,7 +10,6 @@ import 'package:chatapp/features/auth/presentation/widgets/auth_title.dart';
 import 'package:chatapp/features/auth/presentation/providers/is_loging_in_provider.dart';
 import 'package:chatapp/features/auth/presentation/widgets/login_icon_button.dart';
 import 'package:chatapp/features/auth/presentation/widgets/on_board_divider.dart';
-import 'package:chatapp/features/auth/presentation/widgets/on_board_login_buttons_row.dart';
 import 'package:chatapp/gen/assets.gen.dart';
 import 'package:chatapp/gen/fonts.gen.dart';
 import 'package:flutter/material.dart';
@@ -67,6 +68,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
     final themeMode = ref.watch(themeProvider);
 
+    final locale = ref.watch(localeProvider);
+    final localization = ref.watch(localizationProvider(locale)).value;
+
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
@@ -85,14 +89,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     children: [
                       const SizedBox(height: 60),
                       AuthTitle(
-                        title1: 'Log in',
-                        title2: 'to Chatbox',
+                        title1: localization?.translate("sign-in-title1") ?? "",
+                        title2: localization?.translate("sign-in-title2") ?? "",
                         containerWidth: 55.5,
                       ),
                       const SizedBox(height: 16),
                       AuthSubtitle(
                         subtitle:
-                            'Welcome back! Sign in using your social account or email to continue with us.',
+                            localization?.translate("sign-in-subtitle") ?? "",
                       ),
                       const SizedBox(height: 30),
                       Row(
@@ -161,13 +165,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       const SizedBox(height: 30),
                       AuthTextField(
                         controller: emailController,
-                        labelText: 'Email',
+                        labelText:
+                            localization?.translate("sign-in-email") ?? "",
                         validator: _validator,
                       ),
                       const SizedBox(height: 30),
                       AuthTextField(
                         controller: passwordController,
-                        labelText: 'Password',
+                        labelText:
+                            localization?.translate("sign-in-password") ?? "",
                         obscureText: true,
                         validator: _validator,
                       ),
@@ -185,7 +191,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     padding: const EdgeInsets.symmetric(horizontal: 24),
                     child: ChatTextButton(
                       onTap: isLogingIn ? null : () => _validate(),
-                      text: isLogingIn ? 'Logging in...' : 'Log in',
+                      text: isLogingIn
+                          ? localization?.translate("signing-in-button-text") ??
+                              ""
+                          : localization?.translate("onboarding-login-text") ??
+                              "",
                       buttonColor: Color(0xFF24786D),
                       textColor: Colors.white,
                     ),
@@ -195,7 +205,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "Don't have account? ",
+                        localization?.translate("sign-in-dont-have-account") ??
+                            "",
                         textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.bodySmall!.copyWith(
                               fontSize: 14,
@@ -203,8 +214,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       ),
                       GestureDetector(
                         onTap: () => context.push('/signup'),
-                        child: const Text(
-                          ' Sign up.',
+                        child: Text(
+                          localization?.translate("sign-up") ?? "",
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Color(0xFF5EBAAE),
