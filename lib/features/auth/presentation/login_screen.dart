@@ -212,6 +212,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               fontSize: 14,
                             ),
                       ),
+                      const SizedBox(width: 4),
                       GestureDetector(
                         onTap: () => context.push('/signup'),
                         child: Text(

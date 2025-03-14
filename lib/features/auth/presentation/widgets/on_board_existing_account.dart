@@ -25,6 +25,7 @@ class OnBoardExistingAccount extends ConsumerWidget {
             fontWeight: FontWeight.normal,
           ),
         ),
+        const SizedBox(width: 4),
         GestureDetector(
           onTap: () {
             context.push('/login');
