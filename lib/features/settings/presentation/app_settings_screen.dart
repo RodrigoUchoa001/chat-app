@@ -1,3 +1,5 @@
+import 'package:chatapp/core/localization/app_localization.dart';
+import 'package:chatapp/core/localization/locale_provider.dart';
 import 'package:chatapp/core/theme/theme_provider.dart';
 import 'package:chatapp/features/settings/presentation/widgets/setting_button.dart';
 import 'package:chatapp/gen/assets.gen.dart';
@@ -20,6 +22,8 @@ class _AppSettingsScreenState extends ConsumerState<AppSettingsScreen> {
   Widget build(BuildContext context) {
     final themeNotifier = ref.read(themeProvider.notifier);
     final themeMode = ref.watch(themeProvider);
+    final localeNotifier = ref.read(localeProvider.notifier);
+    final locale = ref.watch(localeProvider);
 
     return SafeArea(
       child: Scaffold(
@@ -89,7 +93,12 @@ class _AppSettingsScreenState extends ConsumerState<AppSettingsScreen> {
                 subtitle: "Select your preferred language",
                 onTap: null,
                 trailing: DropdownButton(
-                  value: "System",
+                  value: _getAppLocale(locale),
+                  onChanged: (value) {
+                    if (value != null) {
+                      localeNotifier.setLocale(value);
+                    }
+                  },
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 16,
@@ -98,22 +107,16 @@ class _AppSettingsScreenState extends ConsumerState<AppSettingsScreen> {
                   dropdownColor: Theme.of(context).scaffoldBackgroundColor,
                   items: [
                     DropdownMenuItem(
-                      value: "System",
-                      child: Text("System",
-                          style: Theme.of(context).textTheme.bodyMedium),
-                    ),
-                    DropdownMenuItem(
-                      value: "English",
+                      value: AppLocale.en,
                       child: Text("English",
                           style: Theme.of(context).textTheme.bodyMedium),
                     ),
                     DropdownMenuItem(
-                      value: "Português",
+                      value: AppLocale.pt,
                       child: Text("Português",
                           style: Theme.of(context).textTheme.bodyMedium),
                     ),
                   ],
-                  onChanged: (value) {},
                 ),
               ),
             ],
@@ -132,5 +135,9 @@ class _AppSettingsScreenState extends ConsumerState<AppSettingsScreen> {
       case ThemeMode.system:
         return ThemePreference.system;
     }
+  }
+
+  AppLocale _getAppLocale(Locale locale) {
+    return locale.languageCode == 'pt' ? AppLocale.pt : AppLocale.en;
   }
 }
