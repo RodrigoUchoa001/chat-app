@@ -1,3 +1,5 @@
+import 'package:chatapp/core/localization/app_localization.dart';
+import 'package:chatapp/core/localization/locale_provider.dart';
 import 'package:chatapp/core/providers/firebase_auth_providers.dart';
 import 'package:chatapp/core/widgets/app_bar_widget.dart';
 import 'package:chatapp/core/widgets/home_content_background_widget.dart';
@@ -21,6 +23,9 @@ class _ChatScreenState extends ConsumerState<ChatsListScreen> {
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final currentUser = ref.watch(currentUserProvider).asData?.value;
+
+    final locale = ref.watch(localeProvider);
+    final localization = ref.watch(localizationProvider(locale)).value;
 
     return SafeArea(
       child: Scaffold(
@@ -46,7 +51,7 @@ class _ChatScreenState extends ConsumerState<ChatsListScreen> {
                         width: 18.33,
                       ),
                     ),
-                    title: 'Home',
+                    title: localization?.translate("home") ?? "",
                     rightButton: currentUser!.photoURL != null
                         ? CircleAvatar(
                             radius: 22,

@@ -1,3 +1,5 @@
+import 'package:chatapp/core/localization/app_localization.dart';
+import 'package:chatapp/core/localization/locale_provider.dart';
 import 'package:chatapp/core/providers/firebase_auth_providers.dart';
 import 'package:chatapp/features/chat/data/dto/chat_dto.dart';
 import 'package:chatapp/features/chat/data/repositories/chat_repository.dart';
@@ -25,6 +27,9 @@ class ChatList extends ConsumerWidget {
     final user = ref.watch(currentUserProvider).asData?.value;
     final userProvider = ref.watch(userRepositoryProvider);
 
+    final locale = ref.watch(localeProvider);
+    final localization = ref.watch(localizationProvider(locale)).value;
+
     return Padding(
       padding: const EdgeInsets.only(top: 26),
       child: StreamBuilder(
@@ -42,7 +47,7 @@ class ChatList extends ConsumerWidget {
           if (data!.isEmpty) {
             return Center(
               child: Text(
-                'No chats yet!',
+                localization?.translate("no-chats-yet") ?? "",
                 style: Theme.of(context).textTheme.bodySmall!.copyWith(
                       fontSize: 24,
                     ),
@@ -56,7 +61,7 @@ class ChatList extends ConsumerWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: Text(
-                  'My chats',
+                  localization?.translate("my-chats") ?? "",
                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                         fontSize: 16,
                       ),
@@ -102,6 +107,9 @@ class ChatList extends ConsumerWidget {
     BuildContext context,
     WidgetRef ref,
   ) {
+    final locale = ref.watch(localeProvider);
+    final localization = ref.watch(localizationProvider(locale)).value;
+
     return Slidable(
       endActionPane: ActionPane(
         motion: const ScrollMotion(),
@@ -130,13 +138,17 @@ class ChatList extends ConsumerWidget {
                     ),
                     actions: [
                       TextButton(
-                        child: const Text('Cancel'),
+                        child: Text(localization
+                                ?.translate("settings-account-cancel") ??
+                            ""),
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
                       ),
                       FilledButton(
-                        child: const Text('Delete'),
+                        child: Text(localization
+                                ?.translate("settings-account-delete") ??
+                            ""),
                         onPressed: () {
                           Navigator.of(context).pop();
                           chats.deleteChat(chat.id!);
@@ -214,7 +226,7 @@ class ChatList extends ConsumerWidget {
                   Text(
                     chat.lastMessage != null
                         ? chat.lastMessage!.text ?? ''
-                        : 'No message yet',
+                        : localization?.translate("chat-no-message-yet") ?? "",
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                     style: TextStyle(
