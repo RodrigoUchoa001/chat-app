@@ -68,9 +68,11 @@ class _ChatSettingsScreenState extends ConsumerState<ChatSettingsScreen> {
                     () {
                       try {
                         chatRepo.deleteAllPrivateChats();
-                        // TODO: create translations
                         Fluttertoast.showToast(
-                            msg: "Deleted all private chats");
+                          msg: localization?.translate(
+                                  "settings-chat-all-chats-deleted") ??
+                              "",
+                        );
                         context.pop();
                       } on Exception catch (e) {
                         Fluttertoast.showToast(msg: e.toString());
@@ -86,9 +88,10 @@ class _ChatSettingsScreenState extends ConsumerState<ChatSettingsScreen> {
                     localization?.translate("settings-chat-delete") ?? "",
                   );
                 },
-                trailing: const Icon(
+                trailing: Icon(
                   Icons.arrow_forward_ios,
-                  color: Colors.white,
+                  color:
+                      themeMode == ThemeMode.dark ? Colors.white : Colors.black,
                 ),
               ),
               SettingButton(
@@ -103,8 +106,11 @@ class _ChatSettingsScreenState extends ConsumerState<ChatSettingsScreen> {
                     () {
                       try {
                         chatRepo.leftAllGroupChats();
-                        // TODO: create translations
-                        Fluttertoast.showToast(msg: "Left all groups");
+                        Fluttertoast.showToast(
+                          msg: localization?.translate(
+                                  "settings-chat-all-groups-left") ??
+                              "",
+                        );
                         context.pop();
                       } on Exception catch (e) {
                         Fluttertoast.showToast(msg: e.toString());
@@ -117,13 +123,13 @@ class _ChatSettingsScreenState extends ConsumerState<ChatSettingsScreen> {
                             "settings-chat-left-all-groups-you-sure") ??
                         "",
                     localization?.translate("settings-chat-cancel") ?? "",
-                    // TODO: create translations
-                    "Left",
+                    localization?.translate("settings-chat-left") ?? "",
                   );
                 },
-                trailing: const Icon(
+                trailing: Icon(
                   Icons.arrow_forward_ios,
-                  color: Colors.white,
+                  color:
+                      themeMode == ThemeMode.dark ? Colors.white : Colors.black,
                 ),
               ),
             ],
