@@ -31,6 +31,9 @@ class FriendsListWidget extends ConsumerWidget {
 
     final themeMode = ref.watch(themeProvider);
 
+    final locale = ref.watch(localeProvider);
+    final localization = ref.watch(localizationProvider(locale)).value;
+
     return Padding(
       padding: const EdgeInsets.only(top: 26),
       child: SingleChildScrollView(
@@ -135,8 +138,9 @@ class FriendsListWidget extends ConsumerWidget {
                                     backgroundColor: Theme.of(context)
                                         .scaffoldBackgroundColor,
                                     title: Text(
-                                      // TODO: create translations here
-                                      'Remove friend?',
+                                      localization
+                                              ?.translate("remove-friend") ??
+                                          "",
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodyMedium!
@@ -145,7 +149,9 @@ class FriendsListWidget extends ConsumerWidget {
                                           ),
                                     ),
                                     content: Text(
-                                      'You sure you want to remove this friend?',
+                                      localization?.translate(
+                                              "remove-friend-you-sure") ??
+                                          "",
                                       style: Theme.of(context)
                                           .textTheme
                                           .bodySmall!
@@ -156,8 +162,7 @@ class FriendsListWidget extends ConsumerWidget {
                                     actions: [
                                       TextButton(
                                         child: Text(
-                                          localization?.translate(
-                                                  "settings-account-cancel") ??
+                                          localization?.translate("cancel") ??
                                               "",
                                         ),
                                         onPressed: () {
@@ -165,14 +170,20 @@ class FriendsListWidget extends ConsumerWidget {
                                         },
                                       ),
                                       FilledButton(
-                                        child: Text('Remove'),
+                                        child: Text(
+                                          localization?.translate("remove") ??
+                                              "",
+                                        ),
                                         onPressed: () {
                                           Navigator.of(context).pop();
                                           friendsRepository.removeFriend(
                                             friends[index]!.uid!,
                                           );
                                           Fluttertoast.showToast(
-                                              msg: 'Friend Removed!');
+                                            msg: localization?.translate(
+                                                    "friend-removed") ??
+                                                "",
+                                          );
                                         },
                                       ),
                                     ],
