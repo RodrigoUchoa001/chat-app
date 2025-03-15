@@ -313,9 +313,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                           final friend = snapshot.data;
                           return Text(
                             friend!.isOnline ?? false
-                                // TODO: create translation here
                                 ? 'online'
-                                : 'last seen at ${DateFormat('hh:mm a').format(DateTime.parse(friend.lastSeen!))}',
+                                : lastSeenDateOrTime(
+                                    friend.lastSeen ?? '', ref),
                             style: TextStyle(
                               color: Color(0xFF797C7B),
                               fontSize: 12,
@@ -585,6 +585,25 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       return DateFormat('dd/MM/yyyy').format(
         DateTime.parse(timestamp),
       );
+    }
+  }
+
+  String lastSeenDateOrTime(String timestamp, WidgetRef ref) {
+    final locale = ref.watch(localeProvider);
+    final localization = ref.watch(localizationProvider(locale)).value;
+    final lastSeenDate = DateTime.parse(timestamp);
+
+    if (lastSeenDate.day == DateTime.now().day) {
+      return "${localization?.translate("last-seen-at") ?? ""} ${DateFormat('HH:mm').format(
+        DateTime.parse(timestamp),
+      )}";
+    } else {
+      return "${localization?.translate("last-seen-in") ?? ""} ${DateFormat('dd/MM/yyyy').format(
+        DateTime.parse(timestamp),
+      )}";
+      // return DateFormat('dd/MM/yyyy').format(
+      //   DateTime.parse(timestamp),
+      // );
     }
   }
 }
