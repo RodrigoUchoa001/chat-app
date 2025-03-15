@@ -1,3 +1,5 @@
+import 'package:chatapp/core/localization/app_localization.dart';
+import 'package:chatapp/core/localization/locale_provider.dart';
 import 'package:chatapp/core/providers/firebase_auth_providers.dart';
 import 'package:chatapp/core/theme/theme_provider.dart';
 import 'package:chatapp/core/widgets/chat_text_button.dart';
@@ -35,6 +37,9 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
 
     final themeMode = ref.watch(themeProvider);
 
+    final locale = ref.watch(localeProvider);
+    final localization = ref.watch(localizationProvider(locale)).value;
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -60,7 +65,7 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
           ),
           centerTitle: true,
           title: Text(
-            'Create Group',
+            localization?.translate("create-group") ?? "",
             style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                   fontSize: 16,
                 ),
@@ -75,8 +80,8 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Group Name',
+                    Text(
+                      localization?.translate("group-name") ?? "",
                       style: TextStyle(
                         color: Color(0xFF797C7B),
                         fontSize: 16,
@@ -92,7 +97,9 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
                       maxLines: 1,
                       decoration: InputDecoration(
                         border: InputBorder.none,
-                        hintText: 'Type the Group Name',
+                        hintText:
+                            localization?.translate("type-the-group-name") ??
+                                "",
                         hintStyle: const TextStyle(
                           color: Color(0xFF797C7B),
                           fontSize: 40,
@@ -102,8 +109,8 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
                       autofocus: true,
                     ),
                     const SizedBox(height: 30),
-                    const Text(
-                      'Group Admin',
+                    Text(
+                      localization?.translate("group-admin") ?? "",
                       style: TextStyle(
                         color: Color(0xFF797C7B),
                         fontSize: 16,
@@ -139,7 +146,9 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
                                   ),
                             const SizedBox(width: 12),
                             Text(
-                              user.name != null ? '${user.name} (You)' : '',
+                              user.name != null
+                                  ? '${user.name} (${localization?.translate("you") ?? ""})'
+                                  : '',
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium!
@@ -152,8 +161,8 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
                       },
                     ),
                     const SizedBox(height: 30),
-                    const Text(
-                      'Invited Members',
+                    Text(
+                      localization?.translate("invited-members") ?? "",
                       style: TextStyle(
                         color: Color(0xFF797C7B),
                         fontSize: 16,
