@@ -58,7 +58,6 @@ class AuthTextField extends ConsumerWidget {
             fontSize: 12,
             color: Color(0xFFFF2D1B),
           ),
-          // TODO: fix error message
         ),
         style: Theme.of(context).textTheme.bodyMedium!.copyWith(
               fontSize: 16,
