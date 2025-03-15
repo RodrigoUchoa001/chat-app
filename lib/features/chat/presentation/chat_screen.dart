@@ -453,86 +453,120 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           crossAxisAlignment:
               isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
           children: [
-            if (!isPreviousFromSameSender && !isMe)
-              StreamBuilder(
-                stream: userProvider.getUserDetails(message.senderId!),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const CircularProgressIndicator();
-                  }
+            Row(
+              // mainAxisAlignment: key to align like the design
+              mainAxisAlignment:
+                  isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (!isPreviousFromSameSender && !isMe)
+                  StreamBuilder(
+                    stream: userProvider.getUserDetails(message.senderId!),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const CircularProgressIndicator();
+                      }
 
-                  final user = snapshot.data;
-                  return Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ChatProfilePic(
-                        chatPhotoURL: user!.photoURL,
-                        isOnline: user.isOnline ?? false,
+                      final user = snapshot.data;
+                      return Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ChatProfilePic(
+                            chatPhotoURL: user!.photoURL,
+                            isOnline: user.isOnline ?? false,
+                          ),
+                        ],
+                      );
+                    },
+                  )
+                else
+                  // width of the profile pic, got from flutter inspector
+                  const SizedBox(width: 52),
+                const SizedBox(width: 12),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (!isPreviousFromSameSender && !isMe)
+                      StreamBuilder(
+                        stream: userProvider.getUserDetails(message.senderId!),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const CircularProgressIndicator();
+                          }
+
+                          final user = snapshot.data;
+                          return Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(top: 6),
+                                child: Text(
+                                  user!.name!,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium!
+                                      .copyWith(
+                                        fontSize: 14,
+                                      ),
+                                ),
+                              )
+                            ],
+                          );
+                        },
                       ),
-                      const SizedBox(width: 12),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 6),
-                        child: Text(
-                          user.name!,
-                          style:
-                              Theme.of(context).textTheme.bodyMedium!.copyWith(
-                                    fontSize: 14,
-                                  ),
+                    if (!isPreviousFromSameSender && !isMe)
+                      const SizedBox(height: 12),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: isMe
+                            ? const Color(0xFF20A090)
+                            : themeMode == ThemeMode.light
+                                ? Color(0xFFF2F7FB)
+                                : Color(0xFF1D2525),
+                        borderRadius: BorderRadius.only(
+                          // If it's the FIRST message in the sequence, the bottom corner is flat
+                          bottomRight: isMe
+                              ? (isNextFromSameSender
+                                  ? Radius.zero
+                                  : Radius.circular(50))
+                              : Radius.circular(50),
+                          bottomLeft: isMe
+                              ? Radius.circular(50)
+                              : (isNextFromSameSender
+                                  ? Radius.zero
+                                  : Radius.circular(50)),
+
+                          // If it's the LAST message in the sequence, the top corner is flat
+                          topRight: isMe
+                              ? (isPreviousFromSameSender
+                                  ? Radius.zero
+                                  : Radius.circular(50))
+                              : Radius.circular(50),
+                          topLeft: isMe
+                              ? Radius.circular(50)
+                              : (isPreviousFromSameSender
+                                  ? Radius.zero
+                                  : Radius.circular(50)),
                         ),
-                      )
-                    ],
-                  );
-                },
-              ),
-            Padding(
-              padding: const EdgeInsets.only(left: 74),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: isMe
-                      ? const Color(0xFF20A090)
-                      : themeMode == ThemeMode.light
-                          ? Color(0xFFF2F7FB)
-                          : Color(0xFF1D2525),
-                  borderRadius: BorderRadius.only(
-                    // If it's the FIRST message in the sequence, the bottom corner is flat
-                    bottomRight: isMe
-                        ? (isNextFromSameSender
-                            ? Radius.zero
-                            : Radius.circular(50))
-                        : Radius.circular(50),
-                    bottomLeft: isMe
-                        ? Radius.circular(50)
-                        : (isNextFromSameSender
-                            ? Radius.zero
-                            : Radius.circular(50)),
-
-                    // If it's the LAST message in the sequence, the top corner is flat
-                    topRight: isMe
-                        ? (isPreviousFromSameSender
-                            ? Radius.zero
-                            : Radius.circular(50))
-                        : Radius.circular(50),
-                    topLeft: isMe
-                        ? Radius.circular(50)
-                        : (isPreviousFromSameSender
-                            ? Radius.zero
-                            : Radius.circular(50)),
-                  ),
-                ),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                child: Text(
-                  message.text ?? '',
-                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                        fontSize: 12,
-                        color: themeMode == ThemeMode.light
-                            ? isMe
-                                ? Colors.white
-                                : Colors.black
-                            : Colors.white,
                       ),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 8),
+                      child: Text(
+                        message.text ?? '',
+                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                              fontSize: 12,
+                              color: themeMode == ThemeMode.light
+                                  ? isMe
+                                      ? Colors.white
+                                      : Colors.black
+                                  : Colors.white,
+                            ),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
+              ],
             ),
             if (!isNextFromSameSender) // Display the time only on the last message of the group
               Padding(
