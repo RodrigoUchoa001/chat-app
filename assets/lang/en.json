@@ -54,6 +54,8 @@
     "member": "member",
     "members": "members",
     "online": "online",
+    "last-seen-at": "Last seen at",
+    "last-seen-in": "Last seen in",
     "write-your-message": "Write your message",
     "type-to-search": "Type to search",
     "group-chats": "Group Chats",
