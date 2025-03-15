@@ -31,13 +31,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   final _formKey = GlobalKey<FormState>();
 
-  String? _validator(String? value) {
-    if (value == null || value.trim().isEmpty) {
-      return 'This field cannot be empty.';
-    }
-    return null;
-  }
-
   void _validate() async {
     if (_formKey.currentState!.validate()) {
       ref.read(isLogingInProvider.notifier).state = true;
@@ -167,7 +160,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         controller: emailController,
                         labelText:
                             localization?.translate("sign-in-email") ?? "",
-                        validator: _validator,
+                        validator: (value) {
+                          if (value == null || value.trim().isEmpty) {
+                            return localization
+                                ?.translate("sign-in-empty-field");
+                          }
+                          return null;
+                        },
                       ),
                       const SizedBox(height: 30),
                       AuthTextField(
@@ -175,7 +174,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         labelText:
                             localization?.translate("sign-in-password") ?? "",
                         obscureText: true,
-                        validator: _validator,
+                        validator: (value) {
+                          if (value == null || value.trim().isEmpty) {
+                            return localization
+                                ?.translate("sign-in-empty-field");
+                          }
+                          return null;
+                        },
                       ),
                     ],
                   ),
