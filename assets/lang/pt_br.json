@@ -28,6 +28,8 @@
     "sign-up-invalid-email": "Formato de e-mail inválido.",
     "sign-up-button-text": "Criar conta",
     "signing-up-button-text": "Criando conta...",
+    "sign-up-success": "Cadastrou com sucesso",
+    "sign-up-password-not-match": "Senhas nao conferem",
     "home": "Início",
     "chats": "Conversas",
     "my-chats": "Minhas conversas",
