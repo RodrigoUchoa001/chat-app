@@ -23,9 +23,6 @@ class AuthTextField extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final themeMode = ref.watch(themeProvider);
 
-    final locale = ref.watch(localeProvider);
-    final localization = ref.watch(localizationProvider(locale)).value;
-
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: TextFormField(
