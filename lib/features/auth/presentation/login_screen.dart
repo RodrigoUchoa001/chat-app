@@ -31,29 +31,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   final _formKey = GlobalKey<FormState>();
 
-  void _validate() async {
-    if (_formKey.currentState!.validate()) {
-      ref.read(isLogingInProvider.notifier).state = true;
-
-      final auth = ref.read(authControllerProvider);
-
-      final errorMessage = await auth.loginWithEmailAndPassword(
-        emailController.text,
-        passwordController.text,
-      );
-
-      if (errorMessage == null) {
-        Fluttertoast.showToast(msg: 'Login successful!');
-        context.go('/home');
-
-        ref.read(isLogingInProvider.notifier).state = false;
-      } else {
-        Fluttertoast.showToast(msg: errorMessage);
-        ref.read(isLogingInProvider.notifier).state = false;
-      }
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final auth = ref.watch(authControllerProvider);
@@ -111,7 +88,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
                               if (await auth.loginWithGoogle()) {
                                 Fluttertoast.showToast(
-                                    msg: 'Login successful!');
+                                    msg: localization
+                                            ?.translate("sign-in-success") ??
+                                        "");
                                 // exception here trying the user online thing
                                 context.go('/home');
                                 ref.read(isLogingInProvider.notifier).state =
@@ -195,7 +174,37 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 24),
                     child: ChatTextButton(
-                      onTap: isLogingIn ? null : () => _validate(),
+                      onTap: isLogingIn
+                          ? null
+                          : () async {
+                              if (_formKey.currentState!.validate()) {
+                                ref.read(isLogingInProvider.notifier).state =
+                                    true;
+
+                                final auth = ref.read(authControllerProvider);
+
+                                final errorMessage =
+                                    await auth.loginWithEmailAndPassword(
+                                  emailController.text,
+                                  passwordController.text,
+                                );
+
+                                if (errorMessage == null) {
+                                  Fluttertoast.showToast(
+                                      msg: localization
+                                              ?.translate("sign-in-success") ??
+                                          "");
+                                  context.go('/home');
+
+                                  ref.read(isLogingInProvider.notifier).state =
+                                      false;
+                                } else {
+                                  Fluttertoast.showToast(msg: errorMessage);
+                                  ref.read(isLogingInProvider.notifier).state =
+                                      false;
+                                }
+                              }
+                            },
                       text: isLogingIn
                           ? localization?.translate("signing-in-button-text") ??
                               ""
