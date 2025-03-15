@@ -135,7 +135,7 @@ class _SelectFriendsToCreateGroupScreenState
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Text(
-                      '${friendsListToCreateGroup.length > 1 ? localization?.translate("selected-friends") ?? "" : localization?.translate("selected-friend") ?? ""}: ${friendsListToCreateGroup.length}',
+                      '${friendsListToCreateGroup.length > 1 ? localization?.translate("friends-selected") ?? "" : localization?.translate("friend-selected") ?? ""}: ${friendsListToCreateGroup.length}',
                       style: Theme.of(context).textTheme.bodySmall!.copyWith(
                             fontSize: 14,
                           ),
