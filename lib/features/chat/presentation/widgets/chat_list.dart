@@ -125,30 +125,26 @@ class ChatList extends ConsumerWidget {
                   return AlertDialog(
                     backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                     title: Text(
-                      'Delete chat?',
+                      localization?.translate("delete-chat") ?? "",
                       style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                             fontSize: 24,
                           ),
                     ),
                     content: Text(
-                      'You sure you want to delete this chat?',
+                      localization?.translate("delete-chat-you-sure") ?? "",
                       style: Theme.of(context).textTheme.bodySmall!.copyWith(
                             fontSize: 12,
                           ),
                     ),
                     actions: [
                       TextButton(
-                        child: Text(localization
-                                ?.translate("settings-account-cancel") ??
-                            ""),
+                        child: Text(localization?.translate("cancel") ?? ""),
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
                       ),
                       FilledButton(
-                        child: Text(localization
-                                ?.translate("settings-account-delete") ??
-                            ""),
+                        child: Text(localization?.translate("delete") ?? ""),
                         onPressed: () {
                           Navigator.of(context).pop();
                           chats.deleteChat(chat.id!);
