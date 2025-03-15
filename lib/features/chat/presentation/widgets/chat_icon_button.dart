@@ -26,7 +26,12 @@ class ChatIconButton extends ConsumerWidget {
       icon: SvgPicture.asset(
         iconPath,
         colorFilter: ColorFilter.mode(
-          themeMode == ThemeMode.light ? Colors.black : Colors.white,
+          themeMode == ThemeMode.dark ||
+                  (themeMode == ThemeMode.system &&
+                      MediaQuery.of(context).platformBrightness ==
+                          Brightness.dark)
+              ? Colors.white
+              : Colors.black,
           BlendMode.srcIn,
         ),
         height: 24,

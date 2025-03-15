@@ -37,16 +37,19 @@ class _ChatInputFieldState extends ConsumerState<ChatInputField> {
       height: 90,
       decoration: BoxDecoration(
         color: Theme.of(context).scaffoldBackgroundColor,
-        border: themeMode == ThemeMode.light
+        border: themeMode == ThemeMode.dark ||
+                (themeMode == ThemeMode.system &&
+                    MediaQuery.of(context).platformBrightness ==
+                        Brightness.dark)
             ? Border(
                 top: BorderSide(
-                  color: Color(0xFFEEFAF8),
+                  color: Color(0xFF192222),
                   width: 1,
                 ),
               )
             : Border(
                 top: BorderSide(
-                  color: Color(0xFF192222),
+                  color: Color(0xFFEEFAF8),
                   width: 1,
                 ),
               ),

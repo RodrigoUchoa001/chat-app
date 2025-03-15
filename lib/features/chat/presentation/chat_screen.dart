@@ -342,9 +342,12 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                   icon: SvgPicture.asset(
                     Assets.icons.call.path,
                     colorFilter: ColorFilter.mode(
-                      themeMode == ThemeMode.light
-                          ? Colors.black
-                          : Colors.white,
+                      themeMode == ThemeMode.dark ||
+                              (themeMode == ThemeMode.system &&
+                                  MediaQuery.of(context).platformBrightness ==
+                                      Brightness.dark)
+                          ? Colors.white
+                          : Colors.black,
                       BlendMode.srcIn,
                     ),
                     height: 24,
@@ -356,9 +359,12 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                   icon: SvgPicture.asset(
                     Assets.icons.video.path,
                     colorFilter: ColorFilter.mode(
-                      themeMode == ThemeMode.light
-                          ? Colors.black
-                          : Colors.white,
+                      themeMode == ThemeMode.dark ||
+                              (themeMode == ThemeMode.system &&
+                                  MediaQuery.of(context).platformBrightness ==
+                                      Brightness.dark)
+                          ? Colors.white
+                          : Colors.black,
                       BlendMode.srcIn,
                     ),
                     height: 24,

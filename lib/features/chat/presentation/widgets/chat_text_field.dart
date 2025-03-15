@@ -34,9 +34,12 @@ class ChatTextField extends ConsumerWidget {
           borderRadius: BorderRadius.circular(12),
         ),
         filled: true,
-        fillColor: themeMode == ThemeMode.light
-            ? Color(0xFFF3F6F6)
-            : Color(0xFF192222),
+        fillColor: themeMode == ThemeMode.dark ||
+                (themeMode == ThemeMode.system &&
+                    MediaQuery.of(context).platformBrightness ==
+                        Brightness.dark)
+            ? Color(0xFF192222)
+            : Color(0xFFF3F6F6),
         hintText: localization?.translate("write-your-message") ?? "",
         hintStyle: TextStyle(
           color: Color(0xFF797C7B),

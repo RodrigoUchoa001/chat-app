@@ -17,7 +17,12 @@ class AuthBackButton extends ConsumerWidget {
             icon: SvgPicture.asset(
               Assets.icons.backButton.path,
               colorFilter: ColorFilter.mode(
-                themeMode == ThemeMode.light ? Colors.black : Colors.white,
+                themeMode == ThemeMode.dark ||
+                        (themeMode == ThemeMode.system &&
+                            MediaQuery.of(context).platformBrightness ==
+                                Brightness.dark)
+                    ? Colors.white
+                    : Colors.black,
                 BlendMode.srcIn,
               ),
               width: 8,
