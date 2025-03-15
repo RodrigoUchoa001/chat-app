@@ -105,7 +105,11 @@ class _AccountSettingsScreenState extends ConsumerState<AccountSettingsScreen> {
                                   .textTheme
                                   .bodySmall!
                                   .copyWith(
-                                      color: themeMode == ThemeMode.dark
+                                      color: themeMode == ThemeMode.dark ||
+                                              (themeMode == ThemeMode.system &&
+                                                  MediaQuery.of(context)
+                                                          .platformBrightness ==
+                                                      Brightness.dark)
                                           ? Colors.white
                                           : Colors.black),
                               decoration: InputDecoration(
@@ -152,7 +156,10 @@ class _AccountSettingsScreenState extends ConsumerState<AccountSettingsScreen> {
                     },
                     trailing: Icon(
                       Icons.arrow_forward_ios,
-                      color: themeMode == ThemeMode.dark
+                      color: themeMode == ThemeMode.dark ||
+                              (themeMode == ThemeMode.system &&
+                                  MediaQuery.of(context).platformBrightness ==
+                                      Brightness.dark)
                           ? Colors.white
                           : Colors.black,
                     ),
@@ -191,7 +198,11 @@ class _AccountSettingsScreenState extends ConsumerState<AccountSettingsScreen> {
                                   .textTheme
                                   .bodySmall!
                                   .copyWith(
-                                      color: themeMode == ThemeMode.dark
+                                      color: themeMode == ThemeMode.dark ||
+                                              (themeMode == ThemeMode.system &&
+                                                  MediaQuery.of(context)
+                                                          .platformBrightness ==
+                                                      Brightness.dark)
                                           ? Colors.white
                                           : Colors.black),
                               decoration: InputDecoration(
@@ -234,7 +245,10 @@ class _AccountSettingsScreenState extends ConsumerState<AccountSettingsScreen> {
                     },
                     trailing: Icon(
                       Icons.arrow_forward_ios,
-                      color: themeMode == ThemeMode.dark
+                      color: themeMode == ThemeMode.dark ||
+                              (themeMode == ThemeMode.system &&
+                                  MediaQuery.of(context).platformBrightness ==
+                                      Brightness.dark)
                           ? Colors.white
                           : Colors.black,
                     ),

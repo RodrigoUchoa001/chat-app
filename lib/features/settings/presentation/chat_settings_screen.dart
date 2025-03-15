@@ -90,8 +90,12 @@ class _ChatSettingsScreenState extends ConsumerState<ChatSettingsScreen> {
                 },
                 trailing: Icon(
                   Icons.arrow_forward_ios,
-                  color:
-                      themeMode == ThemeMode.dark ? Colors.white : Colors.black,
+                  color: themeMode == ThemeMode.dark ||
+                          (themeMode == ThemeMode.system &&
+                              MediaQuery.of(context).platformBrightness ==
+                                  Brightness.dark)
+                      ? Colors.white
+                      : Colors.black,
                 ),
               ),
               SettingButton(
@@ -128,8 +132,12 @@ class _ChatSettingsScreenState extends ConsumerState<ChatSettingsScreen> {
                 },
                 trailing: Icon(
                   Icons.arrow_forward_ios,
-                  color:
-                      themeMode == ThemeMode.dark ? Colors.white : Colors.black,
+                  color: themeMode == ThemeMode.dark ||
+                          (themeMode == ThemeMode.system &&
+                              MediaQuery.of(context).platformBrightness ==
+                                  Brightness.dark)
+                      ? Colors.white
+                      : Colors.black,
                 ),
               ),
             ],

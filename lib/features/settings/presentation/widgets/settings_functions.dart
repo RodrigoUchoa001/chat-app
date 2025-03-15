@@ -78,7 +78,10 @@ class _SettingsFunctionsState extends ConsumerState<SettingsFunctions> {
         const SizedBox(height: 20),
         Divider(
             height: 1,
-            color: themeMode == ThemeMode.dark
+            color: themeMode == ThemeMode.dark ||
+                    (themeMode == ThemeMode.system &&
+                        MediaQuery.of(context).platformBrightness ==
+                            Brightness.dark)
                 ? Color(0xFF2D2F2E)
                 : Color(0xFFF5F6F6)),
         const SizedBox(height: 18),

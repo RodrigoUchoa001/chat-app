@@ -27,7 +27,11 @@ class ChatStatusRow extends ConsumerWidget {
                       width: 58,
                       decoration: BoxDecoration(
                         border: Border.all(
-                          color: themeMode == ThemeMode.dark
+                          color: themeMode == ThemeMode.dark ||
+                                  (themeMode == ThemeMode.system &&
+                                      MediaQuery.of(context)
+                                              .platformBrightness ==
+                                          Brightness.dark)
                               ? Color(0xFF4B9289)
                               : Color(0xFF363F3B),
                           width: 1,
@@ -49,7 +53,11 @@ class ChatStatusRow extends ConsumerWidget {
                       width: 16,
                       decoration: BoxDecoration(
                         border: Border.all(
-                          color: themeMode == ThemeMode.dark
+                          color: themeMode == ThemeMode.dark ||
+                                  (themeMode == ThemeMode.system &&
+                                      MediaQuery.of(context)
+                                              .platformBrightness ==
+                                          Brightness.dark)
                               ? Color(0xFF4B9289)
                               : Color(0xFF363F3B),
                           width: 1,
@@ -88,7 +96,11 @@ class ChatStatusRow extends ConsumerWidget {
                       width: 58,
                       decoration: BoxDecoration(
                         border: Border.all(
-                          color: themeMode == ThemeMode.dark
+                          color: themeMode == ThemeMode.dark ||
+                                  (themeMode == ThemeMode.system &&
+                                      MediaQuery.of(context)
+                                              .platformBrightness ==
+                                          Brightness.dark)
                               ? Color(0xFF4B9289)
                               : Color(0xFF363F3B),
                           width: 1,

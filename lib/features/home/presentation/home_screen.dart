@@ -41,7 +41,10 @@ class HomeScreen extends ConsumerWidget {
             decoration: BoxDecoration(
               border: Border(
                 top: BorderSide(
-                  color: themeMode == ThemeMode.dark
+                  color: themeMode == ThemeMode.dark ||
+                          (themeMode == ThemeMode.system &&
+                              MediaQuery.of(context).platformBrightness ==
+                                  Brightness.dark)
                       ? const Color(0xFF242E2E)
                       : Color(0xFFEEFAF8),
                   width: 1,
