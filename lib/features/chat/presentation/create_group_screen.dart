@@ -254,7 +254,7 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
                         context.pushReplacement('/chat/$chatId');
                         friendsListToCreateGroup.clear();
                       },
-                text: "Create",
+                text: localization?.translate("create") ?? "",
                 buttonColor: Color(0xFF24786D),
                 textColor: Colors.white,
               ),
