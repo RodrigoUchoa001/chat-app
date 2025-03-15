@@ -27,23 +27,6 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
 
   final _formKey = GlobalKey<FormState>();
 
-  String? _textValidator(String? value) {
-    if (value == null || value.trim().isEmpty) {
-      return 'This field cannot be empty.';
-    }
-    return null;
-  }
-
-  String? _emailValidator(String? value) {
-    if (value == null || value.trim().isEmpty) {
-      return 'This field cannot be empty.';
-    }
-    if (!EmailValidator.validate(value)) {
-      return 'Invalid email address.';
-    }
-    return null;
-  }
-
   void _validate() async {
     if (_formKey.currentState!.validate()) {
       final auth = ref.read(authControllerProvider);
@@ -102,20 +85,46 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                     AuthTextField(
                       controller: nameController,
                       labelText: localization?.translate("sign-up-name") ?? "",
-                      validator: _textValidator,
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return localization
+                                  ?.translate("sign-up-empty-field") ??
+                              "";
+                        }
+                        return null;
+                      },
                     ),
                     const SizedBox(height: 30),
                     AuthTextField(
-                      controller: emailController,
-                      labelText: localization?.translate("sign-up-email") ?? "",
-                      validator: _emailValidator,
-                    ),
+                        controller: emailController,
+                        labelText:
+                            localization?.translate("sign-up-email") ?? "",
+                        validator: (value) {
+                          if (value == null || value.trim().isEmpty) {
+                            return localization
+                                    ?.translate("sign-up-empty-field") ??
+                                "";
+                          }
+                          if (!EmailValidator.validate(value)) {
+                            return localization
+                                    ?.translate("sign-up-invalid-email") ??
+                                "";
+                          }
+                          return null;
+                        }),
                     const SizedBox(height: 30),
                     AuthTextField(
                       controller: passwordController,
                       labelText:
                           localization?.translate("sign-up-password") ?? "",
-                      validator: _textValidator,
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return localization
+                                  ?.translate("sign-up-empty-field") ??
+                              "";
+                        }
+                        return null;
+                      },
                       obscureText: true,
                     ),
                     const SizedBox(height: 30),
@@ -124,7 +133,14 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                       labelText:
                           localization?.translate("sign-up-confirm-password") ??
                               "",
-                      validator: _textValidator,
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return localization
+                                  ?.translate("sign-up-empty-field") ??
+                              "";
+                        }
+                        return null;
+                      },
                       obscureText: true,
                     ),
                   ],
