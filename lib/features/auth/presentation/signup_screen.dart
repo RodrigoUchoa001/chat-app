@@ -27,30 +27,6 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
 
   final _formKey = GlobalKey<FormState>();
 
-  void _validate() async {
-    if (_formKey.currentState!.validate()) {
-      final auth = ref.read(authControllerProvider);
-
-      if (passwordController.text != confirmPasswordController.text) {
-        Fluttertoast.showToast(msg: 'Passwords do not match.');
-        return;
-      }
-
-      final errorMessage = await auth.registerWithEmailAndPassword(
-        nameController.text,
-        emailController.text,
-        passwordController.text,
-      );
-
-      if (errorMessage == null) {
-        Fluttertoast.showToast(msg: 'Signup successful!');
-        context.go('/home');
-      } else {
-        Fluttertoast.showToast(msg: errorMessage);
-      }
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final locale = ref.watch(localeProvider);
@@ -153,7 +129,36 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24),
                   child: ChatTextButton(
-                    onTap: () => _validate(),
+                    onTap: () async {
+                      if (_formKey.currentState!.validate()) {
+                        final auth = ref.read(authControllerProvider);
+
+                        if (passwordController.text !=
+                            confirmPasswordController.text) {
+                          Fluttertoast.showToast(
+                              msg: localization?.translate(
+                                      "sign-up-password-not-match") ??
+                                  "");
+                          return;
+                        }
+
+                        final errorMessage =
+                            await auth.registerWithEmailAndPassword(
+                          nameController.text,
+                          emailController.text,
+                          passwordController.text,
+                        );
+
+                        if (errorMessage == null) {
+                          Fluttertoast.showToast(
+                              msg: localization?.translate("sign-up-success") ??
+                                  "");
+                          context.go('/home');
+                        } else {
+                          Fluttertoast.showToast(msg: errorMessage);
+                        }
+                      }
+                    },
                     text: localization?.translate("sign-up-button-text") ?? "",
                     buttonColor: Color(0xFF24786D),
                     textColor: Colors.white,
