@@ -1,3 +1,5 @@
+import 'package:chatapp/core/localization/app_localization.dart';
+import 'package:chatapp/core/localization/locale_provider.dart';
 import 'package:chatapp/core/theme/theme_provider.dart';
 import 'package:chatapp/features/auth/data/dto/user_dto.dart';
 import 'package:chatapp/features/chat/presentation/providers/friends_list_to_create_group_provider.dart';
@@ -32,6 +34,9 @@ class _SelectFriendsToCreateGroupScreenState
     final friendsStream = friendsRepo.searchFriends(query);
 
     final themeMode = ref.watch(themeProvider);
+
+    final locale = ref.watch(localeProvider);
+    final localization = ref.watch(localizationProvider(locale)).value;
 
     return SafeArea(
       child: Scaffold(
@@ -109,7 +114,7 @@ class _SelectFriendsToCreateGroupScreenState
                 fillColor: themeMode == ThemeMode.light
                     ? Color(0xFFF3F6F6)
                     : Color(0xFF192222),
-                hintText: 'Type to search',
+                hintText: localization?.translate("type-to-search") ?? "",
                 hintStyle: TextStyle(
                   color: Color(0xFF797C7B),
                   fontSize: 12,
@@ -130,7 +135,7 @@ class _SelectFriendsToCreateGroupScreenState
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Text(
-                      '${friendsListToCreateGroup.length} friend${friendsListToCreateGroup.length > 1 ? 's' : ''} selected:',
+                      '${friendsListToCreateGroup.length > 1 ? localization?.translate("selected-friends") ?? "" : localization?.translate("selected-friend") ?? ""}: ${friendsListToCreateGroup.length}',
                       style: Theme.of(context).textTheme.bodySmall!.copyWith(
                             fontSize: 14,
                           ),
@@ -200,7 +205,9 @@ class _SelectFriendsToCreateGroupScreenState
                             padding: EdgeInsets.symmetric(
                                 horizontal: 24, vertical: 20),
                             child: Text(
-                              'Select friends to create group:',
+                              localization?.translate(
+                                      "select-friends-to-create-group") ??
+                                  "",
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium!
