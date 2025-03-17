@@ -3,6 +3,7 @@ import 'package:chatapp/core/localization/locale_provider.dart';
 import 'package:chatapp/core/theme/theme_provider.dart';
 import 'package:chatapp/core/widgets/app_bar_widget.dart';
 import 'package:chatapp/core/widgets/home_content_background_widget.dart';
+import 'package:chatapp/features/chat/data/repositories/chat_repository.dart';
 import 'package:chatapp/features/chat/presentation/widgets/chat_profile_pic.dart';
 import 'package:chatapp/features/users/data/repositories/user_repository.dart';
 import 'package:chatapp/features/users/presentation/widgets/user_details.dart';
@@ -28,6 +29,7 @@ class _UserDetailsScreenState extends ConsumerState<UserDetailsScreen> {
     final screenHeight = MediaQuery.of(context).size.height;
 
     final userRepo = ref.watch(userRepositoryProvider);
+    final chatRepo = ref.watch(chatRepositoryProvider);
 
     final themeMode = ref.watch(themeProvider);
 
@@ -95,13 +97,7 @@ class _UserDetailsScreenState extends ConsumerState<UserDetailsScreen> {
                                     .textTheme
                                     .bodyMedium!
                                     .copyWith(
-                                      color: themeMode == ThemeMode.dark ||
-                                              (themeMode == ThemeMode.system &&
-                                                  MediaQuery.of(context)
-                                                          .platformBrightness ==
-                                                      Brightness.dark)
-                                          ? Colors.black
-                                          : Colors.white,
+                                      color: Colors.white,
                                       fontSize: 20,
                                     ),
                               ),
@@ -124,7 +120,10 @@ class _UserDetailsScreenState extends ConsumerState<UserDetailsScreen> {
                                 children: [
                                   _profileIconButton(
                                     Assets.icons.message.path,
-                                    () {},
+                                    () async {
+                                      context.push(
+                                          '/chat/${await chatRepo.getPrivateChatIdByFriendId(widget.userId)}');
+                                    },
                                     themeMode,
                                   ),
                                   const SizedBox(width: 33),
