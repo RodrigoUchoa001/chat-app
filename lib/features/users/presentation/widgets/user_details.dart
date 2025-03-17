@@ -19,7 +19,7 @@ class _UserDetailsState extends ConsumerState<UserDetails> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: 41),
+          const SizedBox(height: 41 - 15), // -15 for the top padding
           _buildUserDetail(
             "Display Name",
             widget.user.name,
