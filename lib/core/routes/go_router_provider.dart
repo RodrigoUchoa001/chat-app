@@ -14,6 +14,7 @@ import 'package:chatapp/features/settings/presentation/account_settings_screen.d
 import 'package:chatapp/features/settings/presentation/app_settings_screen.dart';
 import 'package:chatapp/features/settings/presentation/chat_settings_screen.dart';
 import 'package:chatapp/features/settings/presentation/settings_screen.dart';
+import 'package:chatapp/features/users/presentation/user_details_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -101,7 +102,13 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         path: '/select-friends-to-create-group',
         name: selectFriendsToCreateGroupRoute,
         builder: (context, state) => const SelectFriendsToCreateGroupScreen(),
-      )
+      ),
+      GoRoute(
+        path: '/user-details/:userId',
+        name: userDetailsRoute,
+        builder: (context, state) =>
+            UserDetailsScreen(userId: state.pathParameters['userId']!),
+      ),
     ],
   );
 });
