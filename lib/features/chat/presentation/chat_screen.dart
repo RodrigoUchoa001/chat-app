@@ -16,6 +16,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 class ChatScreen extends ConsumerStatefulWidget {
@@ -219,115 +220,128 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
             final friendDetails = userRepo.getUserDetails(friendId);
 
-            return Row(
-              children: [
-                FutureBuilder(
-                  future: chatProvider.getChatPhotoURL(
-                    chat,
-                    userRepo,
-                  ),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const CircularProgressIndicator(
-                          color: Colors.white);
-                    } else if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
-                    }
-
-                    final chatPhoto = snapshot.data;
-                    final hasValidPhoto =
-                        chatPhoto != null && chatPhoto.isNotEmpty;
-
-                    final friendId =
-                        (chat.type == 'private' && chat.participants != null)
-                            ? chat.participants!.firstWhere(
-                                (id) => id != currentUser.value?.uid,
-                                orElse: () => '',
-                              )
-                            : '';
-
-                    final friendDetails = userRepo.getUserDetails(friendId);
-
-                    return StreamBuilder(
-                      stream: friendDetails,
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const CircularProgressIndicator(
-                              color: Colors.white);
-                        } else if (snapshot.hasError) {
-                          return Text('Error: ${snapshot.error}');
-                        }
-
-                        final friend = snapshot.data!;
-
-                        return ChatProfilePic(
-                          chatPhotoURL: hasValidPhoto ? chatPhoto : null,
-                          isOnline: friend.isOnline!,
-                        );
-                      },
-                    );
-                  },
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+            return Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: () => context.push('/user-details/$friendId'),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  child: Row(
                     children: [
-                      currentUser.when(
-                        data: (user) {
-                          return FutureBuilder(
-                            future: _getChatTitle(chat, user!.uid, userRepo),
+                      FutureBuilder(
+                        future: chatProvider.getChatPhotoURL(
+                          chat,
+                          userRepo,
+                        ),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const CircularProgressIndicator(
+                                color: Colors.white);
+                          } else if (snapshot.hasError) {
+                            return Text('Error: ${snapshot.error}');
+                          }
+
+                          final chatPhoto = snapshot.data;
+                          final hasValidPhoto =
+                              chatPhoto != null && chatPhoto.isNotEmpty;
+
+                          final friendId = (chat.type == 'private' &&
+                                  chat.participants != null)
+                              ? chat.participants!.firstWhere(
+                                  (id) => id != currentUser.value?.uid,
+                                  orElse: () => '',
+                                )
+                              : '';
+
+                          final friendDetails =
+                              userRepo.getUserDetails(friendId);
+
+                          return StreamBuilder(
+                            stream: friendDetails,
                             builder: (context, snapshot) {
-                              return Text(
-                                snapshot.data ?? 'No title',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium!
-                                    .copyWith(
-                                      fontSize: 20,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const CircularProgressIndicator(
+                                    color: Colors.white);
+                              } else if (snapshot.hasError) {
+                                return Text('Error: ${snapshot.error}');
+                              }
+
+                              final friend = snapshot.data!;
+
+                              return ChatProfilePic(
+                                chatPhotoURL: hasValidPhoto ? chatPhoto : null,
+                                isOnline: friend.isOnline!,
                               );
                             },
                           );
                         },
-                        error: (error, stackTrace) => Text('Error: $error'),
-                        loading: () => const CircularProgressIndicator(),
                       ),
-                      const SizedBox(height: 6),
-                      StreamBuilder(
-                        stream: friendDetails,
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const Text(
-                              'Checking...',
-                              style: TextStyle(
-                                color: Color(0xFF797C7B),
-                                fontSize: 12,
-                                fontFamily: FontFamily.circular,
-                              ),
-                            );
-                          }
-                          final friend = snapshot.data;
-                          return Text(
-                            friend!.isOnline ?? false
-                                ? 'online'
-                                : lastSeenDateOrTime(
-                                    friend.lastSeen ?? '', ref),
-                            style: TextStyle(
-                              color: Color(0xFF797C7B),
-                              fontSize: 12,
-                              fontFamily: FontFamily.circular,
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            currentUser.when(
+                              data: (user) {
+                                return FutureBuilder(
+                                  future:
+                                      _getChatTitle(chat, user!.uid, userRepo),
+                                  builder: (context, snapshot) {
+                                    return Text(
+                                      snapshot.data ?? 'No title',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium!
+                                          .copyWith(
+                                            fontSize: 20,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                    );
+                                  },
+                                );
+                              },
+                              error: (error, stackTrace) =>
+                                  Text('Error: $error'),
+                              loading: () => const CircularProgressIndicator(),
                             ),
-                          );
-                        },
-                      )
+                            const SizedBox(height: 6),
+                            StreamBuilder(
+                              stream: friendDetails,
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return const Text(
+                                    'Checking...',
+                                    style: TextStyle(
+                                      color: Color(0xFF797C7B),
+                                      fontSize: 12,
+                                      fontFamily: FontFamily.circular,
+                                    ),
+                                  );
+                                }
+                                final friend = snapshot.data;
+                                return Text(
+                                  friend!.isOnline ?? false
+                                      ? 'online'
+                                      : lastSeenDateOrTime(
+                                          friend.lastSeen ?? '', ref),
+                                  style: TextStyle(
+                                    color: Color(0xFF797C7B),
+                                    fontSize: 12,
+                                    fontFamily: FontFamily.circular,
+                                  ),
+                                );
+                              },
+                            )
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ),
-              ],
+              ),
             );
           }
         },
