@@ -84,6 +84,9 @@ class $AssetsIconsGen {
   SvgGenImage get microphone =>
       const SvgGenImage('assets/icons/microphone.svg');
 
+  /// File path: assets/icons/more.svg
+  SvgGenImage get more => const SvgGenImage('assets/icons/more.svg');
+
   /// File path: assets/icons/search.svg
   SvgGenImage get search => const SvgGenImage('assets/icons/search.svg');
 
@@ -117,6 +120,7 @@ class $AssetsIconsGen {
         logoForBlackBack,
         logoForWhiteBack,
         microphone,
+        more,
         search,
         settings,
         trash,
