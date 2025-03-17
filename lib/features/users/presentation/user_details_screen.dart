@@ -1,5 +1,6 @@
 import 'package:chatapp/core/localization/app_localization.dart';
 import 'package:chatapp/core/localization/locale_provider.dart';
+import 'package:chatapp/core/theme/theme_provider.dart';
 import 'package:chatapp/core/widgets/app_bar_widget.dart';
 import 'package:chatapp/core/widgets/home_content_background_widget.dart';
 import 'package:chatapp/features/chat/presentation/widgets/chat_profile_pic.dart';
@@ -27,6 +28,8 @@ class _UserDetailsScreenState extends ConsumerState<UserDetailsScreen> {
     final screenHeight = MediaQuery.of(context).size.height;
 
     final userRepo = ref.watch(userRepositoryProvider);
+
+    final themeMode = ref.watch(themeProvider);
 
     final locale = ref.watch(localeProvider);
     final localization = ref.watch(localizationProvider(locale)).value;
@@ -92,6 +95,13 @@ class _UserDetailsScreenState extends ConsumerState<UserDetailsScreen> {
                                     .textTheme
                                     .bodyMedium!
                                     .copyWith(
+                                      color: themeMode == ThemeMode.dark ||
+                                              (themeMode == ThemeMode.system &&
+                                                  MediaQuery.of(context)
+                                                          .platformBrightness ==
+                                                      Brightness.dark)
+                                          ? Colors.black
+                                          : Colors.white,
                                       fontSize: 20,
                                     ),
                               ),
@@ -115,21 +125,25 @@ class _UserDetailsScreenState extends ConsumerState<UserDetailsScreen> {
                                   _profileIconButton(
                                     Assets.icons.message.path,
                                     () {},
+                                    themeMode,
                                   ),
                                   const SizedBox(width: 33),
                                   _profileIconButton(
                                     Assets.icons.video.path,
                                     () {},
+                                    themeMode,
                                   ),
                                   const SizedBox(width: 33),
                                   _profileIconButton(
                                     Assets.icons.call.path,
                                     () {},
+                                    themeMode,
                                   ),
                                   const SizedBox(width: 33),
                                   _profileIconButton(
                                     Assets.icons.more.path,
                                     () {},
+                                    themeMode,
                                   ),
                                 ],
                               ),
@@ -167,11 +181,19 @@ class _UserDetailsScreenState extends ConsumerState<UserDetailsScreen> {
   IconButton _profileIconButton(
     String iconPath,
     Function() onPressed,
+    ThemeMode themeMode,
   ) {
     return IconButton(
       onPressed: onPressed,
       style: ButtonStyle(
-        backgroundColor: WidgetStatePropertyAll(Color.fromARGB(20, 0, 14, 12)),
+        backgroundColor: WidgetStatePropertyAll(
+          themeMode == ThemeMode.dark ||
+                  (themeMode == ThemeMode.system &&
+                      MediaQuery.of(context).platformBrightness ==
+                          Brightness.dark)
+              ? Color.fromARGB(100, 5, 29, 19)
+              : Color.fromARGB(20, 0, 14, 12),
+        ),
       ),
       icon: SvgPicture.asset(
         iconPath,
