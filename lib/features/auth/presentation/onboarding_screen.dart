@@ -83,6 +83,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                   ),
                   const SizedBox(height: 46),
                   OnBoardExistingAccount(),
+                  const SizedBox(height: 46),
                 ],
               ),
             ),
