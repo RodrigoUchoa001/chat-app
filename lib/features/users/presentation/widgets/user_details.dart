@@ -16,8 +16,8 @@ class _UserDetailsState extends ConsumerState<UserDetails> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 28),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: ListView(
+        // crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 41 - 15), // -15 for the top padding
           _buildUserDetail(
@@ -37,6 +37,7 @@ class _UserDetailsState extends ConsumerState<UserDetails> {
             DateFormat('dd/MM/yyyy')
                 .format(DateTime.parse(widget.user.createdAt!)),
           ),
+          const SizedBox(height: 32),
         ],
       ),
     );
