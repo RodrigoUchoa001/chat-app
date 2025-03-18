@@ -223,6 +223,10 @@ class FriendsListWidget extends ConsumerWidget {
       BuildContext context,
       WidgetRef ref) {
     final themeMode = ref.watch(themeProvider);
+
+    final locale = ref.watch(localeProvider);
+    final localization = ref.watch(localizationProvider(locale)).value;
+
     return friendRequests.when(
       data: (friendRequests) {
         if (friendRequests.isNotEmpty) {
@@ -231,9 +235,9 @@ class FriendsListWidget extends ConsumerWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
-                // TODO: create translation
                 child: Text(
-                  'You have ${friendRequests.length} friend request${friendRequests.length > 1 ? 's' : ''}:',
+                  '${localization?.translate("friend-you-have")} ${friendRequests.length} ${friendRequests.length > 1 ? localization?.translate("friend-requests") : localization?.translate("friend-request")}.',
+                  // 'You have ${friendRequests.length} friend request${friendRequests.length > 1 ? 's' : ''}:',
                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                         fontSize: 16,
                       ),
