@@ -107,5 +107,9 @@
     "settings-source-code-title": "Source code",
     "settings-source-code-subtitle": "Get the source code",
     "settings-portifolio-title": "Portifolio",
-    "settings-portifolio-subtitle": "Click to see my portifolio"    
+    "settings-portifolio-subtitle": "Click to see my portifolio",
+    "user-details-display-name": "Display name",
+    "user-details-email-address": "Email address",
+    "user-details-status-message": "Status message",
+    "user-details-joined-at": "Joined at"
 }

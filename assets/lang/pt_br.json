@@ -107,5 +107,9 @@
     "settings-source-code-title": "Código-fonte",
     "settings-source-code-subtitle": "Obtenha o código-fonte",
     "settings-portifolio-title": "Portfólio",
-    "settings-portifolio-subtitle": "Clique para ver meu portfólio"
+    "settings-portifolio-subtitle": "Clique para ver meu portfólio",
+    "user-details-display-name": "Nome de exibição",
+    "user-details-email-address": "Endereço de e-mail",
+    "user-details-status-message": "Mensagem de status",
+    "user-details-joined-at": "Entrou em"
 }
