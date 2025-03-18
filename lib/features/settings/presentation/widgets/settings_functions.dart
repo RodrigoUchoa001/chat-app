@@ -31,7 +31,7 @@ class _SettingsFunctionsState extends ConsumerState<SettingsFunctions> {
     final locale = ref.watch(localeProvider);
     final localization = ref.watch(localizationProvider(locale)).value;
 
-    return Column(
+    return ListView(
       children: [
         const SizedBox(height: 41),
         Padding(
