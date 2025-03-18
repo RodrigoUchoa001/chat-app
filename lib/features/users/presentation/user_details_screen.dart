@@ -33,10 +33,6 @@ class _UserDetailsScreenState extends ConsumerState<UserDetailsScreen> {
 
     final themeMode = ref.watch(themeProvider);
 
-    final locale = ref.watch(localeProvider);
-    final localization = ref.watch(localizationProvider(locale)).value;
-
-    // TODO: create user details screen
     return SafeArea(
       child: Scaffold(
         body: Stack(
