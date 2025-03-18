@@ -1,3 +1,5 @@
+import 'package:chatapp/core/localization/app_localization.dart';
+import 'package:chatapp/core/localization/locale_provider.dart';
 import 'package:chatapp/features/auth/data/dto/user_dto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,6 +16,9 @@ class UserDetails extends ConsumerStatefulWidget {
 class _UserDetailsState extends ConsumerState<UserDetails> {
   @override
   Widget build(BuildContext context) {
+    final locale = ref.watch(localeProvider);
+    final localization = ref.watch(localizationProvider(locale)).value;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 28),
       child: ListView(
@@ -21,19 +26,19 @@ class _UserDetailsState extends ConsumerState<UserDetails> {
         children: [
           const SizedBox(height: 41 - 15), // -15 for the top padding
           _buildUserDetail(
-            "Display Name",
+            localization?.translate("user-details-display-name") ?? "",
             widget.user.name,
           ),
           _buildUserDetail(
-            "Email Address",
+            localization?.translate("user-details-email-address") ?? "",
             widget.user.email,
           ),
           _buildUserDetail(
-            "Status Message",
+            localization?.translate("user-details-status-message") ?? "",
             widget.user.statusMessage,
           ),
           _buildUserDetail(
-            "Joined At",
+            localization?.translate("user-details-joined-at") ?? "",
             DateFormat('dd/MM/yyyy')
                 .format(DateTime.parse(widget.user.createdAt!)),
           ),
