@@ -1,3 +1,5 @@
+import 'package:chatapp/core/localization/app_localization.dart';
+import 'package:chatapp/core/localization/locale_provider.dart';
 import 'package:chatapp/core/providers/firebase_auth_providers.dart';
 import 'package:chatapp/core/theme/theme_provider.dart';
 import 'package:chatapp/features/chat/presentation/widgets/chat_profile_pic.dart';
@@ -33,6 +35,9 @@ class _AddFriendScreenState extends ConsumerState<AddFriendScreen> {
     final searchResults = userRepo.searchUsers(query);
 
     final themeMode = ref.watch(themeProvider);
+
+    final locale = ref.watch(localeProvider);
+    final localization = ref.watch(localizationProvider(locale)).value;
 
     return SafeArea(
       child: Scaffold(
@@ -235,7 +240,9 @@ class _AddFriendScreenState extends ConsumerState<AddFriendScreen> {
                                           friendRepo
                                               .sendFriendRequest(user.uid!);
                                           Fluttertoast.showToast(
-                                            msg: 'Friend request sent!',
+                                            msg: localization?.translate(
+                                                    "friend-request-sent") ??
+                                                "",
                                           );
                                         },
                                         style: ButtonStyle(
