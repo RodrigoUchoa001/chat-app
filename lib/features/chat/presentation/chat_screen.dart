@@ -624,8 +624,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                                                   MediaQuery.of(context)
                                                           .platformBrightness ==
                                                       Brightness.dark)
-                                          ? Colors.white
-                                          : Colors.black,
+                                          ? Color(0xFF212727)
+                                          : Color(0xFFF2F7FB),
                                       radius: 10,
                                       child: Text(
                                         '+${message.seenBy!.length - 2}',
@@ -642,8 +642,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                                                           MediaQuery.of(context)
                                                                   .platformBrightness ==
                                                               Brightness.dark)
-                                                  ? Colors.black
-                                                  : Colors.white,
+                                                  ? Colors.white
+                                                  : Colors.black,
                                             ),
                                       ),
                                     ),
