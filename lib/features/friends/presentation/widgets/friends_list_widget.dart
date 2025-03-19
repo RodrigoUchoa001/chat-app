@@ -301,6 +301,7 @@ class FriendsListWidget extends ConsumerWidget {
                                         friendsRepository.acceptFriendRequest(
                                             friendRequests[index]!.uid!);
 
+                                        // TODO: translate here
                                         Fluttertoast.showToast(
                                           msg: 'Friend request accepted',
                                           toastLength: Toast.LENGTH_SHORT,
@@ -312,8 +313,8 @@ class FriendsListWidget extends ConsumerWidget {
                                           fontSize: 16.0,
                                         );
                                       },
-                                      child: const Text(
-                                        'Accept',
+                                      child: Text(
+                                        '${localization?.translate("accept")}',
                                         style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 12,
@@ -351,7 +352,7 @@ class FriendsListWidget extends ConsumerWidget {
                                         ),
                                       ),
                                       child: Text(
-                                        'Decline',
+                                        '${localization?.translate("decline")}',
                                         style: Theme.of(context)
                                             .textTheme
                                             .bodySmall!
