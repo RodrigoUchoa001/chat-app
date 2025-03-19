@@ -147,8 +147,10 @@ class _AccountSettingsScreenState extends ConsumerState<AccountSettingsScreen> {
                       if (newName != null && newName.isNotEmpty) {
                         try {
                           await userRepo.updateUserName(name: newName);
-                          // TODO: create translation
-                          Fluttertoast.showToast(msg: "Name updated");
+                          Fluttertoast.showToast(
+                              msg: localization?.translate(
+                                      "settings-account-name-updated") ??
+                                  "");
                         } on Exception catch (e) {
                           Fluttertoast.showToast(msg: e.toString());
                         }
@@ -237,7 +239,10 @@ class _AccountSettingsScreenState extends ConsumerState<AccountSettingsScreen> {
                         try {
                           await userRepo.updateUserStatusMessage(
                               statusMessage: newStatus);
-                          Fluttertoast.showToast(msg: "Status updated");
+                          Fluttertoast.showToast(
+                              msg: localization?.translate(
+                                      "settings-account-status-updated") ??
+                                  "");
                         } on Exception catch (e) {
                           Fluttertoast.showToast(msg: e.toString());
                         }
