@@ -358,7 +358,14 @@ class FriendsListWidget extends ConsumerWidget {
                                             .bodySmall!
                                             .copyWith(
                                               fontSize: 12,
-                                              color: themeMode == ThemeMode.dark
+                                              color: themeMode ==
+                                                          ThemeMode.dark ||
+                                                      (themeMode ==
+                                                              ThemeMode
+                                                                  .system &&
+                                                          MediaQuery.of(context)
+                                                                  .platformBrightness ==
+                                                              Brightness.dark)
                                                   ? Colors.white
                                                   : Colors.black,
                                             ),
