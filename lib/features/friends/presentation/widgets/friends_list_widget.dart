@@ -301,9 +301,10 @@ class FriendsListWidget extends ConsumerWidget {
                                         friendsRepository.acceptFriendRequest(
                                             friendRequests[index]!.uid!);
 
-                                        // TODO: translate here
                                         Fluttertoast.showToast(
-                                          msg: 'Friend request accepted',
+                                          msg: localization?.translate(
+                                                  "friend-request-accepted") ??
+                                              "",
                                           toastLength: Toast.LENGTH_SHORT,
                                           gravity: ToastGravity.BOTTOM,
                                           timeInSecForIosWeb: 1,
@@ -314,7 +315,7 @@ class FriendsListWidget extends ConsumerWidget {
                                         );
                                       },
                                       child: Text(
-                                        '${localization?.translate("accept")}',
+                                        localization?.translate("accept") ?? "",
                                         style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 12,
@@ -334,7 +335,9 @@ class FriendsListWidget extends ConsumerWidget {
                                             friendRequests[index]!.uid!);
 
                                         Fluttertoast.showToast(
-                                          msg: 'Friend request declined',
+                                          msg: localization?.translate(
+                                                  "friend-request-declined") ??
+                                              "",
                                           toastLength: Toast.LENGTH_SHORT,
                                           gravity: ToastGravity.BOTTOM,
                                           timeInSecForIosWeb: 1,
@@ -352,7 +355,8 @@ class FriendsListWidget extends ConsumerWidget {
                                         ),
                                       ),
                                       child: Text(
-                                        '${localization?.translate("decline")}',
+                                        localization?.translate("decline") ??
+                                            "",
                                         style: Theme.of(context)
                                             .textTheme
                                             .bodySmall!
