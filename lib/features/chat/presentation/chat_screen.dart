@@ -446,8 +446,16 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                     ),
                   ),
                 ),
-              chatBubble(bottomPadding, isMe, isNextFromSameSender,
-                  isPreviousFromSameSender, message, userRepo, ref),
+              chatBubble(
+                bottomPadding,
+                isMe,
+                isNextFromSameSender,
+                isPreviousFromSameSender,
+                message,
+                index == messages.length - 1,
+                userRepo,
+                ref,
+              ),
             ],
           );
         },
@@ -461,9 +469,11 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       bool isNextFromSameSender,
       bool isPreviousFromSameSender,
       MessageDTO message,
+      bool islastMessage,
       UserRepositoryInterface userProvider,
       WidgetRef ref) {
     final themeMode = ref.watch(themeProvider);
+    final currentUser = ref.watch(currentUserProvider).asData?.value;
 
     return Padding(
       padding: EdgeInsets.only(bottom: bottomPadding, left: 24, right: 24),
@@ -584,6 +594,77 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                             ),
                       ),
                     ),
+                    if (islastMessage && message.senderId != currentUser!.uid)
+                      const SizedBox(height: 8),
+                    if (islastMessage && message.senderId != currentUser!.uid)
+                      // if (islastMessage)
+                      Row(
+                        children: message.seenBy!.asMap().entries.map((entry) {
+                          final index = entry.key;
+                          final userId = entry.value;
+
+                          return StreamBuilder(
+                            stream: userProvider.getUserDetails(userId),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const CircularProgressIndicator();
+                              }
+
+                              final user = snapshot.data;
+                              // only show 3 imgs
+                              if (index < 3) {
+                                if (index == 2) {
+                                  return Transform.translate(
+                                    offset: Offset(-10, 0.0),
+                                    child: CircleAvatar(
+                                      backgroundColor: themeMode ==
+                                                  ThemeMode.dark ||
+                                              (themeMode == ThemeMode.system &&
+                                                  MediaQuery.of(context)
+                                                          .platformBrightness ==
+                                                      Brightness.dark)
+                                          ? Colors.white
+                                          : Colors.black,
+                                      radius: 10,
+                                      child: Text(
+                                        '+${message.seenBy!.length - 2}',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall!
+                                            .copyWith(
+                                              fontSize: 10,
+                                              color: themeMode ==
+                                                          ThemeMode.dark ||
+                                                      (themeMode ==
+                                                              ThemeMode
+                                                                  .system &&
+                                                          MediaQuery.of(context)
+                                                                  .platformBrightness ==
+                                                              Brightness.dark)
+                                                  ? Colors.black
+                                                  : Colors.white,
+                                            ),
+                                      ),
+                                    ),
+                                  );
+                                } else {
+                                  return Transform.translate(
+                                    offset: Offset(index == 0 ? 0 : -6.0, 0.0),
+                                    child: ChatProfilePic(
+                                      chatPhotoURL: user!.photoURL,
+                                      isOnline: false,
+                                      avatarRadius: 10,
+                                    ),
+                                  );
+                                }
+                              } else {
+                                return Container();
+                              }
+                            },
+                          );
+                        }).toList(),
+                      ),
                   ],
                 ),
               ],
