@@ -594,76 +594,66 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                             ),
                       ),
                     ),
-                    if (islastMessage && message.senderId != currentUser!.uid)
-                      const SizedBox(height: 8),
-                    if (islastMessage && message.senderId != currentUser!.uid)
-                      // if (islastMessage)
+                    if (islastMessage) const SizedBox(height: 8),
+                    if (islastMessage)
                       Row(
-                        children: message.seenBy!.asMap().entries.map((entry) {
-                          final index = entry.key;
-                          final userId = entry.value;
-
-                          return StreamBuilder(
-                            stream: userProvider.getUserDetails(userId),
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return const CircularProgressIndicator();
-                              }
-
-                              final user = snapshot.data;
-                              // only show 3 imgs
-                              if (index < 3) {
-                                if (index == 2) {
-                                  return Transform.translate(
-                                    offset: Offset(-10, 0.0),
-                                    child: CircleAvatar(
-                                      backgroundColor: themeMode ==
-                                                  ThemeMode.dark ||
-                                              (themeMode == ThemeMode.system &&
-                                                  MediaQuery.of(context)
-                                                          .platformBrightness ==
-                                                      Brightness.dark)
-                                          ? Color(0xFF212727)
-                                          : Color(0xFFF2F7FB),
-                                      radius: 10,
-                                      child: Text(
-                                        '+${message.seenBy!.length - 2}',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodySmall!
-                                            .copyWith(
-                                              fontSize: 10,
-                                              color: themeMode ==
-                                                          ThemeMode.dark ||
-                                                      (themeMode ==
-                                                              ThemeMode
-                                                                  .system &&
-                                                          MediaQuery.of(context)
-                                                                  .platformBrightness ==
-                                                              Brightness.dark)
-                                                  ? Colors.white
-                                                  : Colors.black,
-                                            ),
-                                      ),
-                                    ),
-                                  );
-                                } else {
-                                  return Transform.translate(
-                                    offset: Offset(index == 0 ? 0 : -6.0, 0.0),
-                                    child: ChatProfilePic(
-                                      chatPhotoURL: user!.photoURL,
-                                      isOnline: false,
-                                      avatarRadius: 10,
-                                    ),
-                                  );
+                        children: [
+                          ...message.seenBy!
+                              .where((userId) => userId != currentUser!.uid)
+                              .take(2)
+                              .map((userId) {
+                            return StreamBuilder(
+                              stream: userProvider.getUserDetails(userId),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return const CircularProgressIndicator();
                                 }
-                              } else {
-                                return Container();
-                              }
-                            },
-                          );
-                        }).toList(),
+
+                                final user = snapshot.data;
+                                return Transform.translate(
+                                  offset: Offset(-6.0, 0.0),
+                                  child: ChatProfilePic(
+                                    chatPhotoURL: user!.photoURL,
+                                    isOnline: false,
+                                    avatarRadius: 10,
+                                  ),
+                                );
+                              },
+                            );
+                          }),
+                          if (message.seenBy!.length - 1 > 2)
+                            Transform.translate(
+                              offset: Offset(-10, 0.0),
+                              child: CircleAvatar(
+                                backgroundColor: themeMode == ThemeMode.dark ||
+                                        (themeMode == ThemeMode.system &&
+                                            MediaQuery.of(context)
+                                                    .platformBrightness ==
+                                                Brightness.dark)
+                                    ? Color(0xFF212727)
+                                    : Color(0xFFF2F7FB),
+                                radius: 10,
+                                child: Text(
+                                  '+${message.seenBy!.length - 2}',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall!
+                                      .copyWith(
+                                        fontSize: 10,
+                                        color: themeMode == ThemeMode.dark ||
+                                                (themeMode ==
+                                                        ThemeMode.system &&
+                                                    MediaQuery.of(context)
+                                                            .platformBrightness ==
+                                                        Brightness.dark)
+                                            ? Colors.white
+                                            : Colors.black,
+                                      ),
+                                ),
+                              ),
+                            ),
+                        ],
                       ),
                   ],
                 ),
