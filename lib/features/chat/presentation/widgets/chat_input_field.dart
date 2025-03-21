@@ -18,6 +18,7 @@ class ChatInputField extends ConsumerStatefulWidget {
 
 class _ChatInputFieldState extends ConsumerState<ChatInputField> {
   late final TextEditingController _chatTextFieldController;
+  final FocusNode _focusNode = FocusNode();
 
   void _sendMessage(WidgetRef ref, BuildContext context) {
     final chatRepo = ref.watch(chatRepositoryProvider);
@@ -25,6 +26,8 @@ class _ChatInputFieldState extends ConsumerState<ChatInputField> {
     if (message.isNotEmpty) {
       chatRepo.sendMessage(widget.chatId, message);
       _chatTextFieldController.clear();
+
+      _focusNode.requestFocus();
     }
   }
 
@@ -32,6 +35,13 @@ class _ChatInputFieldState extends ConsumerState<ChatInputField> {
   void initState() {
     super.initState();
     _chatTextFieldController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _chatTextFieldController.dispose();
+    _focusNode.dispose();
+    super.dispose();
   }
 
   @override
@@ -85,6 +95,7 @@ class _ChatInputFieldState extends ConsumerState<ChatInputField> {
                     }
                   },
                   onSubmitted: (text) => _sendMessage(ref, context),
+                  focusNode: _focusNode,
                   controller: _chatTextFieldController,
                 ),
               ),
