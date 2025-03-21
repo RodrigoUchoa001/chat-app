@@ -8,9 +8,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class ChatTextField extends ConsumerWidget {
   final Function(String text)? onChanged;
   final Function(String text)? onSubmitted;
+  final FocusNode? focusNode;
   final TextEditingController controller;
   const ChatTextField(
-      {this.onChanged, this.onSubmitted, required this.controller, super.key});
+      {this.onChanged,
+      this.onSubmitted,
+      this.focusNode,
+      required this.controller,
+      super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -23,6 +28,7 @@ class ChatTextField extends ConsumerWidget {
       controller: controller,
       onChanged: onChanged,
       onSubmitted: onSubmitted,
+      focusNode: focusNode,
       autofocus: true,
       style: Theme.of(context).textTheme.bodySmall!.copyWith(
             color: themeMode == ThemeMode.light ? Colors.black : Colors.white,
