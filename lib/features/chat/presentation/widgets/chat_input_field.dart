@@ -19,6 +19,15 @@ class ChatInputField extends ConsumerStatefulWidget {
 class _ChatInputFieldState extends ConsumerState<ChatInputField> {
   late final TextEditingController _chatTextFieldController;
 
+  void _sendMessage(WidgetRef ref, BuildContext context) {
+    final chatRepo = ref.watch(chatRepositoryProvider);
+    final message = _chatTextFieldController.text.trim();
+    if (message.isNotEmpty) {
+      chatRepo.sendMessage(widget.chatId, message);
+      _chatTextFieldController.clear();
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -75,6 +84,7 @@ class _ChatInputFieldState extends ConsumerState<ChatInputField> {
                           .update((state) => false);
                     }
                   },
+                  onSubmitted: (text) => _sendMessage(ref, context),
                   controller: _chatTextFieldController,
                 ),
               ),
