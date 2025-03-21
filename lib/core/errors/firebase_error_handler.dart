@@ -1,34 +1,37 @@
+import 'package:chatapp/core/localization/app_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class FirebaseErrorHandler {
-  static String handleAuthError(FirebaseAuthException e) {
+  static String handleAuthError(
+      FirebaseAuthException e, AppLocalization? localization) {
     switch (e.code) {
       case 'email-already-in-use':
-        return 'Email already in use.';
+        return localization?.translate('email-already-in-use') ?? '';
       case 'invalid-email':
-        return 'The email address is not valid.';
+        return localization?.translate('invalid-email') ?? '';
       case 'weak-password':
-        return 'The password provided is too weak.';
+        return localization?.translate('weak-password') ?? '';
       case 'wrong-password':
-        return 'The password is invalid for the given email.';
+        return localization?.translate('wrong-password') ?? '';
       case 'invalid-credential':
-        return 'The supplied auth credential is malformed or has expired.';
+        return localization?.translate('invalid-credential') ?? '';
       case 'user-not-found':
-        return 'No user found with the given email.';
+        return localization?.translate('user-not-found') ?? '';
       case 'operation-not-allowed':
-        return 'The operation is not allowed.';
+        return localization?.translate('operation-not-allowed') ?? '';
       case 'network-request-failed':
-        return 'A network error has occurred.';
+        return localization?.translate('network-request-failed') ?? '';
       default:
-        return 'Unknown error: ${e.message}';
+        return '${localization?.translate('unknown-error') ?? ''} ${e.message}';
     }
   }
 
-  static String handleFirestoreError(FirebaseException e) {
-    return 'Firestore database error: ${e.message}';
+  static String handleFirestoreError(
+      FirebaseException e, AppLocalization? localization) {
+    return '${localization?.translate('firebase-error') ?? ''} ${e.message}';
   }
 
-  static String handleGenericError(dynamic e) {
-    return 'Unexpected error: $e';
+  static String handleGenericError(dynamic e, AppLocalization? localization) {
+    return '${localization?.translate('unexpected-error') ?? ''} $e';
   }
 }
