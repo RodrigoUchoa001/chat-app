@@ -1,4 +1,6 @@
 import 'package:chatapp/core/errors/firebase_error_handler.dart';
+import 'package:chatapp/core/localization/app_localization.dart';
+import 'package:chatapp/core/localization/locale_provider.dart';
 import 'package:chatapp/core/providers/firebase_auth_providers.dart';
 import 'package:chatapp/core/providers/firebase_firestore_provider.dart';
 import 'package:chatapp/features/auth/data/dto/user_dto.dart';
@@ -11,15 +13,20 @@ import 'package:google_sign_in/google_sign_in.dart';
 final authRepositoryProvider = Provider<AuthRepositoryInterface>((ref) {
   final auth = ref.watch(authProvider);
   final firestore = ref.watch(firestoreProvider);
-  return AuthRepository(auth, firestore);
+
+  final locale = ref.watch(localeProvider);
+  final localization = ref.watch(localizationProvider(locale)).value;
+
+  return AuthRepository(auth, firestore, localization);
 });
 
 class AuthRepository implements AuthRepositoryInterface {
   final FirebaseAuth _auth;
   final FirebaseFirestore _firestore;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final AppLocalization? _localization;
 
-  AuthRepository(this._auth, this._firestore);
+  AuthRepository(this._auth, this._firestore, this._localization);
 
   @override
   Future<bool> loginWithGoogle() async {
@@ -77,18 +84,20 @@ class AuthRepository implements AuthRepositoryInterface {
       );
 
       final user = userCredential.user;
-      if (user == null) return 'Error while logging in. Please try again.';
+      if (user == null) {
+        return _localization?.translate('erro-while-logging-in');
+      }
 
       final userRef = _firestore.collection('users').doc(user.uid);
       await userRef.update({'isOnline': true});
 
       return null;
     } on FirebaseAuthException catch (e) {
-      return FirebaseErrorHandler.handleAuthError(e);
+      return FirebaseErrorHandler.handleAuthError(e, _localization);
     } on FirebaseException catch (e) {
-      return FirebaseErrorHandler.handleFirestoreError(e);
+      return FirebaseErrorHandler.handleFirestoreError(e, _localization);
     } catch (e) {
-      return FirebaseErrorHandler.handleGenericError(e);
+      return FirebaseErrorHandler.handleGenericError(e, _localization);
     }
   }
 
@@ -102,7 +111,9 @@ class AuthRepository implements AuthRepositoryInterface {
       );
 
       final user = userCredential.user;
-      if (user == null) return "Error while registering. Please try again.";
+      if (user == null) {
+        return _localization?.translate('erro-while-registering') ?? '';
+      }
 
       final userRef = _firestore.collection('users').doc(user.uid);
 
@@ -125,11 +136,11 @@ class AuthRepository implements AuthRepositoryInterface {
 
       return null;
     } on FirebaseAuthException catch (e) {
-      return FirebaseErrorHandler.handleAuthError(e);
+      return FirebaseErrorHandler.handleAuthError(e, _localization);
     } on FirebaseException catch (e) {
-      return FirebaseErrorHandler.handleFirestoreError(e);
+      return FirebaseErrorHandler.handleFirestoreError(e, _localization);
     } catch (e) {
-      return FirebaseErrorHandler.handleGenericError(e);
+      return FirebaseErrorHandler.handleGenericError(e, _localization);
     }
   }
 
