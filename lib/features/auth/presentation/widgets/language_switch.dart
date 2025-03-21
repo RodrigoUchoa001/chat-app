@@ -23,7 +23,7 @@ class _LanguageSwitchState extends ConsumerState<LanguageSwitch> {
       padding: const EdgeInsets.symmetric(vertical: 16),
       child: Container(
         height: 52,
-        width: 192,
+        width: 200,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(50),
           color: Colors.white,
@@ -33,8 +33,8 @@ class _LanguageSwitchState extends ConsumerState<LanguageSwitch> {
             AnimatedPositioned(
               duration: const Duration(milliseconds: 300),
               curve: Curves.easeInOut,
-              left: isEnglish ? 2 : 96,
-              right: isEnglish ? 96 : 2,
+              left: isEnglish ? 2 : 100,
+              right: isEnglish ? 100 : 2,
               top: 2,
               bottom: 2,
               child: Container(
@@ -76,7 +76,7 @@ class _LanguageSwitchState extends ConsumerState<LanguageSwitch> {
     return TextButton(
       onPressed: onTap,
       style: TextButton.styleFrom(
-        minimumSize: const Size(100, 52),
+        minimumSize: const Size(100, 50),
         foregroundColor: isSelected ? Colors.white : Colors.black,
       ),
       child: Text(
