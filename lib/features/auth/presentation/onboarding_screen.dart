@@ -27,6 +27,8 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
     final locale = ref.watch(localeProvider);
     final localization = ref.watch(localizationProvider(locale)).value;
 
+    final localeNotifier = ref.read(localeProvider.notifier);
+
     return Scaffold(
       backgroundColor: Color(0xFF1A1A1A),
       body: SafeArea(
@@ -41,49 +43,118 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: ListView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const SizedBox(height: 64),
-                  OnBoardAppbar(),
-                  const SizedBox(height: 43.8),
-                  Text(
-                    localization?.translate("onboarding-title1") ?? "",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 68,
-                      height: 1.2,
-                      fontFamily: FontFamily.caros,
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 64),
+                          OnBoardAppbar(),
+                          const SizedBox(height: 43.8),
+                          Text(
+                            localization?.translate("onboarding-title1") ?? "",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 68,
+                              height: 1.2,
+                              fontFamily: FontFamily.caros,
+                            ),
+                          ),
+                          Text(
+                            localization?.translate("onboarding-title2") ?? "",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 68,
+                              height: 1.2,
+                              fontFamily: FontFamily.caros,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          OnBoardSubtitle(),
+                          const SizedBox(height: 38),
+                          OnBoardLoginButtonsRow(),
+                          const SizedBox(height: 20),
+                          OnBoardDivider(),
+                          const SizedBox(height: 20),
+                          ChatTextButton(
+                            onTap: isLogingIn
+                                ? null
+                                : () => context.push('/signup'),
+                            text: isLogingIn
+                                ? localization
+                                        ?.translate("signing-in-button-text") ??
+                                    ""
+                                : localization
+                                        ?.translate("sign-in-button-text") ??
+                                    "",
+                            buttonColor: Color(0xFF24786D),
+                            textColor: Colors.white,
+                          ),
+                          const SizedBox(height: 20),
+                          OnBoardExistingAccount(),
+                          const SizedBox(height: 46),
+                        ],
+                      ),
                     ),
                   ),
-                  Text(
-                    localization?.translate("onboarding-title2") ?? "",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 68,
-                      height: 1.2,
-                      fontFamily: FontFamily.caros,
-                      fontWeight: FontWeight.bold,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        TextButton(
+                          onPressed: () {
+                            localeNotifier.setLocale(AppLocale.en);
+                          },
+                          style: TextButton.styleFrom(
+                            minimumSize: const Size(100, 48),
+                            backgroundColor: locale.languageCode == "en"
+                                ? Color(0xFF24786D)
+                                : Colors.transparent,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                          ),
+                          child: Text(
+                            "English",
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium!
+                                .copyWith(
+                                  color: Colors.white,
+                                ),
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        TextButton(
+                          onPressed: () {
+                            localeNotifier.setLocale(AppLocale.pt);
+                          },
+                          style: TextButton.styleFrom(
+                            minimumSize: const Size(100, 48),
+                            backgroundColor: locale.languageCode == "pt"
+                                ? Color(0xFF24786D)
+                                : Colors.transparent,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                          ),
+                          child: Text(
+                            "Português",
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium!
+                                .copyWith(
+                                  color: Colors.white,
+                                ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  const SizedBox(height: 16),
-                  OnBoardSubtitle(),
-                  const SizedBox(height: 38),
-                  OnBoardLoginButtonsRow(),
-                  const SizedBox(height: 20),
-                  OnBoardDivider(),
-                  const SizedBox(height: 20),
-                  ChatTextButton(
-                    onTap: isLogingIn ? null : () => context.push('/signup'),
-                    text: isLogingIn
-                        ? localization?.translate("signing-in-button-text") ??
-                            ""
-                        : localization?.translate("sign-in-button-text") ?? "",
-                    buttonColor: Color(0xFF24786D),
-                    textColor: Colors.white,
-                  ),
-                  const SizedBox(height: 46),
-                  OnBoardExistingAccount(),
-                  const SizedBox(height: 46),
                 ],
               ),
             ),
