@@ -94,7 +94,12 @@ class _ChatInputFieldState extends ConsumerState<ChatInputField> {
                           .update((state) => false);
                     }
                   },
-                  onSubmitted: (text) => _sendMessage(ref, context),
+                  onSubmitted: (text) {
+                    _sendMessage(ref, context);
+                    ref
+                        .read(showSendMessageIconProvider.notifier)
+                        .update((state) => false);
+                  },
                   focusNode: _focusNode,
                   controller: _chatTextFieldController,
                 ),
