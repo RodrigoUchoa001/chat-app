@@ -102,61 +102,64 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 16),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        TextButton(
-                          onPressed: () {
-                            localeNotifier.setLocale(AppLocale.en);
-                          },
-                          style: TextButton.styleFrom(
-                            minimumSize: const Size(100, 48),
-                            backgroundColor: locale.languageCode == "en"
-                                ? Colors.white
-                                : Colors.transparent,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16),
+                    child: Container(
+                      width: 192,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50),
+                        color: Colors.white,
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(2),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            TextButton(
+                              onPressed: () {
+                                localeNotifier.setLocale(AppLocale.en);
+                              },
+                              style: TextButton.styleFrom(
+                                minimumSize: const Size(100, 48),
+                                backgroundColor: locale.languageCode == "en"
+                                    ? Theme.of(context).scaffoldBackgroundColor
+                                    : Colors.transparent,
+                              ),
+                              child: Text(
+                                "English",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium!
+                                    .copyWith(
+                                      color: locale.languageCode == "en"
+                                          ? Colors.white
+                                          : Colors.black,
+                                    ),
+                              ),
                             ),
-                          ),
-                          child: Text(
-                            "English",
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium!
-                                .copyWith(
-                                  color: locale.languageCode == "en"
-                                      ? Colors.black
-                                      : Colors.white,
-                                ),
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        TextButton(
-                          onPressed: () {
-                            localeNotifier.setLocale(AppLocale.pt);
-                          },
-                          style: TextButton.styleFrom(
-                            minimumSize: const Size(100, 48),
-                            backgroundColor: locale.languageCode == "pt"
-                                ? Colors.white
-                                : Colors.transparent,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16),
+                            TextButton(
+                              onPressed: () {
+                                localeNotifier.setLocale(AppLocale.pt);
+                              },
+                              style: TextButton.styleFrom(
+                                minimumSize: const Size(100, 48),
+                                backgroundColor: locale.languageCode == "pt"
+                                    ? Theme.of(context).scaffoldBackgroundColor
+                                    : Colors.transparent,
+                              ),
+                              child: Text(
+                                "Português",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium!
+                                    .copyWith(
+                                      color: locale.languageCode == "pt"
+                                          ? Colors.white
+                                          : Colors.black,
+                                    ),
+                              ),
                             ),
-                          ),
-                          child: Text(
-                            "Português",
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium!
-                                .copyWith(
-                                  color: locale.languageCode == "pt"
-                                      ? Colors.black
-                                      : Colors.white,
-                                ),
-                          ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
                   ),
                 ],
