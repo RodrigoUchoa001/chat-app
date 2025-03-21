@@ -1,4 +1,3 @@
-import 'package:chatapp/core/theme/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -11,8 +10,6 @@ class LoginIconButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final themeMode = ref.watch(themeProvider);
-
     return InkWell(
       borderRadius: BorderRadius.circular(50),
       splashColor: Color(0xFF24786D).withAlpha(150),

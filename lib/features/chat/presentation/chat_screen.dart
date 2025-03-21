@@ -597,6 +597,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                     if (islastMessage) const SizedBox(height: 8),
                     if (islastMessage)
                       Row(
+                        // TODO: move this to the right
                         children: [
                           ...message.seenBy!
                               .where((userId) => userId != currentUser!.uid)
@@ -705,7 +706,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     } else if (messageDate.day ==
         DateTime.now().subtract(const Duration(days: 1)).day) {
       return localization?.translate("yesterday") ?? "";
-      ;
     } else {
       return DateFormat('dd/MM/yyyy').format(
         DateTime.parse(timestamp),

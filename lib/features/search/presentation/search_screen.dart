@@ -199,7 +199,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                         if (friend.statusMessage != null &&
                                             friend.statusMessage!.isNotEmpty)
                                           Text(
-                                            friends[index]!.statusMessage!,
+                                            friends[index].statusMessage!,
                                             style: TextStyle(
                                               color: Color(0xFF797C7B),
                                               fontSize: 12,

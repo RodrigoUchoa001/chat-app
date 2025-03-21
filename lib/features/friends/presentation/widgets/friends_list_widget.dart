@@ -31,9 +31,6 @@ class FriendsListWidget extends ConsumerWidget {
 
     final themeMode = ref.watch(themeProvider);
 
-    final locale = ref.watch(localeProvider);
-    final localization = ref.watch(localizationProvider(locale)).value;
-
     return Padding(
       padding: const EdgeInsets.only(top: 26),
       child: SingleChildScrollView(

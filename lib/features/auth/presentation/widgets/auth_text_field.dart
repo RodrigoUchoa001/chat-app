@@ -1,5 +1,3 @@
-import 'package:chatapp/core/localization/app_localization.dart';
-import 'package:chatapp/core/localization/locale_provider.dart';
 import 'package:chatapp/core/theme/theme_provider.dart';
 import 'package:chatapp/gen/fonts.gen.dart';
 import 'package:flutter/material.dart';
