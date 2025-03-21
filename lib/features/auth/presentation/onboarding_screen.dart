@@ -90,8 +90,8 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                                 : localization
                                         ?.translate("sign-in-button-text") ??
                                     "",
-                            buttonColor: Color(0xFF24786D),
-                            textColor: Colors.white,
+                            buttonColor: Colors.white,
+                            textColor: Colors.black,
                           ),
                           const SizedBox(height: 20),
                           OnBoardExistingAccount(),
@@ -112,7 +112,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                           style: TextButton.styleFrom(
                             minimumSize: const Size(100, 48),
                             backgroundColor: locale.languageCode == "en"
-                                ? Color(0xFF24786D)
+                                ? Colors.white
                                 : Colors.transparent,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(16),
@@ -124,7 +124,9 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                                 .textTheme
                                 .bodyMedium!
                                 .copyWith(
-                                  color: Colors.white,
+                                  color: locale.languageCode == "en"
+                                      ? Colors.black
+                                      : Colors.white,
                                 ),
                           ),
                         ),
@@ -136,7 +138,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                           style: TextButton.styleFrom(
                             minimumSize: const Size(100, 48),
                             backgroundColor: locale.languageCode == "pt"
-                                ? Color(0xFF24786D)
+                                ? Colors.white
                                 : Colors.transparent,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(16),
@@ -148,7 +150,9 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                                 .textTheme
                                 .bodyMedium!
                                 .copyWith(
-                                  color: Colors.white,
+                                  color: locale.languageCode == "pt"
+                                      ? Colors.black
+                                      : Colors.white,
                                 ),
                           ),
                         ),
