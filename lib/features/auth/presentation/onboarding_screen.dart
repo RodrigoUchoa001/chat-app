@@ -2,6 +2,7 @@ import 'package:chatapp/core/localization/app_localization.dart';
 import 'package:chatapp/core/localization/locale_provider.dart';
 import 'package:chatapp/core/widgets/chat_text_button.dart';
 import 'package:chatapp/features/auth/presentation/providers/is_loging_in_provider.dart';
+import 'package:chatapp/features/auth/presentation/widgets/language_switch.dart';
 import 'package:chatapp/features/auth/presentation/widgets/on_board_appbar.dart';
 import 'package:chatapp/features/auth/presentation/widgets/on_board_divider.dart';
 import 'package:chatapp/features/auth/presentation/widgets/on_board_existing_account.dart';
@@ -26,8 +27,6 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
     final isLogingIn = ref.watch(isLogingInProvider);
     final locale = ref.watch(localeProvider);
     final localization = ref.watch(localizationProvider(locale)).value;
-
-    final localeNotifier = ref.read(localeProvider.notifier);
 
     return Scaffold(
       backgroundColor: Color(0xFF1A1A1A),
@@ -100,68 +99,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    child: Container(
-                      width: 192,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50),
-                        color: Colors.white,
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(2),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            TextButton(
-                              onPressed: () {
-                                localeNotifier.setLocale(AppLocale.en);
-                              },
-                              style: TextButton.styleFrom(
-                                minimumSize: const Size(100, 48),
-                                backgroundColor: locale.languageCode == "en"
-                                    ? Theme.of(context).scaffoldBackgroundColor
-                                    : Colors.transparent,
-                              ),
-                              child: Text(
-                                "English",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium!
-                                    .copyWith(
-                                      color: locale.languageCode == "en"
-                                          ? Colors.white
-                                          : Colors.black,
-                                    ),
-                              ),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                localeNotifier.setLocale(AppLocale.pt);
-                              },
-                              style: TextButton.styleFrom(
-                                minimumSize: const Size(100, 48),
-                                backgroundColor: locale.languageCode == "pt"
-                                    ? Theme.of(context).scaffoldBackgroundColor
-                                    : Colors.transparent,
-                              ),
-                              child: Text(
-                                "Português",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium!
-                                    .copyWith(
-                                      color: locale.languageCode == "pt"
-                                          ? Colors.white
-                                          : Colors.black,
-                                    ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
+                  LanguageSwitch(),
                 ],
               ),
             ),
