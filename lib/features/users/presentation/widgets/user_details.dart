@@ -1,8 +1,13 @@
 import 'package:chatapp/core/localization/app_localization.dart';
 import 'package:chatapp/core/localization/locale_provider.dart';
+import 'package:chatapp/core/providers/firebase_auth_providers.dart';
 import 'package:chatapp/features/auth/data/dto/user_dto.dart';
+import 'package:chatapp/features/auth/data/repositories/auth_repository.dart';
+import 'package:chatapp/features/settings/presentation/widgets/setting_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 class UserDetails extends ConsumerStatefulWidget {
@@ -18,6 +23,10 @@ class _UserDetailsState extends ConsumerState<UserDetails> {
   Widget build(BuildContext context) {
     final locale = ref.watch(localeProvider);
     final localization = ref.watch(localizationProvider(locale)).value;
+
+    final authRepo = ref.watch(authRepositoryProvider);
+
+    final currentUser = ref.watch(currentUserProvider).value;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 28),
@@ -42,6 +51,31 @@ class _UserDetailsState extends ConsumerState<UserDetails> {
             DateFormat('dd/MM/yyyy')
                 .format(DateTime.parse(widget.user.createdAt!)),
           ),
+          const SizedBox(height: 32),
+          currentUser!.uid == widget.user.uid
+              ? Material(
+                  color: Color(0xFFEA3736).withAlpha(100),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                  ),
+                  child: SettingButton(
+                    title: localization
+                            ?.translate("settings-account-sign-out-title") ??
+                        "",
+                    subtitle: localization
+                            ?.translate("settings-account-sign-out-subtitle") ??
+                        "",
+                    onTap: () async {
+                      try {
+                        await authRepo.logout();
+                        context.go("/onboarding");
+                      } on Exception catch (e) {
+                        Fluttertoast.showToast(msg: "Error: $e");
+                      }
+                    },
+                  ),
+                )
+              : Container(),
           const SizedBox(height: 32),
         ],
       ),
