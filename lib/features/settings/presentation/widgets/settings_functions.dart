@@ -33,49 +33,57 @@ class _SettingsFunctionsState extends ConsumerState<SettingsFunctions> {
 
     return ListView(
       children: [
-        const SizedBox(height: 41),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: Row(
-            children: [
-              ChatProfilePic(
-                chatPhotoURL: currentUser?.photoURL,
-                isOnline: false,
-              ),
-              const SizedBox(width: 15),
-              StreamBuilder(
-                stream: userRepo.getUserDetails(currentUser!.uid),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const CircularProgressIndicator();
-                  }
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        snapshot.data!.name ?? '',
-                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
+        const SizedBox(height: 21),
+        Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: () => context.push('/user-details/${currentUser.uid}'),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+              child: Row(
+                children: [
+                  ChatProfilePic(
+                    chatPhotoURL: currentUser?.photoURL,
+                    isOnline: false,
+                  ),
+                  const SizedBox(width: 15),
+                  StreamBuilder(
+                    stream: userRepo.getUserDetails(currentUser!.uid),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const CircularProgressIndicator();
+                      }
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            snapshot.data!.name ?? '',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium!
+                                .copyWith(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                          ),
+                          const SizedBox(height: 6),
+                          Text(
+                            snapshot.data!.statusMessage ?? '',
+                            style: const TextStyle(
+                              color: Color(0xFF797C7B),
+                              fontSize: 12,
+                              fontFamily: FontFamily.circular,
                             ),
-                      ),
-                      const SizedBox(height: 6),
-                      Text(
-                        snapshot.data!.statusMessage ?? '',
-                        style: const TextStyle(
-                          color: Color(0xFF797C7B),
-                          fontSize: 12,
-                          fontFamily: FontFamily.circular,
-                        ),
-                      ),
-                    ],
-                  );
-                },
-              )
-            ],
+                          ),
+                        ],
+                      );
+                    },
+                  )
+                ],
+              ),
+            ),
           ),
         ),
-        const SizedBox(height: 20),
         Divider(
             height: 1,
             color: themeMode == ThemeMode.dark ||
