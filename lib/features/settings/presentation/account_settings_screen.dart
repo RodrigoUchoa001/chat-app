@@ -272,6 +272,11 @@ class _AccountSettingsScreenState extends ConsumerState<AccountSettingsScreen> {
                         subtitle: localization?.translate(
                                 "settings-account-sign-out-subtitle") ??
                             "",
+                        subtitleStyle:
+                            Theme.of(context).textTheme.bodySmall!.copyWith(
+                                  fontSize: 12,
+                                  color: Colors.white.withAlpha(150),
+                                ),
                         onTap: () async {
                           try {
                             await authRepo.logout();
