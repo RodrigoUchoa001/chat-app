@@ -53,20 +53,34 @@ class _ChatScreenState extends ConsumerState<ChatsListScreen> {
                     ),
                     title: localization?.translate("home") ?? "",
                     rightButton: currentUser!.photoURL != null
-                        ? CircleAvatar(
-                            radius: 22,
-                            backgroundImage: NetworkImage(
-                              currentUser.photoURL ?? '',
+                        ? Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              onTap: () => context
+                                  .push('/user-details/${currentUser.uid}'),
+                              child: CircleAvatar(
+                                radius: 22,
+                                backgroundImage: NetworkImage(
+                                  currentUser.photoURL ?? '',
+                                ),
+                              ),
                             ),
                           )
-                        : Container(
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(50),
-                            ),
-                            child: SvgPicture.asset(
-                              Assets.icons.user.path,
-                              height: 52,
+                        : Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              onTap: () => context
+                                  .push('/user-details/${currentUser.uid}'),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(50),
+                                ),
+                                child: SvgPicture.asset(
+                                  Assets.icons.user.path,
+                                  height: 52,
+                                ),
+                              ),
                             ),
                           ),
                   ),
