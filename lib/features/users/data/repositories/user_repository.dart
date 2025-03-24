@@ -22,7 +22,7 @@ class UserRepository implements UserRepositoryInterface {
     return _firestore.collection('users').doc(userId).snapshots().map((doc) {
       if (!doc.exists) return null;
 
-      return UserDTO.fromJson(doc.data()!);
+      return UserDTO.fromJson(doc.data()!).copyWith(uid: doc.id);
     });
   }
 
