@@ -1,4 +1,3 @@
-import 'package:chatapp/gen/fonts.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -7,12 +6,16 @@ class SettingButton extends ConsumerWidget {
   final String? iconPath;
   final String? imagePath;
   final String title;
+  final TextStyle? titleStyle;
   final String subtitle;
+  final TextStyle? subtitleStyle;
   final Widget? trailing;
   final Function()? onTap;
   const SettingButton(
       {this.iconPath,
       this.imagePath,
+      this.titleStyle,
+      this.subtitleStyle,
       required this.title,
       required this.subtitle,
       required this.onTap,
@@ -59,18 +62,18 @@ class SettingButton extends ConsumerWidget {
                 children: [
                   Text(
                     title,
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                          fontSize: 16,
-                        ),
+                    style: titleStyle ??
+                        Theme.of(context).textTheme.bodyMedium!.copyWith(
+                              fontSize: 16,
+                            ),
                   ),
                   const SizedBox(height: 6),
                   Text(
                     subtitle,
-                    style: const TextStyle(
-                      fontSize: 12,
-                      fontFamily: FontFamily.circular,
-                      color: Color(0xFF797C7B),
-                    ),
+                    style: subtitleStyle ??
+                        Theme.of(context).textTheme.bodySmall!.copyWith(
+                              fontSize: 12,
+                            ),
                   ),
                 ],
               ),
