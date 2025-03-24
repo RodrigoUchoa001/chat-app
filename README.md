@@ -15,8 +15,8 @@ Inspired by the design of Alex Hylton, design available at [Chatting App UI kit 
 ## Functionalities
 - ✅✅ Users
     - ✅✅ Login with Google. 
-    - ✅✅ Login and Signup with email and password. 
-- ✅ Friends Requests
+    - ✅✅ Login and signup with email and password. 
+- ✅✅ Friends Requests
     - ✅✅ Send friend requests to another accounts.
     - ✅✅ Accept or decline friend requests by another accounts.
 - ❗Chats
@@ -24,9 +24,9 @@ Inspired by the design of Alex Hylton, design available at [Chatting App UI kit 
     - ✅✅ Create groups with your friends.
     - ✅✅ Send and receive text messages in groups with friends.
     - ✖️ Send media in private chats or groups. *(firebase storage is now paid)*
-- Messages
-    - See if your friend saw your private message.
-    - See who saw your message in the group.
+- ✅✅ Messages
+    - ✅✅ See if your friend saw your private message.
+    - ✅✅ See who saw your message in the group.
 - Stories
     - Post stories for friends.
     - List the stories of your friends.
