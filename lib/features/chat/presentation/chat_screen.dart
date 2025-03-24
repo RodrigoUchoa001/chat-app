@@ -514,7 +514,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                   const SizedBox(width: 52),
                 const SizedBox(width: 12),
                 Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: !isPreviousFromSameSender
+                      ? CrossAxisAlignment.start
+                      : CrossAxisAlignment.end,
                   children: [
                     if (!isPreviousFromSameSender && !isMe)
                       StreamBuilder(
@@ -597,7 +599,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                     if (islastMessage) const SizedBox(height: 8),
                     if (islastMessage)
                       Row(
-                        // TODO: move this to the right
                         children: [
                           ...message.seenBy!
                               .where((userId) => userId != currentUser!.uid)
