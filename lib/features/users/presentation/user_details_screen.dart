@@ -1,5 +1,6 @@
 import 'package:chatapp/core/localization/app_localization.dart';
 import 'package:chatapp/core/localization/locale_provider.dart';
+import 'package:chatapp/core/providers/firebase_auth_providers.dart';
 import 'package:chatapp/core/theme/theme_provider.dart';
 import 'package:chatapp/core/widgets/app_bar_widget.dart';
 import 'package:chatapp/core/widgets/home_content_background_widget.dart';
@@ -30,6 +31,8 @@ class _UserDetailsScreenState extends ConsumerState<UserDetailsScreen> {
 
     final userRepo = ref.watch(userRepositoryProvider);
     final chatRepo = ref.watch(chatRepositoryProvider);
+
+    final currentUser = ref.watch(currentUserProvider).asData?.value;
 
     final themeMode = ref.watch(themeProvider);
 
@@ -111,37 +114,40 @@ class _UserDetailsScreenState extends ConsumerState<UserDetailsScreen> {
                                     ),
                               ),
                               const SizedBox(height: 20),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  _profileIconButton(
-                                    Assets.icons.message.path,
-                                    () async {
-                                      context.push(
-                                          '/chat/${await chatRepo.getPrivateChatIdByFriendId(widget.userId)}');
-                                    },
-                                    themeMode,
-                                  ),
-                                  const SizedBox(width: 33),
-                                  _profileIconButton(
-                                    Assets.icons.video.path,
-                                    () {},
-                                    themeMode,
-                                  ),
-                                  const SizedBox(width: 33),
-                                  _profileIconButton(
-                                    Assets.icons.call.path,
-                                    () {},
-                                    themeMode,
-                                  ),
-                                  const SizedBox(width: 33),
-                                  _profileIconButton(
-                                    Assets.icons.more.path,
-                                    () {},
-                                    themeMode,
-                                  ),
-                                ],
-                              ),
+                              currentUser!.uid != widget.userId
+                                  ? Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        _profileIconButton(
+                                          Assets.icons.message.path,
+                                          () async {
+                                            context.push(
+                                                '/chat/${await chatRepo.getPrivateChatIdByFriendId(widget.userId)}');
+                                          },
+                                          themeMode,
+                                        ),
+                                        const SizedBox(width: 33),
+                                        _profileIconButton(
+                                          Assets.icons.video.path,
+                                          () {},
+                                          themeMode,
+                                        ),
+                                        const SizedBox(width: 33),
+                                        _profileIconButton(
+                                          Assets.icons.call.path,
+                                          () {},
+                                          themeMode,
+                                        ),
+                                        const SizedBox(width: 33),
+                                        _profileIconButton(
+                                          Assets.icons.more.path,
+                                          () {},
+                                          themeMode,
+                                        ),
+                                      ],
+                                    )
+                                  : SizedBox(height: 19.5),
                             ],
                           );
                         },
@@ -152,7 +158,8 @@ class _UserDetailsScreenState extends ConsumerState<UserDetailsScreen> {
               ),
             ),
             HomeContentBackground(
-              height: screenHeight - 313.33,
+              height: screenHeight -
+                  (currentUser!.uid != widget.userId ? 313.33 : 200),
               child: StreamBuilder(
                 stream: userRepo.getUserDetails(widget.userId),
                 builder: (context, snapshot) {
