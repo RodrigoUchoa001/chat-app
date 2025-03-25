@@ -11,6 +11,7 @@ abstract interface class ChatRepositoryInterface {
   Future<MessageDTO?> sendMessage(
     String chatId,
     String message,
+    bool isMedia,
     bool isVideo,
   );
   Future<void> markMessageAsSeen(String chatId, String messageId);
