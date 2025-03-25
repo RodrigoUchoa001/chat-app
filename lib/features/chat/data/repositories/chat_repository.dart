@@ -103,6 +103,7 @@ class ChatRepository implements ChatRepositoryInterface {
   Future<MessageDTO?> sendMessage(
     String chatId,
     String message,
+    bool isMedia,
     bool isVideo, {
     String? friendId,
   }) async {
@@ -127,7 +128,11 @@ class ChatRepository implements ChatRepositoryInterface {
             senderId: _userId,
             text: message,
             timestamp: DateTime.now().toString(),
-            messageType: isVideo ? 'video' : 'text',
+            messageType: isMedia
+                ? isVideo
+                    ? 'video'
+                    : 'image'
+                : 'text',
             seenBy: [],
           ).toJson(),
         )
@@ -139,7 +144,11 @@ class ChatRepository implements ChatRepositoryInterface {
           senderId: _userId,
           text: message,
           timestamp: DateTime.now().toString(),
-          messageType: isVideo ? 'video' : 'text',
+          messageType: isMedia
+              ? isVideo
+                  ? 'video'
+                  : 'image'
+              : 'text',
         ).toJson()
       });
 
@@ -147,7 +156,11 @@ class ChatRepository implements ChatRepositoryInterface {
         senderId: doc.id,
         text: message,
         timestamp: DateTime.now().toString(),
-        messageType: isVideo ? 'video' : 'text',
+        messageType: isMedia
+            ? isVideo
+                ? 'video'
+                : 'image'
+            : 'text',
       );
     });
   }
