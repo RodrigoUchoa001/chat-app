@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -8,11 +10,13 @@ class CloudinaryService {
   final String apiKey = dotenv.env['CLOUDINARY_API_KEY']!;
   final String apiSecret = dotenv.env['CLOUDINARY_API_SECRET']!;
 
-  Future<String> uploadImage(String filePath) async {
+  Future<String> uploadMedia(File mediaFile, {required bool isVideo}) async {
     try {
-      final url = 'https://api.cloudinary.com/v1_1/$cloudName/image/upload';
+      final url =
+          'https://api.cloudinary.com/v1_1/$cloudName/${isVideo ? 'video' : 'image'}/upload';
+
       FormData formData = FormData.fromMap({
-        'file': MultipartFile.fromFileSync(filePath),
+        'file': MultipartFile.fromFile(mediaFile.path),
         'upload_preset': 'unsigned_preset',
         'api_key': apiKey,
         'timestamp': DateTime.now().millisecondsSinceEpoch ~/ 1000,
