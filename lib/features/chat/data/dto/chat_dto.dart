@@ -82,14 +82,21 @@ class MessageDTO {
   String? senderId;
   String? text;
   String? timestamp;
+  String? messageType;
   List<String>? seenBy;
 
-  MessageDTO({this.senderId, this.text, this.timestamp, this.seenBy});
+  MessageDTO(
+      {this.senderId,
+      this.text,
+      this.timestamp,
+      this.messageType,
+      this.seenBy});
 
   MessageDTO.fromJson(Map<String, dynamic> json) {
     senderId = json['senderId'];
     text = json['text'];
     timestamp = json['timestamp'];
+    messageType = json['messageType'];
     if (json['seenBy'] != null) {
       seenBy = json['seenBy'].cast<String>();
     }
@@ -100,6 +107,7 @@ class MessageDTO {
     data['senderId'] = senderId;
     data['text'] = text;
     data['timestamp'] = timestamp;
+    data['messageType'] = messageType;
     if (seenBy != null) {
       data['seenBy'] = seenBy;
     }
