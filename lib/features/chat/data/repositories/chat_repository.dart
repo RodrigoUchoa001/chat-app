@@ -102,7 +102,8 @@ class ChatRepository implements ChatRepositoryInterface {
   @override
   Future<MessageDTO?> sendMessage(
     String chatId,
-    String message, {
+    String message,
+    bool isVideo, {
     String? friendId,
   }) async {
     final chatRef = _firestore.collection('chats').doc(chatId);
@@ -126,6 +127,7 @@ class ChatRepository implements ChatRepositoryInterface {
             senderId: _userId,
             text: message,
             timestamp: DateTime.now().toString(),
+            messageType: isVideo ? 'video' : 'text',
             seenBy: [],
           ).toJson(),
         )
@@ -137,6 +139,7 @@ class ChatRepository implements ChatRepositoryInterface {
           senderId: _userId,
           text: message,
           timestamp: DateTime.now().toString(),
+          messageType: isVideo ? 'video' : 'text',
         ).toJson()
       });
 
@@ -144,6 +147,7 @@ class ChatRepository implements ChatRepositoryInterface {
         senderId: doc.id,
         text: message,
         timestamp: DateTime.now().toString(),
+        messageType: isVideo ? 'video' : 'text',
       );
     });
   }
