@@ -8,7 +8,11 @@ abstract interface class ChatRepositoryInterface {
   Future<String?> getPrivateChatIdByFriendId(String friendId);
   Stream<int> getUnseenMessagesCount(String chatId);
   Stream<List<MessageDTO>?> getMessages(String chatId);
-  Future<MessageDTO?> sendMessage(String chatId, String message);
+  Future<MessageDTO?> sendMessage(
+    String chatId,
+    String message,
+    bool isVideo,
+  );
   Future<void> markMessageAsSeen(String chatId, String messageId);
   Future<void> createPrivateChat(String friendId);
   Future<String> createGroupChat(
