@@ -50,6 +50,7 @@ flutter:
     - assets/background/
     - assets/icons/
     - assets/lang/
+    - .env
   
   fonts:
     - family: Caros
