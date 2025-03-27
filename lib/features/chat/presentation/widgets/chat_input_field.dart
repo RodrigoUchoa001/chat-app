@@ -146,6 +146,154 @@ class _ChatInputFieldState extends ConsumerState<ChatInputField> {
     );
   }
 
+  void _showMediaOptions(BuildContext context, WidgetRef ref) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (context) {
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 16, bottom: 8),
+                  child: Text(
+                    "Select media format:",
+                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                          fontSize: 20,
+                        ),
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    _mediaButton(context),
+                    _mediaButton(context, isVideo: true),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Padding _mediaButton(BuildContext context, {bool isVideo = false}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 16),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () => _pickMedia(ref, isVideo: isVideo),
+          borderRadius: BorderRadius.circular(50),
+          child: Container(
+            width: 100,
+            height: 100,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(50),
+              border: Border.all(
+                color: Theme.of(context).cardColor,
+                width: 1,
+              ),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                  onPressed: null,
+                  icon: Icon(
+                    isVideo ? Icons.video_call : Icons.image,
+                  ),
+                ),
+                Text(isVideo ? "Video" : "Image",
+                    style: Theme.of(context).textTheme.bodyMedium),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _pickMedia(WidgetRef ref, {required bool isVideo}) async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickMedia();
+
+    if (pickedFile != null) {
+      final File mediaFile = File(pickedFile.path);
+      _showConfirmMediaModal(context, ref, mediaFile, isVideo);
+    }
+  }
+
+  void _showConfirmMediaModal(
+      BuildContext context, WidgetRef ref, File mediaFile, bool isVideo) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (context) {
+        return Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (isVideo)
+                VideoPreview(mediaFile)
+              else
+                Image.file(mediaFile, height: 250, fit: BoxFit.cover),
+              const SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context), // 🔥 Cancelar
+                    child: const Text("Cancel",
+                        style: TextStyle(color: Colors.red)),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      _sendMedia(ref, mediaFile, isVideo);
+                    },
+                    child: const Text("Send"),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _sendMedia(WidgetRef ref, File mediaFile, bool isVideo) async {
+    final mediaRepo = ref.read(mediaRepositoryProvider);
+
+    Fluttertoast.showToast(msg: "Uploading ${isVideo ? 'video' : 'image'}...");
+
+    final mediaUrl = await mediaRepo.uploadMedia(mediaFile, isVideo: isVideo);
+
+    if (mediaUrl != null) {
+      final chatRepo = ref.read(chatRepositoryProvider);
+      chatRepo.sendMessage(widget.chatId, mediaUrl, true, isVideo);
+
+      Fluttertoast.showToast(msg: "${isVideo ? 'Video' : 'Image'} sent!");
+    } else {
+      Fluttertoast.showToast(
+          msg: "Failed to upload ${isVideo ? 'video' : 'image'}");
+    }
+  }
+
   Widget _buildButtons(bool showSendMessageIcon, WidgetRef ref) {
     if (showSendMessageIcon) {
       return ChatIconButton(
