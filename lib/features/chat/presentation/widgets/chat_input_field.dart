@@ -82,7 +82,7 @@ class _ChatInputFieldState extends ConsumerState<ChatInputField> {
           children: [
             ChatIconButton(
               iconPath: Assets.icons.clip.path,
-              onPressed: () => _showMediaOptions(context),
+              onPressed: () => _showMediaOptions(context, ref),
             ),
             Expanded(
               child: Padding(
