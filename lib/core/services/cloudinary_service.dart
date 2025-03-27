@@ -15,7 +15,7 @@ class CloudinaryService {
   final String apiKey = dotenv.env['CLOUDINARY_API_KEY']!;
   final String apiSecret = dotenv.env['CLOUDINARY_API_SECRET']!;
 
-  Future<String> uploadMedia(File mediaFile, {required bool isVideo}) async {
+  Future<String?> uploadMedia(File mediaFile, {required bool isVideo}) async {
     try {
       final url =
           'https://api.cloudinary.com/v1_1/$cloudName/${isVideo ? 'video' : 'image'}/upload';
@@ -30,13 +30,13 @@ class CloudinaryService {
       final response = await _dio.post(url, data: formData);
 
       if (response.statusCode == 200) {
-        final imageUrl = response.data['secure_url'];
-        return imageUrl;
+        return response.data["secure_url"];
       } else {
-        throw Exception('Failed to upload image');
+        return null;
       }
     } catch (e) {
-      throw Exception('Failed to upload image: $e');
+      print("Erro ao enviar mídia para Cloudinary: $e");
+      return null;
     }
   }
 }
