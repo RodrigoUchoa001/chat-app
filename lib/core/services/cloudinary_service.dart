@@ -17,12 +17,12 @@ class CloudinaryService {
 
   Future<String?> uploadMedia(File mediaFile, {required bool isVideo}) async {
     try {
-      final url =
-          'https://api.cloudinary.com/v1_1/$cloudName/${isVideo ? 'video' : 'image'}/upload';
+      final url = 'https://api.cloudinary.com/v1_1/$cloudName/upload/';
 
       FormData formData = FormData.fromMap({
-        'file': MultipartFile.fromFile(mediaFile.path),
-        'upload_preset': 'unsigned_preset',
+        // dont forget to put await
+        'file': await MultipartFile.fromFile(mediaFile.path),
+        'upload_preset': 'testeteste',
         'api_key': apiKey,
         'timestamp': DateTime.now().millisecondsSinceEpoch ~/ 1000,
       });
