@@ -16,7 +16,7 @@ class MediaRepository implements MediaRepositoryInterface {
   MediaRepository(this._cloudinaryService);
 
   @override
-  Future<String> uploadMedia(File mediaFile, {required bool isVideo}) {
+  Future<String?> uploadMedia(File mediaFile, {required bool isVideo}) {
     return _cloudinaryService.uploadMedia(mediaFile, isVideo: isVideo);
   }
 }
