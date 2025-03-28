@@ -684,8 +684,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     );
   }
 
-  Widget imageMessage(bool isMe, ThemeMode themeMode, bool isNextFromSameSender,
-      bool isPreviousFromSameSender, MessageDTO message) {
+  Widget mediaMessage(bool isMe, ThemeMode themeMode, bool isNextFromSameSender,
+      bool isPreviousFromSameSender, MessageDTO message,
+      {bool isVideo = false}) {
     return Container(
       constraints: BoxConstraints(
         maxWidth: MediaQuery.of(context).size.width * 0.7,
@@ -715,38 +716,57 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         ),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-      child: Image.network(
-        message.text ?? '',
-        fit: BoxFit.cover,
-        loadingBuilder: (context, child, loadingProgress) {
-          if (loadingProgress == null) {
-            return child;
-          } else {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-        },
-        errorBuilder: (context, error, stackTrace) {
-          return Center(
-            child: Column(
-              children: [
-                Icon(
-                  Icons.error,
-                  color: Colors.red,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          Image.network(
+            message.text ?? '',
+            fit: BoxFit.cover,
+            loadingBuilder: (context, child, loadingProgress) {
+              if (loadingProgress == null) {
+                return child;
+              } else {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            },
+            errorBuilder: (context, error, stackTrace) {
+              return Center(
+                child: Column(
+                  children: [
+                    Icon(
+                      Icons.error,
+                      color: Colors.red,
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Error loading image',
+                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                            fontSize: 12,
+                            color: Colors.red,
+                          ),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 8),
-                Text(
-                  'Error loading image',
-                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                        fontSize: 12,
-                        color: Colors.red,
-                      ),
-                ),
-              ],
+              );
+            },
+          ),
+          if (isVideo)
+            Container(
+              alignment: Alignment.center,
+              height: 50,
+              width: 50,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(50),
+                color: Colors.grey.withAlpha(150),
+              ),
+              child: const Icon(
+                Icons.play_arrow,
+                color: Colors.white,
+              ),
             ),
-          );
-        },
+        ],
       ),
     );
   }
