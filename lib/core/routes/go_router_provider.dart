@@ -125,11 +125,15 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         },
       ),
       GoRoute(
-        path: '/view-media/:mediaUrl',
+        path: '/view-media',
         name: viewMediaRoute,
-        builder: (context, state) => ViewMediaScreen(
-          mediaPath: state.pathParameters['mediaUrl']!,
-        ),
+        builder: (context, state) {
+          final mediaUrl = state.uri.queryParameters['mediaUrl'];
+
+          return ViewMediaScreen(
+            mediaUrl: mediaUrl!,
+          );
+        },
       ),
     ],
   );
