@@ -30,7 +30,7 @@ class _SendMediaConfirmationScreenState
   Widget build(BuildContext context) {
     final chatRepo = ref.watch(chatRepositoryProvider);
     final userRepo = ref.watch(userRepositoryProvider);
-    final _currentUser = ref.watch(currentUserProvider).asData?.value;
+    final currentUser = ref.watch(currentUserProvider).asData?.value;
 
     final media = File(widget.mediaFilePath);
     final mediaFormat = media.path.split(".").last;
@@ -79,7 +79,7 @@ class _SendMediaConfirmationScreenState
                       }
                       final chat = snapshot.data!;
                       final friendId = chat.participants!.firstWhere(
-                        (id) => id != _currentUser!.uid,
+                        (id) => id != currentUser!.uid,
                         orElse: () => '',
                       );
 
