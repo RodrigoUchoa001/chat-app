@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:chatapp/core/providers/firebase_auth_providers.dart';
 import 'package:chatapp/features/auth/presentation/widgets/auth_back_button.dart';
 import 'package:chatapp/features/chat/data/repositories/chat_repository.dart';
+import 'package:chatapp/features/chat/presentation/providers/video_to_send_progress_provider.dart';
 import 'package:chatapp/features/chat/presentation/widgets/chat_icon_button.dart';
-import 'package:chatapp/features/chat/presentation/widgets/video_preview.dart';
 import 'package:chatapp/features/media/data/repositories/media_repository.dart';
 import 'package:chatapp/features/users/data/repositories/user_repository.dart';
 import 'package:chatapp/gen/assets.gen.dart';
@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
+import 'package:video_player/video_player.dart';
 
 class SendMediaConfirmationScreen extends ConsumerStatefulWidget {
   final String chatId;
@@ -26,11 +27,36 @@ class SendMediaConfirmationScreen extends ConsumerStatefulWidget {
 
 class _SendMediaConfirmationScreenState
     extends ConsumerState<SendMediaConfirmationScreen> {
+  late VideoPlayerController _controller;
+
+  @override
+  void initState() {
+    _controller = VideoPlayerController.file(File(widget.mediaFilePath))
+      ..initialize().then(
+        (value) => setState(() {}),
+      )
+      ..play();
+
+    _controller.addListener(() {
+      ref.read(videoToSendProgressProvider.notifier).state =
+          _controller.value.position.inMilliseconds.toDouble();
+    });
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final chatRepo = ref.watch(chatRepositoryProvider);
     final userRepo = ref.watch(userRepositoryProvider);
     final currentUser = ref.watch(currentUserProvider).asData?.value;
+    final videoProgress = ref.watch(videoToSendProgressProvider);
 
     final media = File(widget.mediaFilePath);
     final mediaFormat = media.path.split(".").last;
@@ -55,7 +81,12 @@ class _SendMediaConfirmationScreenState
             if (mediaFormat == 'mp4')
               Expanded(
                 child: Center(
-                  child: VideoPreview(media),
+                  child: _controller.value.isInitialized
+                      ? AspectRatio(
+                          aspectRatio: _controller.value.aspectRatio,
+                          child: VideoPlayer(_controller),
+                        )
+                      : const Center(child: CircularProgressIndicator()),
                 ),
               ),
             if (mediaFormat == 'jpg' ||
