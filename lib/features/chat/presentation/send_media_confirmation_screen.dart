@@ -11,6 +11,7 @@ import 'package:chatapp/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:go_router/go_router.dart';
 
 class SendMediaConfirmationScreen extends ConsumerStatefulWidget {
   final String chatId;
@@ -113,7 +114,9 @@ class _SendMediaConfirmationScreenState
                   ChatIconButton(
                     iconPath: Assets.icons.send.path,
                     backgroundColor: Color(0xFF20A090),
-                    onPressed: () {},
+                    onPressed: () {
+                      _sendMedia(ref, media, isVideo);
+                    },
                   )
                 ],
               ),
@@ -136,6 +139,7 @@ class _SendMediaConfirmationScreenState
       chatRepo.sendMessage(widget.chatId, mediaUrl, true, isVideo);
 
       Fluttertoast.showToast(msg: "${isVideo ? 'Video' : 'Image'} sent!");
+      context.pop();
     } else {
       Fluttertoast.showToast(
           msg: "Failed to upload ${isVideo ? 'video' : 'image'}");
