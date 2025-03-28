@@ -550,11 +550,32 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                     if (!isPreviousFromSameSender && !isMe)
                       const SizedBox(height: 12),
                     if (message.messageType == 'text')
-                      textMessage(isMe, themeMode, isNextFromSameSender,
-                          isPreviousFromSameSender, message),
+                      textMessage(
+                        isMe,
+                        themeMode,
+                        isNextFromSameSender,
+                        isPreviousFromSameSender,
+                        message,
+                      ),
                     if (message.messageType == 'image')
-                      imageMessage(isMe, themeMode, isNextFromSameSender,
-                          isPreviousFromSameSender, message),
+                      // TODO: add function to click and show the image in full screen
+                      mediaMessage(
+                        isMe,
+                        themeMode,
+                        isNextFromSameSender,
+                        isPreviousFromSameSender,
+                        message,
+                      ),
+                    // TODO: add function to click and show the video in full screen
+                    if (message.messageType == 'video')
+                      mediaMessage(
+                        isMe,
+                        themeMode,
+                        isNextFromSameSender,
+                        isPreviousFromSameSender,
+                        message,
+                        isVideo: true,
+                      ),
                     if (islastMessage) const SizedBox(height: 8),
                     if (islastMessage)
                       Row(
