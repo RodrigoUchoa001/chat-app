@@ -708,86 +708,93 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   Widget mediaMessage(bool isMe, ThemeMode themeMode, bool isNextFromSameSender,
       bool isPreviousFromSameSender, MessageDTO message,
       {bool isVideo = false}) {
-    return Container(
-      constraints: BoxConstraints(
-        maxWidth: MediaQuery.of(context).size.width * 0.7,
-      ),
-      decoration: BoxDecoration(
-        color: isMe
-            ? const Color(0xFF20A090)
-            : themeMode == ThemeMode.light
-                ? Color(0xFFF2F7FB)
-                : Color(0xFF1D2525),
-        borderRadius: BorderRadius.only(
-          // If it's the FIRST message in the sequence, the bottom corner is flat
-          bottomRight: isMe
-              ? (isNextFromSameSender ? Radius.zero : Radius.circular(10))
-              : Radius.circular(10),
-          bottomLeft: isMe
-              ? Radius.circular(10)
-              : (isNextFromSameSender ? Radius.zero : Radius.circular(10)),
-
-          // If it's the LAST message in the sequence, the top corner is flat
-          topRight: isMe
-              ? (isPreviousFromSameSender ? Radius.zero : Radius.circular(10))
-              : Radius.circular(10),
-          topLeft: isMe
-              ? Radius.circular(10)
-              : (isPreviousFromSameSender ? Radius.zero : Radius.circular(10)),
+    return GestureDetector(
+      onTap: () {
+        context.push('/view-media/?mediaUrl=${message.text}');
+      },
+      child: Container(
+        constraints: BoxConstraints(
+          maxWidth: MediaQuery.of(context).size.width * 0.7,
         ),
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          Image.network(
-            message.text ?? '',
-            fit: BoxFit.cover,
-            loadingBuilder: (context, child, loadingProgress) {
-              if (loadingProgress == null) {
-                return child;
-              } else {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-            },
-            errorBuilder: (context, error, stackTrace) {
-              return Center(
-                child: Column(
-                  children: [
-                    Icon(
-                      Icons.error,
-                      color: Colors.red,
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'Error loading image',
-                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                            fontSize: 12,
-                            color: Colors.red,
-                          ),
-                    ),
-                  ],
-                ),
-              );
-            },
+        decoration: BoxDecoration(
+          color: isMe
+              ? const Color(0xFF20A090)
+              : themeMode == ThemeMode.light
+                  ? Color(0xFFF2F7FB)
+                  : Color(0xFF1D2525),
+          borderRadius: BorderRadius.only(
+            // If it's the FIRST message in the sequence, the bottom corner is flat
+            bottomRight: isMe
+                ? (isNextFromSameSender ? Radius.zero : Radius.circular(10))
+                : Radius.circular(10),
+            bottomLeft: isMe
+                ? Radius.circular(10)
+                : (isNextFromSameSender ? Radius.zero : Radius.circular(10)),
+
+            // If it's the LAST message in the sequence, the top corner is flat
+            topRight: isMe
+                ? (isPreviousFromSameSender ? Radius.zero : Radius.circular(10))
+                : Radius.circular(10),
+            topLeft: isMe
+                ? Radius.circular(10)
+                : (isPreviousFromSameSender
+                    ? Radius.zero
+                    : Radius.circular(10)),
           ),
-          if (isVideo)
-            Container(
-              alignment: Alignment.center,
-              height: 50,
-              width: 50,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(50),
-                color: Colors.grey.withAlpha(150),
-              ),
-              child: const Icon(
-                Icons.play_arrow,
-                color: Colors.white,
-              ),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Image.network(
+              message.text ?? '',
+              fit: BoxFit.cover,
+              loadingBuilder: (context, child, loadingProgress) {
+                if (loadingProgress == null) {
+                  return child;
+                } else {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+              },
+              errorBuilder: (context, error, stackTrace) {
+                return Center(
+                  child: Column(
+                    children: [
+                      Icon(
+                        Icons.error,
+                        color: Colors.red,
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        'Error loading image',
+                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                              fontSize: 12,
+                              color: Colors.red,
+                            ),
+                      ),
+                    ],
+                  ),
+                );
+              },
             ),
-        ],
+            if (isVideo)
+              Container(
+                alignment: Alignment.center,
+                height: 50,
+                width: 50,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(50),
+                  color: Colors.grey.withAlpha(150),
+                ),
+                child: const Icon(
+                  Icons.play_arrow,
+                  color: Colors.white,
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }
