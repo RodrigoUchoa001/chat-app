@@ -20,19 +20,26 @@ class _ViewMediaScreenState extends ConsumerState<ViewMediaScreen> {
 
   @override
   void initState() {
-    // _controller = VideoPlayerController.networkUrl(Uri.parse(widget.mediaUrl))
-    //   ..initialize().then(
-    //     (value) => setState(() {}),
-    //   )
-    //   ..play();
+    videoProgress = 0.0;
+    _controller = VideoPlayerController.networkUrl(Uri.parse(widget.mediaUrl))
+      ..initialize().then(
+        (value) => setState(() {}),
+      )
+      ..play();
 
-    // _controller.addListener(() {
-    //   setState(() {
-    //     videoProgress = _controller.value.position.inMilliseconds.toDouble();
-    //   });
-    // });
+    _controller.addListener(() {
+      setState(() {
+        videoProgress = _controller.value.position.inMilliseconds.toDouble();
+      });
+    });
 
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -119,15 +126,12 @@ class _ViewMediaScreenState extends ConsumerState<ViewMediaScreen> {
                           ? Icons.pause
                           : Icons.play_arrow),
                     ),
-                  if (mediaFormat == 'jpg' ||
-                      mediaFormat == 'png' ||
-                      mediaFormat == 'jpeg')
-                    Text(
-                      widget.mediaUrl.split('/').last,
-                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                            fontSize: 14,
-                          ),
-                    ),
+                  Text(
+                    widget.mediaUrl.split('/').last,
+                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                          fontSize: 14,
+                        ),
+                  ),
                 ],
               ),
             ),
