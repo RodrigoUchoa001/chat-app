@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:chatapp/core/providers/firebase_auth_providers.dart';
 import 'package:chatapp/features/auth/presentation/widgets/auth_back_button.dart';
 import 'package:chatapp/features/chat/data/repositories/chat_repository.dart';
-import 'package:chatapp/features/chat/presentation/providers/video_to_send_progress_provider.dart';
 import 'package:chatapp/features/chat/presentation/widgets/chat_icon_button.dart';
 import 'package:chatapp/features/media/data/repositories/media_repository.dart';
 import 'package:chatapp/features/users/data/repositories/user_repository.dart';
@@ -28,9 +27,11 @@ class SendMediaConfirmationScreen extends ConsumerStatefulWidget {
 class _SendMediaConfirmationScreenState
     extends ConsumerState<SendMediaConfirmationScreen> {
   late VideoPlayerController _controller;
+  late double videoProgress;
 
   @override
   void initState() {
+    videoProgress = 0.0;
     _controller = VideoPlayerController.file(File(widget.mediaFilePath))
       ..initialize().then(
         (value) => setState(() {}),
@@ -38,8 +39,9 @@ class _SendMediaConfirmationScreenState
       ..play();
 
     _controller.addListener(() {
-      ref.read(videoToSendProgressProvider.notifier).state =
-          _controller.value.position.inMilliseconds.toDouble();
+      setState(() {
+        videoProgress = _controller.value.position.inMilliseconds.toDouble();
+      });
     });
 
     super.initState();
@@ -56,7 +58,6 @@ class _SendMediaConfirmationScreenState
     final chatRepo = ref.watch(chatRepositoryProvider);
     final userRepo = ref.watch(userRepositoryProvider);
     final currentUser = ref.watch(currentUserProvider).asData?.value;
-    final videoProgress = ref.watch(videoToSendProgressProvider);
 
     final media = File(widget.mediaFilePath);
     final mediaFormat = media.path.split(".").last;
@@ -109,8 +110,9 @@ class _SendMediaConfirmationScreenState
                       onChanged: (double value) {
                         _controller
                             .seekTo(Duration(milliseconds: value.toInt()));
-                        ref.read(videoToSendProgressProvider.notifier).state =
-                            value;
+                        setState(() {
+                          videoProgress = value;
+                        });
                       },
                     ),
                   if (mediaFormat == 'mp4')
