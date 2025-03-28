@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:chatapp/core/localization/app_localization.dart';
 import 'package:chatapp/core/localization/locale_provider.dart';
 import 'package:chatapp/core/providers/firebase_auth_providers.dart';
@@ -13,11 +15,15 @@ import 'package:chatapp/features/users/domain/user_repository_interface.dart';
 import 'package:chatapp/gen/assets.gen.dart';
 import 'package:chatapp/gen/fonts.gen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get_thumbnail_video/index.dart';
+import 'package:get_thumbnail_video/video_thumbnail.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:video_player/video_player.dart';
 
 class ChatScreen extends ConsumerStatefulWidget {
   final String chatId;
@@ -746,39 +752,64 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         child: Stack(
           alignment: Alignment.center,
           children: [
-            Image.network(
-              message.text ?? '',
-              fit: BoxFit.cover,
-              loadingBuilder: (context, child, loadingProgress) {
-                if (loadingProgress == null) {
-                  return child;
-                } else {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-              },
-              errorBuilder: (context, error, stackTrace) {
-                return Center(
-                  child: Column(
-                    children: [
-                      Icon(
-                        Icons.error,
-                        color: Colors.red,
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        'Error loading image',
-                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                              fontSize: 12,
+            isVideo
+                ?
+                // video thumbnail here
+                FutureBuilder(
+                    future: VideoThumbnail.thumbnailFile(
+                      video: message.text ?? '',
+                      imageFormat: ImageFormat.JPEG,
+                      quality: 75,
+                    ),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      }
+                      final data = snapshot.data;
+                      return kIsWeb
+                          ? Image.network(data!.path)
+                          : Image.file(File(data!.path));
+                      ;
+                    },
+                  )
+                : Image.network(
+                    message.text ?? '',
+                    fit: BoxFit.cover,
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) {
+                        return child;
+                      } else {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                    },
+                    errorBuilder: (context, error, stackTrace) {
+                      return Center(
+                        child: Column(
+                          children: [
+                            Icon(
+                              Icons.error,
                               color: Colors.red,
                             ),
-                      ),
-                    ],
+                            const SizedBox(height: 8),
+                            Text(
+                              'Error loading image',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall!
+                                  .copyWith(
+                                    fontSize: 12,
+                                    color: Colors.red,
+                                  ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
                   ),
-                );
-              },
-            ),
             if (isVideo)
               Container(
                 alignment: Alignment.center,
