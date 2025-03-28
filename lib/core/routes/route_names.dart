@@ -15,3 +15,4 @@ String appSettingsRoute = 'app-settings';
 String profileRoute = 'profile';
 String searchRoute = 'search';
 String userDetailsRoute = 'user-details';
+String sendMediaConfirmationRoute = 'send-media-confirmation';
