@@ -7,6 +7,7 @@ import 'package:chatapp/features/chat/presentation/chat_screen.dart';
 import 'package:chatapp/features/chat/presentation/chats_list_screen.dart';
 import 'package:chatapp/features/chat/presentation/create_group_screen.dart';
 import 'package:chatapp/features/chat/presentation/select_friends_to_create_group_screen.dart';
+import 'package:chatapp/features/chat/presentation/send_media_confirmation_screen.dart';
 import 'package:chatapp/features/friends/presentation/add_friend_screen.dart';
 import 'package:chatapp/features/home/presentation/home_screen.dart';
 import 'package:chatapp/features/search/presentation/search_screen.dart';
@@ -108,6 +109,19 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         name: userDetailsRoute,
         builder: (context, state) =>
             UserDetailsScreen(userId: state.pathParameters['userId']!),
+      ),
+      GoRoute(
+        path: '/send-media-confirmation',
+        name: sendMediaConfirmationRoute,
+        builder: (context, state) {
+          final chatId = state.uri.queryParameters['chatId'];
+          final mediaPath = state.uri.queryParameters['mediaPath'];
+
+          return SendMediaConfirmationScreen(
+            chatId: chatId!,
+            mediaFilePath: mediaPath!,
+          );
+        },
       ),
     ],
   );
