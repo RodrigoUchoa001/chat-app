@@ -119,10 +119,16 @@ class _ChatInputFieldState extends ConsumerState<ChatInputField> {
     final pickedFile = await picker.pickMedia();
     final pickedFileFormat = pickedFile?.path.split(".").last;
 
-    if (pickedFile != null) {
+    if (pickedFile != null && pickedFileFormat == "mp4" ||
+        pickedFileFormat == "jpg" ||
+        pickedFileFormat == "png" ||
+        pickedFileFormat == "jpeg") {
       // final File mediaFile = File(pickedFile.path);
       context.push(
-          '/send-media-confirmation/?chatId=${widget.chatId}&mediaPath=${pickedFile.path}');
+          '/send-media-confirmation/?chatId=${widget.chatId}&mediaPath=${pickedFile!.path}');
+    } else {
+      // TODO: add translation
+      Fluttertoast.showToast(msg: "Invalid media format");
     }
   }
 
