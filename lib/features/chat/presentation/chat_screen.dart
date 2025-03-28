@@ -550,6 +550,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                     if (!isPreviousFromSameSender && !isMe)
                       const SizedBox(height: 12),
                     Container(
+                      constraints: BoxConstraints(
+                        maxWidth: MediaQuery.of(context).size.width * 0.7,
+                      ),
                       decoration: BoxDecoration(
                         color: isMe
                             ? const Color(0xFF20A090)
