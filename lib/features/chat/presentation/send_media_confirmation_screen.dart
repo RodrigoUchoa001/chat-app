@@ -123,18 +123,19 @@ class _SendMediaConfirmationScreenState
                             "${_controller.value.duration.inMinutes.remainder(60).toString().padLeft(2, '0')}:${_controller.value.duration.inSeconds.remainder(60).toString().padLeft(2, '0')}"),
                       ],
                     ),
-                  IconButton(
-                    onPressed: () {
-                      setState(() {
-                        _controller.value.isPlaying
-                            ? _controller.pause()
-                            : _controller.play();
-                      });
-                    },
-                    icon: Icon(_controller.value.isPlaying
-                        ? Icons.pause
-                        : Icons.play_arrow),
-                  ),
+                  if (mediaFormat == 'mp4')
+                    IconButton(
+                      onPressed: () {
+                        setState(() {
+                          _controller.value.isPlaying
+                              ? _controller.pause()
+                              : _controller.play();
+                        });
+                      },
+                      icon: Icon(_controller.value.isPlaying
+                          ? Icons.pause
+                          : Icons.play_arrow),
+                    ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
