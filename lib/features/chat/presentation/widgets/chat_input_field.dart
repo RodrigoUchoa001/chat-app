@@ -1,16 +1,13 @@
-import 'dart:io';
-
 import 'package:chatapp/core/theme/theme_provider.dart';
 import 'package:chatapp/features/chat/data/repositories/chat_repository.dart';
 import 'package:chatapp/features/chat/presentation/providers/show_send_message_icon_provider.dart';
 import 'package:chatapp/features/chat/presentation/widgets/chat_icon_button.dart';
 import 'package:chatapp/features/chat/presentation/widgets/chat_text_field.dart';
-import 'package:chatapp/features/chat/presentation/widgets/video_preview.dart';
-import 'package:chatapp/features/media/data/repositories/media_repository.dart';
 import 'package:chatapp/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ChatInputField extends ConsumerStatefulWidget {
@@ -123,75 +120,9 @@ class _ChatInputFieldState extends ConsumerState<ChatInputField> {
     final pickedFileFormat = pickedFile?.path.split(".").last;
 
     if (pickedFile != null) {
-      final File mediaFile = File(pickedFile.path);
-      _showConfirmMediaModal(
-        context,
-        ref,
-        mediaFile,
-        pickedFileFormat == "mp4",
-      );
-    }
-  }
-
-  void _showConfirmMediaModal(
-      BuildContext context, WidgetRef ref, File mediaFile, bool isVideo) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-      ),
-      builder: (context) {
-        return Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (isVideo)
-                VideoPreview(mediaFile)
-              else
-                Image.file(mediaFile, height: 250, fit: BoxFit.cover),
-              const SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  TextButton(
-                    onPressed: () => Navigator.pop(context), // 🔥 Cancelar
-                    child: const Text("Cancel",
-                        style: TextStyle(color: Colors.red)),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                      _sendMedia(ref, mediaFile, isVideo);
-                    },
-                    child: const Text("Send"),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  Future<void> _sendMedia(WidgetRef ref, File mediaFile, bool isVideo) async {
-    final mediaRepo = ref.read(mediaRepositoryProvider);
-
-    Fluttertoast.showToast(msg: "Uploading ${isVideo ? 'video' : 'image'}...");
-
-    final mediaUrl = await mediaRepo.uploadMedia(mediaFile, isVideo: isVideo);
-
-    if (mediaUrl != null) {
-      final chatRepo = ref.read(chatRepositoryProvider);
-      chatRepo.sendMessage(widget.chatId, mediaUrl, true, isVideo);
-
-      Fluttertoast.showToast(msg: "${isVideo ? 'Video' : 'Image'} sent!");
-    } else {
-      Fluttertoast.showToast(
-          msg: "Failed to upload ${isVideo ? 'video' : 'image'}");
+      // final File mediaFile = File(pickedFile.path);
+      context.push(
+          '/send-media-confirmation/?chatId=${widget.chatId}&mediaPath=${pickedFile.path}');
     }
   }
 
