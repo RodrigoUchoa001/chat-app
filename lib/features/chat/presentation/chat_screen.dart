@@ -715,16 +715,39 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         ),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-      child: Image.network(message.text ?? '', fit: BoxFit.cover,
-          loadingBuilder: (context, child, loadingProgress) {
-        if (loadingProgress == null) {
-          return child;
-        } else {
-          return const Center(
-            child: CircularProgressIndicator(),
+      child: Image.network(
+        message.text ?? '',
+        fit: BoxFit.cover,
+        loadingBuilder: (context, child, loadingProgress) {
+          if (loadingProgress == null) {
+            return child;
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
+        errorBuilder: (context, error, stackTrace) {
+          return Center(
+            child: Column(
+              children: [
+                Icon(
+                  Icons.error,
+                  color: Colors.red,
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Error loading image',
+                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                        fontSize: 12,
+                        color: Colors.red,
+                      ),
+                ),
+              ],
+            ),
           );
-        }
-      }),
+        },
+      ),
     );
   }
 
