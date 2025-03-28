@@ -549,56 +549,12 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                       ),
                     if (!isPreviousFromSameSender && !isMe)
                       const SizedBox(height: 12),
-                    Container(
-                      constraints: BoxConstraints(
-                        maxWidth: MediaQuery.of(context).size.width * 0.7,
-                      ),
-                      decoration: BoxDecoration(
-                        color: isMe
-                            ? const Color(0xFF20A090)
-                            : themeMode == ThemeMode.light
-                                ? Color(0xFFF2F7FB)
-                                : Color(0xFF1D2525),
-                        borderRadius: BorderRadius.only(
-                          // If it's the FIRST message in the sequence, the bottom corner is flat
-                          bottomRight: isMe
-                              ? (isNextFromSameSender
-                                  ? Radius.zero
-                                  : Radius.circular(50))
-                              : Radius.circular(50),
-                          bottomLeft: isMe
-                              ? Radius.circular(50)
-                              : (isNextFromSameSender
-                                  ? Radius.zero
-                                  : Radius.circular(50)),
-
-                          // If it's the LAST message in the sequence, the top corner is flat
-                          topRight: isMe
-                              ? (isPreviousFromSameSender
-                                  ? Radius.zero
-                                  : Radius.circular(50))
-                              : Radius.circular(50),
-                          topLeft: isMe
-                              ? Radius.circular(50)
-                              : (isPreviousFromSameSender
-                                  ? Radius.zero
-                                  : Radius.circular(50)),
-                        ),
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 12, vertical: 8),
-                      child: Text(
-                        message.text ?? '',
-                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                              fontSize: 12,
-                              color: themeMode == ThemeMode.light
-                                  ? isMe
-                                      ? Colors.white
-                                      : Colors.black
-                                  : Colors.white,
-                            ),
-                      ),
-                    ),
+                    if (message.messageType == 'text')
+                      textMessage(isMe, themeMode, isNextFromSameSender,
+                          isPreviousFromSameSender, message),
+                    if (message.messageType == 'image')
+                      imageMessage(isMe, themeMode, isNextFromSameSender,
+                          isPreviousFromSameSender, message),
                     if (islastMessage) const SizedBox(height: 8),
                     if (islastMessage)
                       Row(
@@ -682,6 +638,52 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       ),
     );
   }
+
+  Widget textMessage(bool isMe, ThemeMode themeMode, bool isNextFromSameSender,
+      bool isPreviousFromSameSender, MessageDTO message) {
+    return Container(
+      constraints: BoxConstraints(
+        maxWidth: MediaQuery.of(context).size.width * 0.7,
+      ),
+      decoration: BoxDecoration(
+        color: isMe
+            ? const Color(0xFF20A090)
+            : themeMode == ThemeMode.light
+                ? Color(0xFFF2F7FB)
+                : Color(0xFF1D2525),
+        borderRadius: BorderRadius.only(
+          // If it's the FIRST message in the sequence, the bottom corner is flat
+          bottomRight: isMe
+              ? (isNextFromSameSender ? Radius.zero : Radius.circular(50))
+              : Radius.circular(50),
+          bottomLeft: isMe
+              ? Radius.circular(50)
+              : (isNextFromSameSender ? Radius.zero : Radius.circular(50)),
+
+          // If it's the LAST message in the sequence, the top corner is flat
+          topRight: isMe
+              ? (isPreviousFromSameSender ? Radius.zero : Radius.circular(50))
+              : Radius.circular(50),
+          topLeft: isMe
+              ? Radius.circular(50)
+              : (isPreviousFromSameSender ? Radius.zero : Radius.circular(50)),
+        ),
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      child: Text(
+        message.text ?? '',
+        style: Theme.of(context).textTheme.bodySmall!.copyWith(
+              fontSize: 12,
+              color: themeMode == ThemeMode.light
+                  ? isMe
+                      ? Colors.white
+                      : Colors.black
+                  : Colors.white,
+            ),
+      ),
+    );
+  }
+
 
   Future<String> _getChatTitle(
       ChatDTO chat, String userId, UserRepositoryInterface userRepo) async {
