@@ -82,7 +82,7 @@ class _ChatInputFieldState extends ConsumerState<ChatInputField> {
           children: [
             ChatIconButton(
               iconPath: Assets.icons.clip.path,
-              onPressed: () => _showMediaOptions(context, ref),
+              onPressed: () => _pickMedia(ref),
             ),
             Expanded(
               child: Padding(
@@ -117,89 +117,19 @@ class _ChatInputFieldState extends ConsumerState<ChatInputField> {
     );
   }
 
-  void _showMediaOptions(BuildContext context, WidgetRef ref) {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-      ),
-      builder: (context) {
-        return SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 16, bottom: 8),
-                  child: Text(
-                    "Select media format:",
-                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                          fontSize: 20,
-                        ),
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    _mediaButton(context),
-                    _mediaButton(context, isVideo: true),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  Padding _mediaButton(BuildContext context, {bool isVideo = false}) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 16),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: () => _pickMedia(ref, isVideo: isVideo),
-          borderRadius: BorderRadius.circular(50),
-          child: Container(
-            width: 100,
-            height: 100,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(50),
-              border: Border.all(
-                color: Theme.of(context).cardColor,
-                width: 1,
-              ),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                IconButton(
-                  onPressed: null,
-                  icon: Icon(
-                    isVideo ? Icons.video_call : Icons.image,
-                  ),
-                ),
-                Text(isVideo ? "Video" : "Image",
-                    style: Theme.of(context).textTheme.bodyMedium),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Future<void> _pickMedia(WidgetRef ref, {required bool isVideo}) async {
+  Future<void> _pickMedia(WidgetRef ref) async {
     final picker = ImagePicker();
     final pickedFile = await picker.pickMedia();
+    final pickedFileFormat = pickedFile?.path.split(".").last;
 
     if (pickedFile != null) {
       final File mediaFile = File(pickedFile.path);
-      _showConfirmMediaModal(context, ref, mediaFile, isVideo);
+      _showConfirmMediaModal(
+        context,
+        ref,
+        mediaFile,
+        pickedFileFormat == "mp4",
+      );
     }
   }
 
