@@ -101,25 +101,28 @@ class _SendMediaConfirmationScreenState
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 children: [
-                  Slider(
-                    value: videoProgress,
-                    min: 0.0,
-                    max: _controller.value.duration.inMilliseconds.toDouble(),
-                    onChanged: (double value) {
-                      _controller.seekTo(Duration(milliseconds: value.toInt()));
-                      ref.read(videoToSendProgressProvider.notifier).state =
-                          value;
-                    },
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                          "${_controller.value.position.inMinutes.remainder(60).toString().padLeft(2, '0')}:${_controller.value.position.inSeconds.remainder(60).toString().padLeft(2, '0')}"),
-                      Text(
-                          "${_controller.value.duration.inMinutes.remainder(60).toString().padLeft(2, '0')}:${_controller.value.position.inSeconds.remainder(60).toString().padLeft(2, '0')}"),
-                    ],
-                  ),
+                  if (mediaFormat == 'mp4')
+                    Slider(
+                      value: videoProgress,
+                      min: 0.0,
+                      max: _controller.value.duration.inMilliseconds.toDouble(),
+                      onChanged: (double value) {
+                        _controller
+                            .seekTo(Duration(milliseconds: value.toInt()));
+                        ref.read(videoToSendProgressProvider.notifier).state =
+                            value;
+                      },
+                    ),
+                  if (mediaFormat == 'mp4')
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                            "${_controller.value.position.inMinutes.remainder(60).toString().padLeft(2, '0')}:${_controller.value.position.inSeconds.remainder(60).toString().padLeft(2, '0')}"),
+                        Text(
+                            "${_controller.value.duration.inMinutes.remainder(60).toString().padLeft(2, '0')}:${_controller.value.duration.inSeconds.remainder(60).toString().padLeft(2, '0')}"),
+                      ],
+                    ),
                   IconButton(
                     onPressed: () {
                       setState(() {
