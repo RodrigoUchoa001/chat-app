@@ -68,56 +68,84 @@ class _SendMediaConfirmationScreenState
               ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: Column(
                 children: [
-                  StreamBuilder(
-                    stream: chatRepo.getChatDetails(widget.chatId),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(child: CircularProgressIndicator());
-                      }
-                      final chat = snapshot.data!;
-                      final friendId = chat.participants!.firstWhere(
-                        (id) => id != currentUser!.uid,
-                        orElse: () => '',
-                      );
-
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Sending to:"),
-                          const SizedBox(width: 10),
-                          StreamBuilder(
-                              stream: userRepo.getUserDetails(friendId),
-                              builder: (context, snapshot) {
-                                if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return const Center(
-                                      child: CircularProgressIndicator());
-                                }
-                                final user = snapshot.data!;
-                                return Text(
-                                  user.name!,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall!
-                                      .copyWith(
-                                        fontSize: 14,
-                                      ),
-                                );
-                              }),
-                        ],
-                      );
+                  Slider(
+                    value: videoProgress,
+                    min: 0.0,
+                    max: _controller.value.duration.inMilliseconds.toDouble(),
+                    onChanged: (double value) {
+                      _controller.seekTo(Duration(milliseconds: value.toInt()));
+                      ref.read(videoToSendProgressProvider.notifier).state =
+                          value;
                     },
                   ),
-                  ChatIconButton(
-                    iconPath: Assets.icons.send.path,
-                    backgroundColor: Color(0xFF20A090),
+                  IconButton(
                     onPressed: () {
-                      _sendMedia(ref, media, isVideo);
+                      setState(() {
+                        _controller.value.isPlaying
+                            ? _controller.pause()
+                            : _controller.play();
+                      });
                     },
-                  )
+                    icon: Icon(_controller.value.isPlaying
+                        ? Icons.pause
+                        : Icons.play_arrow),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      StreamBuilder(
+                        stream: chatRepo.getChatDetails(widget.chatId),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          }
+                          final chat = snapshot.data!;
+                          final friendId = chat.participants!.firstWhere(
+                            (id) => id != currentUser!.uid,
+                            orElse: () => '',
+                          );
+
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("Sending to:"),
+                              const SizedBox(width: 10),
+                              StreamBuilder(
+                                  stream: userRepo.getUserDetails(friendId),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return const Center(
+                                          child: CircularProgressIndicator());
+                                    }
+                                    final user = snapshot.data!;
+                                    return Text(
+                                      user.name!,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall!
+                                          .copyWith(
+                                            fontSize: 14,
+                                          ),
+                                    );
+                                  }),
+                            ],
+                          );
+                        },
+                      ),
+                      ChatIconButton(
+                        iconPath: Assets.icons.send.path,
+                        backgroundColor: Color(0xFF20A090),
+                        onPressed: () {
+                          _sendMedia(ref, media, isVideo);
+                        },
+                      )
+                    ],
+                  ),
                 ],
               ),
             ),
