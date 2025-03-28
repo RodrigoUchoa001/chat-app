@@ -19,11 +19,11 @@ Inspired by the design of Alex Hylton, design available at [Chatting App UI kit 
 - ✅✅ Friends Requests
     - ✅✅ Send friend requests to another accounts.
     - ✅✅ Accept or decline friend requests by another accounts.
-- ❗Chats
+- ✅✅ Chats
     - ✅✅ Send and receive text privately with friend.
     - ✅✅ Create groups with your friends.
     - ✅✅ Send and receive text messages in groups with friends.
-    - ✖️ Send media in private chats or groups. *(firebase storage is now paid)*
+    - ✅✅ Send media in private chats or groups. *(using cloudinary)*
 - ✅✅ Messages
     - ✅✅ See if your friend saw your private message.
     - ✅✅ See who saw your message in the group.
