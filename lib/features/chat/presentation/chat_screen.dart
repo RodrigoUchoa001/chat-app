@@ -684,6 +684,49 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     );
   }
 
+  Widget imageMessage(bool isMe, ThemeMode themeMode, bool isNextFromSameSender,
+      bool isPreviousFromSameSender, MessageDTO message) {
+    return Container(
+      constraints: BoxConstraints(
+        maxWidth: MediaQuery.of(context).size.width * 0.7,
+      ),
+      decoration: BoxDecoration(
+        color: isMe
+            ? const Color(0xFF20A090)
+            : themeMode == ThemeMode.light
+                ? Color(0xFFF2F7FB)
+                : Color(0xFF1D2525),
+        borderRadius: BorderRadius.only(
+          // If it's the FIRST message in the sequence, the bottom corner is flat
+          bottomRight: isMe
+              ? (isNextFromSameSender ? Radius.zero : Radius.circular(10))
+              : Radius.circular(10),
+          bottomLeft: isMe
+              ? Radius.circular(10)
+              : (isNextFromSameSender ? Radius.zero : Radius.circular(10)),
+
+          // If it's the LAST message in the sequence, the top corner is flat
+          topRight: isMe
+              ? (isPreviousFromSameSender ? Radius.zero : Radius.circular(10))
+              : Radius.circular(10),
+          topLeft: isMe
+              ? Radius.circular(10)
+              : (isPreviousFromSameSender ? Radius.zero : Radius.circular(10)),
+        ),
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+      child: Image.network(message.text ?? '', fit: BoxFit.cover,
+          loadingBuilder: (context, child, loadingProgress) {
+        if (loadingProgress == null) {
+          return child;
+        } else {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      }),
+    );
+  }
 
   Future<String> _getChatTitle(
       ChatDTO chat, String userId, UserRepositoryInterface userRepo) async {
