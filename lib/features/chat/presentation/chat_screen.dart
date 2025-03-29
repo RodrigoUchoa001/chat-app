@@ -771,7 +771,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                       return kIsWeb
                           ? Image.network(data!.path)
                           : Image.file(File(data!.path));
-                      ;
                     },
                   )
                 : Image.network(
