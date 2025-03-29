@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:chatapp/core/localization/app_localization.dart';
+import 'package:chatapp/core/localization/locale_provider.dart';
 import 'package:chatapp/core/providers/firebase_auth_providers.dart';
 import 'package:chatapp/core/theme/theme_provider.dart';
 import 'package:chatapp/features/auth/presentation/widgets/auth_back_button.dart';
@@ -63,6 +65,9 @@ class _SendMediaConfirmationScreenState
     final isSending = ref.watch(isSendingMediaProvider);
     final themeMode = ref.watch(themeProvider);
 
+    final locale = ref.watch(localeProvider);
+    final localization = ref.watch(localizationProvider(locale)).value;
+
     final media = File(widget.mediaFilePath);
     final mediaFormat = media.path.split(".").last;
     final isVideo = mediaFormat == 'mp4';
@@ -74,9 +79,11 @@ class _SendMediaConfirmationScreenState
           backgroundColor: Colors.transparent,
           leading: AuthBackButton(),
           title: Text(
-            "Send ${isVideo ? "Video" : "Image"}",
+            isVideo
+                ? localization!.translate("send-video")
+                : localization!.translate("send-image"),
             style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                  fontSize: 20,
+                  fontSize: 16,
                 ),
           ),
           centerTitle: true,
@@ -170,7 +177,9 @@ class _SendMediaConfirmationScreenState
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("Sending to:"),
+                              Text(
+                                "${localization.translate("sending-to")}:",
+                              ),
                               const SizedBox(width: 10),
                               StreamBuilder(
                                   stream: userRepo.getUserDetails(friendId),
@@ -243,6 +252,9 @@ class _SendMediaConfirmationScreenState
   Future<void> _sendMedia(WidgetRef ref, File mediaFile, bool isVideo) async {
     final mediaRepo = ref.read(mediaRepositoryProvider);
 
+    final locale = ref.watch(localeProvider);
+    final localization = ref.watch(localizationProvider(locale)).value;
+
     ref.read(isSendingMediaProvider.notifier).state = true;
 
     final mediaUrl = await mediaRepo.uploadMedia(mediaFile, isVideo: isVideo);
@@ -251,12 +263,17 @@ class _SendMediaConfirmationScreenState
       final chatRepo = ref.read(chatRepositoryProvider);
       chatRepo.sendMessage(widget.chatId, mediaUrl, true, isVideo);
 
-      Fluttertoast.showToast(msg: "${isVideo ? 'Video' : 'Image'} sent!");
+      Fluttertoast.showToast(
+          msg: isVideo
+              ? localization!.translate("video-sent")
+              : localization!.translate("image-sent"));
       ref.read(isSendingMediaProvider.notifier).state = false;
       context.pop();
     } else {
       Fluttertoast.showToast(
-          msg: "Failed to upload ${isVideo ? 'video' : 'image'}");
+          msg: isVideo
+              ? localization!.translate("failed-to-send-video")
+              : localization!.translate("failed-to-send-image"));
       ref.read(isSendingMediaProvider.notifier).state = false;
     }
   }
