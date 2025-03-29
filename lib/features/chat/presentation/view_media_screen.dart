@@ -74,8 +74,9 @@ class _ViewMediaScreenState extends ConsumerState<ViewMediaScreen> {
                 child: Center(
                   child: Image.network(
                     widget.mediaUrl,
-                    width: MediaQuery.of(context).size.width * 0.95,
-                    fit: BoxFit.cover,
+                    width: double.maxFinite,
+                    height: double.maxFinite,
+                    fit: BoxFit.contain,
                   ),
                 ),
               ),

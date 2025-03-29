@@ -99,7 +99,15 @@ class _SendMediaConfirmationScreenState
                 mediaFormat == 'jpeg')
               Expanded(
                 child: Center(
-                  child: Image.file(media, height: 250, fit: BoxFit.cover),
+                  // TODO: fix error when entering some imgs
+                  // (happens when the img is already sent before)
+                  // BUT IT DONT HAPPENED BEFORE WHEN SENT TWO IMGS IN A ROW
+                  child: Image.file(
+                    media,
+                    width: double.maxFinite,
+                    height: double.maxFinite,
+                    fit: BoxFit.contain,
+                  ),
                 ),
               ),
             Padding(
