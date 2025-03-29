@@ -131,7 +131,6 @@ class _ChatInputFieldState extends ConsumerState<ChatInputField> {
       context.push(
           '/send-media-confirmation/?chatId=${widget.chatId}&mediaPath=${pickedFile!.path}');
     } else {
-      // TODO: add translation
       Fluttertoast.showToast(
           msg: localization!.translate("invalid-media-format"));
     }
