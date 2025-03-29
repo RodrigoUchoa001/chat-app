@@ -95,6 +95,7 @@ class _ViewMediaScreenState extends ConsumerState<ViewMediaScreen> {
                       value: videoProgress,
                       min: 0.0,
                       max: _controller.value.duration.inMilliseconds.toDouble(),
+                      activeColor: Theme.of(context).primaryColor,
                       onChanged: (double value) {
                         _controller
                             .seekTo(Duration(milliseconds: value.toInt()));
