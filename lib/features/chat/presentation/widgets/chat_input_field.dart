@@ -1,3 +1,5 @@
+import 'package:chatapp/core/localization/app_localization.dart';
+import 'package:chatapp/core/localization/locale_provider.dart';
 import 'package:chatapp/core/theme/theme_provider.dart';
 import 'package:chatapp/features/chat/data/repositories/chat_repository.dart';
 import 'package:chatapp/features/chat/presentation/providers/show_send_message_icon_provider.dart';
@@ -119,6 +121,9 @@ class _ChatInputFieldState extends ConsumerState<ChatInputField> {
     final pickedFile = await picker.pickMedia();
     final pickedFileFormat = pickedFile?.path.split(".").last;
 
+    final local = ref.watch(localeProvider);
+    final localization = ref.watch(localizationProvider(local)).value;
+
     if (pickedFile != null && pickedFileFormat == "mp4" ||
         pickedFileFormat == "jpg" ||
         pickedFileFormat == "png" ||
@@ -127,7 +132,8 @@ class _ChatInputFieldState extends ConsumerState<ChatInputField> {
           '/send-media-confirmation/?chatId=${widget.chatId}&mediaPath=${pickedFile!.path}');
     } else {
       // TODO: add translation
-      Fluttertoast.showToast(msg: "Invalid media format");
+      Fluttertoast.showToast(
+          msg: localization!.translate("invalid-media-format"));
     }
   }
 
