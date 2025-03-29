@@ -564,7 +564,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                         message,
                       ),
                     if (message.messageType == 'image')
-                      // TODO: add function to click and show the image in full screen
                       mediaMessage(
                         isMe,
                         themeMode,
@@ -572,7 +571,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                         isPreviousFromSameSender,
                         message,
                       ),
-                    // TODO: add function to click and show the video in full screen
                     if (message.messageType == 'video')
                       mediaMessage(
                         isMe,
