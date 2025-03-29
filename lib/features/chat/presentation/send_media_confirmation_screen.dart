@@ -1,14 +1,16 @@
 import 'dart:io';
 
 import 'package:chatapp/core/providers/firebase_auth_providers.dart';
+import 'package:chatapp/core/theme/theme_provider.dart';
 import 'package:chatapp/features/auth/presentation/widgets/auth_back_button.dart';
 import 'package:chatapp/features/chat/data/repositories/chat_repository.dart';
-import 'package:chatapp/features/chat/presentation/widgets/chat_icon_button.dart';
+import 'package:chatapp/features/chat/presentation/providers/is_sending_media_provider.dart';
 import 'package:chatapp/features/media/data/repositories/media_repository.dart';
 import 'package:chatapp/features/users/data/repositories/user_repository.dart';
 import 'package:chatapp/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:video_player/video_player.dart';
@@ -58,6 +60,8 @@ class _SendMediaConfirmationScreenState
     final chatRepo = ref.watch(chatRepositoryProvider);
     final userRepo = ref.watch(userRepositoryProvider);
     final currentUser = ref.watch(currentUserProvider).asData?.value;
+    final isSending = ref.watch(isSendingMediaProvider);
+    final themeMode = ref.watch(themeProvider);
 
     final media = File(widget.mediaFilePath);
     final mediaFormat = media.path.split(".").last;
@@ -183,12 +187,39 @@ class _SendMediaConfirmationScreenState
                           );
                         },
                       ),
-                      ChatIconButton(
-                        iconPath: Assets.icons.send.path,
-                        backgroundColor: Color(0xFF20A090),
-                        onPressed: () {
-                          _sendMedia(ref, media, isVideo);
-                        },
+                      IconButton(
+                        style: ButtonStyle(
+                          backgroundColor:
+                              WidgetStatePropertyAll(Color(0xFF20A090)),
+                        ),
+                        onPressed: isSending
+                            ? null
+                            : () {
+                                _sendMedia(ref, media, isVideo);
+                              },
+                        icon: isSending
+                            ? SizedBox(
+                                height: 24,
+                                width: 24,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  color: Colors.white,
+                                ),
+                              )
+                            : SvgPicture.asset(
+                                Assets.icons.send.path,
+                                colorFilter: ColorFilter.mode(
+                                  themeMode == ThemeMode.dark ||
+                                          (themeMode == ThemeMode.system &&
+                                              MediaQuery.of(context)
+                                                      .platformBrightness ==
+                                                  Brightness.dark)
+                                      ? Colors.white
+                                      : Colors.black,
+                                  BlendMode.srcIn,
+                                ),
+                                height: 24,
+                              ),
                       )
                     ],
                   ),
@@ -204,7 +235,7 @@ class _SendMediaConfirmationScreenState
   Future<void> _sendMedia(WidgetRef ref, File mediaFile, bool isVideo) async {
     final mediaRepo = ref.read(mediaRepositoryProvider);
 
-    Fluttertoast.showToast(msg: "Uploading ${isVideo ? 'video' : 'image'}...");
+    ref.read(isSendingMediaProvider.notifier).state = true;
 
     final mediaUrl = await mediaRepo.uploadMedia(mediaFile, isVideo: isVideo);
 
@@ -213,10 +244,12 @@ class _SendMediaConfirmationScreenState
       chatRepo.sendMessage(widget.chatId, mediaUrl, true, isVideo);
 
       Fluttertoast.showToast(msg: "${isVideo ? 'Video' : 'Image'} sent!");
+      ref.read(isSendingMediaProvider.notifier).state = false;
       context.pop();
     } else {
       Fluttertoast.showToast(
           msg: "Failed to upload ${isVideo ? 'video' : 'image'}");
+      ref.read(isSendingMediaProvider.notifier).state = false;
     }
   }
 }
