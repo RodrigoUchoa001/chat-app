@@ -719,6 +719,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       child: Container(
         constraints: BoxConstraints(
           maxWidth: MediaQuery.of(context).size.width * 0.7,
+          maxHeight: MediaQuery.of(context).size.height * 0.5,
         ),
         decoration: BoxDecoration(
           color: isMe
