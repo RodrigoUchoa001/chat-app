@@ -10,7 +10,7 @@ Inspired by the design of Alex Hylton, design available at [Chatting App UI kit 
 - Try the login using email and password using Firebase Auth.
 - Practice to replicate screens to the app by using a Figma project.
 - Practice Firebase Firestore to store user, chats, messages and stories data.
-- Try Firebase Storage to store media sent by users and Stories.
+- Try Firebase Storage to store media sent by users and Stories *(Used Cloudinary instead)*.
 
 ## Functionalities
 - ✅✅ Users
