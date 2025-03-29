@@ -123,7 +123,6 @@ class _ChatInputFieldState extends ConsumerState<ChatInputField> {
         pickedFileFormat == "jpg" ||
         pickedFileFormat == "png" ||
         pickedFileFormat == "jpeg") {
-      // final File mediaFile = File(pickedFile.path);
       context.push(
           '/send-media-confirmation/?chatId=${widget.chatId}&mediaPath=${pickedFile!.path}');
     } else {
