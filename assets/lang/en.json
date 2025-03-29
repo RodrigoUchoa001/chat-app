@@ -134,5 +134,13 @@
     "user-details-display-name": "Display name",
     "user-details-email-address": "Email address",
     "user-details-status-message": "Status message",
-    "user-details-joined-at": "Joined at"
+    "user-details-joined-at": "Joined at",
+    "send-image": "Send image",
+    "send-video": "Send video",
+    "sending-to": "Sending to",
+    "image-sent": "Image sent",
+    "video-sent": "Video sent",
+    "failed-to-send-image": "Failed to send image",
+    "failed-to-send-video": "Failed to send video",
+    "invalid-media-format": "Invalid media format"
 }

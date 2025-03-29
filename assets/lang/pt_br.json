@@ -134,5 +134,13 @@
     "user-details-display-name": "Nome de exibição",
     "user-details-email-address": "Endereço de e-mail",
     "user-details-status-message": "Mensagem de status",
-    "user-details-joined-at": "Entrou em"
+    "user-details-joined-at": "Entrou em",
+    "send-image": "Enviar imagem",
+    "send-video": "Enviar vídeo",
+    "sending-to": "Enviando para",
+    "image-sent": "Imagem enviada",
+    "video-sent": "Vídeo enviado",
+    "failed-to-send-image": "Falha ao enviar imagem",
+    "failed-to-send-video": "Falha ao enviar vídeo",
+    "invalid-media-format": "Formato de mídia inválido"
 }
