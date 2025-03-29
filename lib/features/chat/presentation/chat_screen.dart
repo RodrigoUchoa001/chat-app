@@ -23,7 +23,6 @@ import 'package:get_thumbnail_video/index.dart';
 import 'package:get_thumbnail_video/video_thumbnail.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import 'package:video_player/video_player.dart';
 
 class ChatScreen extends ConsumerStatefulWidget {
   final String chatId;
