@@ -1,3 +1,4 @@
+// dont remove
 import 'dart:io';
 
 import 'package:chatapp/features/auth/presentation/widgets/auth_back_button.dart';
@@ -45,7 +46,6 @@ class _ViewMediaScreenState extends ConsumerState<ViewMediaScreen> {
   @override
   Widget build(BuildContext context) {
     final mediaFormat = widget.mediaUrl.split(".").last;
-    final isVideo = mediaFormat == 'mp4';
 
     return SafeArea(
       child: Scaffold(
@@ -53,13 +53,6 @@ class _ViewMediaScreenState extends ConsumerState<ViewMediaScreen> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           leading: AuthBackButton(),
-          title: Text(
-            isVideo ? "Video" : "Image",
-            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                  fontSize: 20,
-                ),
-          ),
-          centerTitle: true,
         ),
         body: Column(
           children: [
@@ -127,12 +120,6 @@ class _ViewMediaScreenState extends ConsumerState<ViewMediaScreen> {
                           ? Icons.pause
                           : Icons.play_arrow),
                     ),
-                  Text(
-                    widget.mediaUrl.split('/').last,
-                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                          fontSize: 14,
-                        ),
-                  ),
                 ],
               ),
             ),
