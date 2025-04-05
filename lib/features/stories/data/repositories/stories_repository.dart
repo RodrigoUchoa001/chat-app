@@ -1,5 +1,7 @@
 import 'package:chatapp/core/providers/firebase_auth_providers.dart';
 import 'package:chatapp/core/providers/firebase_firestore_provider.dart';
+import 'package:chatapp/features/friends/data/repositories/friends_repository.dart';
+import 'package:chatapp/features/friends/domain/friends_repository_interface.dart';
 import 'package:chatapp/features/stories/data/dto/story_dto.dart';
 import 'package:chatapp/features/stories/domain/repositories/stories_repository_interface.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -8,14 +10,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 final storiesRepositoryProvider = Provider<StoriesRepositoryInterface>((ref) {
   final firestore = ref.watch(firestoreProvider);
   final currentUser = ref.watch(currentUserProvider).asData?.value;
-  return StoriesRepository(firestore, currentUser!.uid);
+  final friendsRepo = ref.watch(friendsRepositoryProvider);
+
+  return StoriesRepository(firestore, currentUser!.uid, friendsRepo);
 });
 
 class StoriesRepository implements StoriesRepositoryInterface {
   final FirebaseFirestore _firestore;
   final String _userId;
+  final FriendsRepositoryInterface friendsRepo;
 
-  StoriesRepository(this._firestore, this._userId);
+  StoriesRepository(this._firestore, this._userId, this.friendsRepo);
 
   @override
   Future<void> deleteAllStories() {
@@ -44,14 +49,26 @@ class StoriesRepository implements StoriesRepositoryInterface {
 
   @override
   Stream<List<StoryDTO?>> getStories() {
-    final collection = _firestore.collection('stories');
+    return friendsRepo.getFriends().asyncExpand(
+      (friendIds) {
+        if (friendIds == null || friendIds.isEmpty) {
+          return Stream.value([]);
+        }
 
-    return collection.snapshots().map((querySnapshot) {
-      return querySnapshot.docs.map((doc) {
-        final data = doc.data();
-        return StoryDTO.fromJson(data)..id = doc.id;
-      }).toList();
-    });
+        return _firestore
+            .collection('stories')
+            .where('userId', whereIn: friendIds)
+            .snapshots()
+            .map(
+          (querySnapshot) {
+            return querySnapshot.docs.map((doc) {
+              final data = doc.data();
+              return StoryDTO.fromJson(data)..id = doc.id;
+            }).toList();
+          },
+        );
+      },
+    );
   }
 
   @override
