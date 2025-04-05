@@ -1,4 +1,8 @@
+import 'package:chatapp/core/providers/firebase_auth_providers.dart';
 import 'package:chatapp/core/theme/theme_provider.dart';
+import 'package:chatapp/features/chat/presentation/widgets/chat_profile_pic.dart';
+import 'package:chatapp/features/stories/data/repositories/stories_repository.dart';
+import 'package:chatapp/features/users/data/repositories/user_repository.dart';
 import 'package:chatapp/gen/fonts.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,6 +12,9 @@ class ChatStoriesRow extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final currentUser = ref.watch(currentUserProvider).asData?.value;
+    final storiesRepo = ref.watch(storiesRepositoryProvider);
+    final userRepo = ref.watch(userRepositoryProvider);
     final themeMode = ref.watch(themeProvider);
 
     return SizedBox(
@@ -40,11 +47,10 @@ class ChatStoriesRow extends ConsumerWidget {
                       ),
                       child: Padding(
                         padding: const EdgeInsets.all(6),
-                        child: CircleAvatar(
-                          radius: 26,
-                          backgroundImage: NetworkImage(
-                            'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
-                          ),
+                        child: ChatProfilePic(
+                          avatarRadius: 26,
+                          chatPhotoURL: currentUser?.photoURL,
+                          isOnline: false,
                         ),
                       ),
                     ),
@@ -82,52 +88,95 @@ class ChatStoriesRow extends ConsumerWidget {
               ],
             ),
           ),
-          ListView.builder(
-            shrinkWrap: true,
-            scrollDirection: Axis.horizontal,
-            itemCount: 8,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 13),
-                child: Column(
-                  children: [
-                    Container(
-                      height: 58,
-                      width: 58,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: themeMode == ThemeMode.dark ||
-                                  (themeMode == ThemeMode.system &&
-                                      MediaQuery.of(context)
-                                              .platformBrightness ==
-                                          Brightness.dark)
-                              ? Color(0xFF4B9289)
-                              : Color(0xFF363F3B),
-                          width: 1,
-                        ),
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(6),
-                        child: CircleAvatar(
-                          backgroundImage: NetworkImage(
-                            // scale: 52,
-                            'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80',
+          StreamBuilder(
+            stream: storiesRepo.getStories(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                return Center(
+                    child: Text('Error: ${snapshot.error}',
+                        style: const TextStyle(color: Colors.red)));
+              }
+
+              final stories = snapshot.data;
+              if (stories!.isEmpty) {
+                return SizedBox();
+              }
+
+              return ListView.builder(
+                shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
+                itemCount: stories.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 13),
+                    child: Column(
+                      children: [
+                        Container(
+                          height: 58,
+                          width: 58,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: themeMode == ThemeMode.dark ||
+                                      (themeMode == ThemeMode.system &&
+                                          MediaQuery.of(context)
+                                                  .platformBrightness ==
+                                              Brightness.dark)
+                                  ? Color(0xFF4B9289)
+                                  : Color(0xFF363F3B),
+                              width: 1,
+                            ),
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(6),
+                            child: StreamBuilder(
+                              stream: userRepo
+                                  .getUserDetails(stories[index]!.userId ?? ''),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return const Center(
+                                      child: CircularProgressIndicator());
+                                }
+
+                                final user = snapshot.data;
+                                return ChatProfilePic(
+                                  avatarRadius: 26,
+                                  chatPhotoURL: user?.photoURL,
+                                  isOnline: false,
+                                );
+                              },
+                            ),
                           ),
                         ),
-                      ),
+                        const SizedBox(height: 10),
+                        StreamBuilder(
+                          stream: userRepo
+                              .getUserDetails(stories[index]!.userId ?? ''),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const Center(
+                                  child: CircularProgressIndicator());
+                            }
+
+                            final user = snapshot.data;
+                            return Text(
+                              user?.name ?? '',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontFamily: FontFamily.caros,
+                                fontSize: 14,
+                              ),
+                            );
+                          },
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 10),
-                    const Text(
-                      'John Doe',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontFamily: FontFamily.caros,
-                        fontSize: 14,
-                      ),
-                    ),
-                  ],
-                ),
+                  );
+                },
               );
             },
           ),
