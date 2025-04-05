@@ -761,7 +761,12 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                     ),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(child: CircularProgressIndicator());
+                        return SizedBox(
+                          height: double.infinity,
+                          width: double.infinity,
+                          child:
+                              const Center(child: CircularProgressIndicator()),
+                        );
                       } else if (snapshot.hasError) {
                         return Text('Error: ${snapshot.error}');
                       }
