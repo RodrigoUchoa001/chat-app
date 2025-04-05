@@ -3,8 +3,8 @@ import 'package:chatapp/gen/fonts.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ChatStatusRow extends ConsumerWidget {
-  const ChatStatusRow({super.key});
+class ChatStoriesRow extends ConsumerWidget {
+  const ChatStoriesRow({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
