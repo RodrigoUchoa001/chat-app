@@ -4,7 +4,7 @@ import 'package:chatapp/core/providers/firebase_auth_providers.dart';
 import 'package:chatapp/core/widgets/app_bar_widget.dart';
 import 'package:chatapp/core/widgets/home_content_background_widget.dart';
 import 'package:chatapp/features/chat/presentation/widgets/chat_list.dart';
-import 'package:chatapp/features/chat/presentation/widgets/chat_status_row.dart';
+import 'package:chatapp/features/chat/presentation/widgets/chat_stories_row.dart';
 import 'package:chatapp/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -85,7 +85,7 @@ class _ChatScreenState extends ConsumerState<ChatsListScreen> {
                           ),
                   ),
                   SizedBox(height: 40),
-                  ChatStatusRow(),
+                  ChatStoriesRow(),
                 ],
               ),
             ),
