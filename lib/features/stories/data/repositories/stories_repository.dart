@@ -1,6 +1,15 @@
+import 'package:chatapp/core/providers/firebase_auth_providers.dart';
+import 'package:chatapp/core/providers/firebase_firestore_provider.dart';
 import 'package:chatapp/features/stories/data/dto/story_dto.dart';
 import 'package:chatapp/features/stories/domain/repositories/stories_repository_interface.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+final storiesRepositoryProvider = Provider<StoriesRepositoryInterface>((ref) {
+  final firestore = ref.watch(firestoreProvider);
+  final currentUser = ref.watch(currentUserProvider).asData?.value;
+  return StoriesRepository(firestore, currentUser!.uid);
+});
 
 class StoriesRepository implements StoriesRepositoryInterface {
   final FirebaseFirestore _firestore;
