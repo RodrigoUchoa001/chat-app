@@ -5,6 +5,5 @@ abstract interface class StoriesRepositoryInterface {
   Stream<StoryDTO?> getStory(String storyId);
   Future<void> sendStory(StoryDTO story);
   Future<void> deleteStory(String storyId);
-  Future<void> updateStory(String storyId, StoryDTO story);
   Future<void> deleteAllStories();
 }
