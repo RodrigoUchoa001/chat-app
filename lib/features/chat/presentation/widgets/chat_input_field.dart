@@ -117,6 +117,7 @@ class _ChatInputFieldState extends ConsumerState<ChatInputField> {
   }
 
   Future<void> _pickMedia(WidgetRef ref) async {
+    // TODO: DOENS'T WORK IN WEB, FIX
     final picker = ImagePicker();
     final pickedFile = await picker.pickMedia();
     final pickedFileFormat = pickedFile?.path.split(".").last;
