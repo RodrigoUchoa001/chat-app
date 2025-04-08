@@ -17,3 +17,4 @@ String searchRoute = 'search';
 String userDetailsRoute = 'user-details';
 String sendMediaConfirmationRoute = 'send-media-confirmation';
 String viewMediaRoute = 'view-media';
+String sendStoryConfirmationRoute = 'send-story-confirmation';
