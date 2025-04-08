@@ -154,6 +154,7 @@ class _SendStoryConfirmationScreenState
   }
 
   Future<void> _sendStory(WidgetRef ref, File mediaFile, bool isVideo) async {
+    // TODO: fix this function
     final mediaRepo = ref.read(mediaRepositoryProvider);
     final storyRepo = ref.read(storiesRepositoryProvider);
     final currentUser = ref.read(currentUserProvider).value;
