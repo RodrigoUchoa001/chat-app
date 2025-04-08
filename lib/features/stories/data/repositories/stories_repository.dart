@@ -48,30 +48,6 @@ class StoriesRepository implements StoriesRepositoryInterface {
   }
 
   @override
-  Stream<List<StoryDTO?>> getStories() {
-    return friendsRepo.getFriends().asyncExpand(
-      (friendIds) {
-        if (friendIds == null || friendIds.isEmpty) {
-          return Stream.value([]);
-        }
-
-        return _firestore
-            .collection('stories')
-            .where('userId', whereIn: friendIds)
-            .snapshots()
-            .map(
-          (querySnapshot) {
-            return querySnapshot.docs.map((doc) {
-              final data = doc.data();
-              return StoryDTO.fromJson(data)..id = doc.id;
-            }).toList();
-          },
-        );
-      },
-    );
-  }
-
-  @override
   Stream<StoryDTO?> getStory(String storyId) {
     final collection = _firestore.collection('stories');
 
