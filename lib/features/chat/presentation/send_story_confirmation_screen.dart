@@ -118,7 +118,12 @@ class _SendStoryConfirmationScreenState
             if (!isVideo)
               Expanded(
                 child: Center(
-                  child: Image.file(media, height: 250, fit: BoxFit.cover),
+                  child: Image.file(
+                    media,
+                    width: double.maxFinite,
+                    height: double.maxFinite,
+                    fit: BoxFit.contain,
+                  ),
                 ),
               ),
             ChatTextField(controller: _captionController),
