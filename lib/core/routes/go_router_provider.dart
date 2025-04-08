@@ -17,6 +17,7 @@ import 'package:chatapp/features/settings/presentation/account_settings_screen.d
 import 'package:chatapp/features/settings/presentation/app_settings_screen.dart';
 import 'package:chatapp/features/settings/presentation/chat_settings_screen.dart';
 import 'package:chatapp/features/settings/presentation/settings_screen.dart';
+import 'package:chatapp/features/stories/presentation/view_story_screen.dart';
 import 'package:chatapp/features/users/presentation/user_details_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -147,6 +148,17 @@ final goRouterProvider = Provider<GoRouter>((ref) {
           );
         },
       ),
+      GoRoute(
+        path: '/view-story',
+        name: viewStoryRoute,
+        builder: (context, state) {
+          final storyId = state.uri.queryParameters['storyId'];
+
+          return ViewStoryScreen(
+            storyId: storyId!,
+          );
+        },
+      )
     ],
   );
 });
