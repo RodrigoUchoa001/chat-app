@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:chatapp/core/providers/firebase_auth_providers.dart';
 import 'package:chatapp/features/auth/presentation/widgets/auth_back_button.dart';
+import 'package:chatapp/features/auth/presentation/widgets/auth_text_field.dart';
 import 'package:chatapp/features/chat/presentation/widgets/chat_icon_button.dart';
 import 'package:chatapp/features/chat/presentation/widgets/chat_text_field.dart';
 import 'package:chatapp/features/media/data/repositories/media_repository.dart';
@@ -126,7 +127,14 @@ class _SendStoryConfirmationScreenState
                   ),
                 ),
               ),
-            ChatTextField(controller: _captionController),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: AuthTextField(
+                controller: _captionController,
+                labelText: "Insert caption",
+                validator: (value) => null,
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Align(
