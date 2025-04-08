@@ -26,55 +26,62 @@ class ChatStoriesRow extends ConsumerWidget {
             padding: const EdgeInsets.symmetric(horizontal: 13),
             child: Column(
               children: [
-                Stack(
-                  alignment: Alignment.bottomRight,
-                  children: [
-                    Container(
-                      height: 58,
-                      width: 58,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: themeMode == ThemeMode.dark ||
-                                  (themeMode == ThemeMode.system &&
-                                      MediaQuery.of(context)
-                                              .platformBrightness ==
-                                          Brightness.dark)
-                              ? Color(0xFF4B9289)
-                              : Color(0xFF363F3B),
-                          width: 1,
+                Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(50),
+                    onTap: () => _pickMedia(ref),
+                    child: Stack(
+                      alignment: Alignment.bottomRight,
+                      children: [
+                        Container(
+                          height: 58,
+                          width: 58,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: themeMode == ThemeMode.dark ||
+                                      (themeMode == ThemeMode.system &&
+                                          MediaQuery.of(context)
+                                                  .platformBrightness ==
+                                              Brightness.dark)
+                                  ? Color(0xFF4B9289)
+                                  : Color(0xFF363F3B),
+                              width: 1,
+                            ),
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(6),
+                            child: ChatProfilePic(
+                              avatarRadius: 26,
+                              chatPhotoURL: currentUser?.photoURL,
+                              isOnline: false,
+                            ),
+                          ),
                         ),
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(6),
-                        child: ChatProfilePic(
-                          avatarRadius: 26,
-                          chatPhotoURL: currentUser?.photoURL,
-                          isOnline: false,
+                        Container(
+                          height: 16,
+                          width: 16,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: themeMode == ThemeMode.dark ||
+                                      (themeMode == ThemeMode.system &&
+                                          MediaQuery.of(context)
+                                                  .platformBrightness ==
+                                              Brightness.dark)
+                                  ? Color(0xFF4B9289)
+                                  : Color(0xFF363F3B),
+                              width: 1,
+                            ),
+                            borderRadius: BorderRadius.circular(50),
+                            color: Colors.white,
+                          ),
+                          child: Icon(Icons.add,
+                              size: 10, color: Color(0xFF24786D)),
                         ),
-                      ),
+                      ],
                     ),
-                    Container(
-                      height: 16,
-                      width: 16,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: themeMode == ThemeMode.dark ||
-                                  (themeMode == ThemeMode.system &&
-                                      MediaQuery.of(context)
-                                              .platformBrightness ==
-                                          Brightness.dark)
-                              ? Color(0xFF4B9289)
-                              : Color(0xFF363F3B),
-                          width: 1,
-                        ),
-                        borderRadius: BorderRadius.circular(50),
-                        color: Colors.white,
-                      ),
-                      child:
-                          Icon(Icons.add, size: 10, color: Color(0xFF24786D)),
-                    ),
-                  ],
+                  ),
                 ),
                 const SizedBox(height: 10),
                 const Text(
