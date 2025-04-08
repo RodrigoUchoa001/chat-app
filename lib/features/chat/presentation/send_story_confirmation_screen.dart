@@ -4,7 +4,6 @@ import 'package:chatapp/core/providers/firebase_auth_providers.dart';
 import 'package:chatapp/features/auth/presentation/widgets/auth_back_button.dart';
 import 'package:chatapp/features/auth/presentation/widgets/auth_text_field.dart';
 import 'package:chatapp/features/chat/presentation/widgets/chat_icon_button.dart';
-import 'package:chatapp/features/chat/presentation/widgets/chat_text_field.dart';
 import 'package:chatapp/features/media/data/repositories/media_repository.dart';
 import 'package:chatapp/features/stories/data/dto/story_dto.dart';
 import 'package:chatapp/features/stories/data/repositories/stories_repository.dart';
@@ -67,7 +66,7 @@ class _SendStoryConfirmationScreenState
           backgroundColor: Colors.transparent,
           leading: const AuthBackButton(),
           title: Text(
-            "Post ${isVideo ? "Video" : "Image"}",
+            "Send ${isVideo ? "Video" : "Image"} Story",
             style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                   fontSize: 20,
                 ),
