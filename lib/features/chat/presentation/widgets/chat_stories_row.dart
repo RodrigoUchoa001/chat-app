@@ -32,7 +32,6 @@ class _ChatStoriesRowState extends ConsumerState<ChatStoriesRow> {
       child: ListView(
         scrollDirection: Axis.horizontal,
         children: [
-          // TODO: add the option to add a new story
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 13),
             child: Column(
