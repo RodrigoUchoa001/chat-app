@@ -89,7 +89,7 @@ class ChatStoriesRow extends ConsumerWidget {
             ),
           ),
           StreamBuilder(
-            stream: storiesRepo.getStories(),
+            stream: storiesRepo.getFriendsWhoHaveStories(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());
@@ -99,15 +99,15 @@ class ChatStoriesRow extends ConsumerWidget {
                         style: const TextStyle(color: Colors.red)));
               }
 
-              final stories = snapshot.data;
-              if (stories!.isEmpty) {
+              final friendsWhoHaveStories = snapshot.data;
+              if (friendsWhoHaveStories!.isEmpty) {
                 return SizedBox();
               }
 
               return ListView.builder(
                 shrinkWrap: true,
                 scrollDirection: Axis.horizontal,
-                itemCount: stories.length,
+                itemCount: friendsWhoHaveStories.length,
                 itemBuilder: (context, index) {
                   return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 13),
@@ -132,8 +132,8 @@ class ChatStoriesRow extends ConsumerWidget {
                           child: Padding(
                             padding: const EdgeInsets.all(6),
                             child: StreamBuilder(
-                              stream: userRepo
-                                  .getUserDetails(stories[index]!.userId ?? ''),
+                              stream: userRepo.getUserDetails(
+                                  friendsWhoHaveStories[index]!.uid ?? ''),
                               builder: (context, snapshot) {
                                 if (snapshot.connectionState ==
                                     ConnectionState.waiting) {
@@ -153,8 +153,8 @@ class ChatStoriesRow extends ConsumerWidget {
                         ),
                         const SizedBox(height: 10),
                         StreamBuilder(
-                          stream: userRepo
-                              .getUserDetails(stories[index]!.userId ?? ''),
+                          stream: userRepo.getUserDetails(
+                              friendsWhoHaveStories[index]!.uid ?? ''),
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
