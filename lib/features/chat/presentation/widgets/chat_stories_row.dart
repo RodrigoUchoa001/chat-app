@@ -219,6 +219,7 @@ class _ChatStoriesRowState extends ConsumerState<ChatStoriesRow> {
         pickedFileFormat == "png" ||
         pickedFileFormat == "jpeg") {
       context.go('/send-story-confirmation/?mediaPath=${pickedFile!.path}');
+    } else if (pickedFileFormat == null) {
     } else {
       Fluttertoast.showToast(
           msg:
