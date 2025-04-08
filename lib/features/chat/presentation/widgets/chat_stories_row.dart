@@ -184,4 +184,25 @@ class ChatStoriesRow extends ConsumerWidget {
       ),
     );
   }
+
+  Future<void> _pickMedia(WidgetRef ref) async {
+    // TODO: DOENS'T WORK IN WEB, FIX
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickMedia();
+    final pickedFileFormat = pickedFile?.path.split(".").last;
+
+    final local = ref.watch(localeProvider);
+    final localization = ref.watch(localizationProvider(local)).value;
+
+    if (pickedFile != null && pickedFileFormat == "mp4" ||
+        pickedFileFormat == "jpg" ||
+        pickedFileFormat == "png" ||
+        pickedFileFormat == "jpeg") {
+      context.go('/send-story-confirmation/?mediaPath=${pickedFile!.path}');
+    } else {
+      Fluttertoast.showToast(
+          msg:
+              "${localization!.translate("invalid-media-format")}: $pickedFileFormat");
+    }
+  }
 }
