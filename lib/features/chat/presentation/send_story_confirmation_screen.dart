@@ -164,7 +164,7 @@ class _SendStoryConfirmationScreenState
       );
 
       Fluttertoast.showToast(msg: "Story posted!");
-      context.pop();
+      context.go('/home');
     } else {
       Fluttertoast.showToast(msg: "Failed to upload story");
     }
