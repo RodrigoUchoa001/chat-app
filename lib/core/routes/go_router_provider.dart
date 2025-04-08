@@ -8,7 +8,7 @@ import 'package:chatapp/features/chat/presentation/chats_list_screen.dart';
 import 'package:chatapp/features/chat/presentation/create_group_screen.dart';
 import 'package:chatapp/features/chat/presentation/select_friends_to_create_group_screen.dart';
 import 'package:chatapp/features/chat/presentation/send_media_confirmation_screen.dart';
-import 'package:chatapp/features/chat/presentation/send_story_confirmation_screen.dart';
+import 'package:chatapp/features/stories/presentation/send_story_confirmation_screen.dart';
 import 'package:chatapp/features/chat/presentation/view_media_screen.dart';
 import 'package:chatapp/features/friends/presentation/add_friend_screen.dart';
 import 'package:chatapp/features/home/presentation/home_screen.dart';
