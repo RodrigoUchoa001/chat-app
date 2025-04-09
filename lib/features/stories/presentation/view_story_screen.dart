@@ -58,6 +58,26 @@ class _ViewStoryScreenState extends ConsumerState<ViewStoryScreen> {
                     fit: BoxFit.cover,
                   ),
                 ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          // TODO: create function to go to previous story
+                          Fluttertoast.showToast(msg: 'previous story');
+                        },
+                      ),
+                    ),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          // TODO: create function to go to next story
+                          Fluttertoast.showToast(msg: 'next story');
+                        },
+                      ),
+                    ),
+                  ],
+                ),
                 Column(
                   children: [
                     Expanded(
@@ -169,26 +189,6 @@ class _ViewStoryScreenState extends ConsumerState<ViewStoryScreen> {
                             stories[selectedStoryIndex]!.caption ?? '',
                           ),
                         ),
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          // TODO: create function to go to previous story
-                          Fluttertoast.showToast(msg: 'previous story');
-                        },
-                      ),
-                    ),
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          // TODO: create function to go to next story
-                          Fluttertoast.showToast(msg: 'next story');
-                        },
                       ),
                     ),
                   ],
