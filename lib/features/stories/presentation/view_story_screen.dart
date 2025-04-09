@@ -63,7 +63,8 @@ class _ViewStoryScreenState extends ConsumerState<ViewStoryScreen> {
                     Expanded(
                       child: GestureDetector(
                         onTap: () {
-                          // TODO: create function to go to previous story
+                          if (selectedStoryIndex == 0) return;
+                          ref.read(selectedStoryIndexProvider.notifier).state--;
                           Fluttertoast.showToast(msg: 'previous story');
                         },
                       ),
@@ -71,7 +72,8 @@ class _ViewStoryScreenState extends ConsumerState<ViewStoryScreen> {
                     Expanded(
                       child: GestureDetector(
                         onTap: () {
-                          // TODO: create function to go to next story
+                          if (selectedStoryIndex == stories.length - 1) return;
+                          ref.read(selectedStoryIndexProvider.notifier).state++;
                           Fluttertoast.showToast(msg: 'next story');
                         },
                       ),
