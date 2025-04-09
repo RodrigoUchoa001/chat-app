@@ -65,7 +65,6 @@ class _ViewStoryScreenState extends ConsumerState<ViewStoryScreen> {
                         onTap: () {
                           if (selectedStoryIndex == 0) return;
                           ref.read(selectedStoryIndexProvider.notifier).state--;
-                          Fluttertoast.showToast(msg: 'previous story');
                         },
                       ),
                     ),
@@ -74,7 +73,6 @@ class _ViewStoryScreenState extends ConsumerState<ViewStoryScreen> {
                         onTap: () {
                           if (selectedStoryIndex == stories.length - 1) return;
                           ref.read(selectedStoryIndexProvider.notifier).state++;
-                          Fluttertoast.showToast(msg: 'next story');
                         },
                       ),
                     ),
