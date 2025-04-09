@@ -63,7 +63,7 @@ class _ChatStoriesRowState extends ConsumerState<ChatStoriesRow> {
                           child: Padding(
                             padding: const EdgeInsets.all(6),
                             child: ChatProfilePic(
-                              avatarRadius: 52,
+                              avatarRadius: 26,
                               chatPhotoURL: currentUser?.photoURL,
                               isOnline: false,
                             ),
@@ -128,45 +128,56 @@ class _ChatStoriesRowState extends ConsumerState<ChatStoriesRow> {
                 scrollDirection: Axis.horizontal,
                 itemCount: friendsWhoHaveStories.length,
                 itemBuilder: (context, index) {
+                  final friend = friendsWhoHaveStories[index];
+
                   return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 13),
                     child: Column(
                       children: [
-                        Container(
-                          height: 58,
-                          width: 58,
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: themeMode == ThemeMode.dark ||
-                                      (themeMode == ThemeMode.system &&
-                                          MediaQuery.of(context)
-                                                  .platformBrightness ==
-                                              Brightness.dark)
-                                  ? Color(0xFF4B9289)
-                                  : Color(0xFF363F3B),
-                              width: 1,
-                            ),
+                        Material(
+                          color: Colors.transparent,
+                          child: InkWell(
                             borderRadius: BorderRadius.circular(50),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(6),
-                            child: StreamBuilder(
-                              stream: userRepo.getUserDetails(
-                                  friendsWhoHaveStories[index]!.uid ?? ''),
-                              builder: (context, snapshot) {
-                                if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return const Center(
-                                      child: CircularProgressIndicator());
-                                }
+                            onTap: () {
+                              context.push('/view-story/${friend!.uid}');
+                            },
+                            child: Container(
+                              height: 58,
+                              width: 58,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: themeMode == ThemeMode.dark ||
+                                          (themeMode == ThemeMode.system &&
+                                              MediaQuery.of(context)
+                                                      .platformBrightness ==
+                                                  Brightness.dark)
+                                      ? Color(0xFF4B9289)
+                                      : Color(0xFF363F3B),
+                                  width: 1,
+                                ),
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(6),
+                                child: StreamBuilder(
+                                  stream: userRepo
+                                      .getUserDetails(friend!.uid ?? ''),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return const Center(
+                                          child: CircularProgressIndicator());
+                                    }
 
-                                final user = snapshot.data;
-                                return ChatProfilePic(
-                                  avatarRadius: 26,
-                                  chatPhotoURL: user?.photoURL,
-                                  isOnline: false,
-                                );
-                              },
+                                    final user = snapshot.data;
+                                    return ChatProfilePic(
+                                      avatarRadius: 26,
+                                      chatPhotoURL: user?.photoURL,
+                                      isOnline: false,
+                                    );
+                                  },
+                                ),
+                              ),
                             ),
                           ),
                         ),
