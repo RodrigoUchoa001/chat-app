@@ -63,7 +63,7 @@ class _ChatStoriesRowState extends ConsumerState<ChatStoriesRow> {
                           child: Padding(
                             padding: const EdgeInsets.all(6),
                             child: ChatProfilePic(
-                              avatarRadius: 26,
+                              avatarRadius: 52,
                               chatPhotoURL: currentUser?.photoURL,
                               isOnline: false,
                             ),
