@@ -1,6 +1,9 @@
 import 'package:chatapp/features/chat/presentation/widgets/chat_profile_pic.dart';
 import 'package:chatapp/features/stories/data/repositories/stories_repository.dart';
+import 'package:chatapp/features/stories/presentation/providers/selected_story_index_provider.dart';
+import 'package:chatapp/features/stories/presentation/utils/calculate_time_since_story_posted.dart';
 import 'package:chatapp/features/stories/presentation/widgets/story_progress_bar.dart';
+import 'package:chatapp/features/users/data/repositories/user_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -18,6 +21,8 @@ class _ViewStoryScreenState extends ConsumerState<ViewStoryScreen> {
   @override
   Widget build(BuildContext context) {
     final storiesRepo = ref.watch(storiesRepositoryProvider);
+    final userRepo = ref.watch(userRepositoryProvider);
+    final selectedStoryIndex = ref.watch(selectedStoryIndexProvider);
 
     return SafeArea(
       child: Scaffold(
@@ -47,7 +52,7 @@ class _ViewStoryScreenState extends ConsumerState<ViewStoryScreen> {
                 Center(
                   child: Image(
                     image: NetworkImage(
-                      'https://picsum.photos/200/300',
+                      stories[selectedStoryIndex]!.mediaURL ?? '',
                     ),
                     fit: BoxFit.cover,
                     height: double.infinity,
@@ -78,49 +83,72 @@ class _ViewStoryScreenState extends ConsumerState<ViewStoryScreen> {
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 4),
                                 child: StoryProgressBar(
-                                  totalStories: 5,
-                                  currentIndex: 2,
+                                  totalStories: stories.length,
+                                  currentIndex: selectedStoryIndex,
                                 ),
                               ),
                               const SizedBox(height: 8),
                               Padding(
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 8),
-                                child: Row(
-                                  children: [
-                                    ChatProfilePic(
-                                      isOnline: true,
-                                      avatarRadius: 45,
-                                    ),
-                                    const SizedBox(width: 8),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                child: StreamBuilder(
+                                  stream:
+                                      userRepo.getUserDetails(widget.friendId),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return const Center(
+                                          child: CircularProgressIndicator());
+                                    }
+
+                                    final friend = snapshot.data;
+                                    if (friend == null) {
+                                      Fluttertoast.showToast(
+                                        msg: 'User not found',
+                                      );
+                                      return const Text('User not found');
+                                    }
+
+                                    return Row(
                                       children: [
-                                        Text(
-                                          'Username',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodySmall!
-                                              .copyWith(
-                                                fontSize: 18,
-                                                color: Colors.white,
-                                              ),
+                                        ChatProfilePic(
+                                          isOnline: true,
+                                          avatarRadius: 45,
+                                          chatPhotoURL: friend.photoURL,
                                         ),
-                                        Text(
-                                          '40min ago',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodySmall!
-                                              .copyWith(
-                                                fontSize: 12,
-                                                color:
-                                                    Colors.white.withAlpha(200),
-                                              ),
+                                        const SizedBox(width: 8),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              friend.name ?? '',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodySmall!
+                                                  .copyWith(
+                                                    fontSize: 18,
+                                                    color: Colors.white,
+                                                  ),
+                                            ),
+                                            Text(
+                                              calculateTimeSinceStoryPosted(
+                                                  stories[selectedStoryIndex]!
+                                                      .createdAt),
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodySmall!
+                                                  .copyWith(
+                                                    fontSize: 12,
+                                                    color: Colors.white
+                                                        .withAlpha(200),
+                                                  ),
+                                            ),
+                                          ],
                                         ),
                                       ],
-                                    ),
-                                  ],
+                                    );
+                                  },
                                 ),
                               ),
                             ],
@@ -130,13 +158,13 @@ class _ViewStoryScreenState extends ConsumerState<ViewStoryScreen> {
                     ),
                     Container(
                       color: Colors.black.withAlpha(100),
-                      child: const Center(
+                      child: Center(
                         child: Padding(
                           padding:
                               EdgeInsets.symmetric(vertical: 16, horizontal: 8),
                           child: Text(
                             textAlign: TextAlign.center,
-                            'Story Caption',
+                            stories[selectedStoryIndex]!.caption ?? '',
                           ),
                         ),
                       ),
