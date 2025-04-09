@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final selectedStoryIndexProvider = Provider<int>((ref) {
+final selectedStoryIndexProvider = StateProvider<int>((ref) {
   return 0;
 });
