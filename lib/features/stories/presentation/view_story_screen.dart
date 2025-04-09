@@ -102,7 +102,14 @@ class _ViewStoryScreenState extends ConsumerState<ViewStoryScreen> {
                 Container(
                   color: Colors.black.withAlpha(100),
                   child: const Center(
-                    child: Text('Story Caption'),
+                    child: Padding(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+                      child: Text(
+                        textAlign: TextAlign.center,
+                        'Story Caption',
+                      ),
+                    ),
                   ),
                 ),
               ],
