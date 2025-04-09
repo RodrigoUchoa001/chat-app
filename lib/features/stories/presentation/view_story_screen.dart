@@ -5,8 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class ViewStoryScreen extends ConsumerStatefulWidget {
-  final String storyId;
-  const ViewStoryScreen({required this.storyId, super.key});
+  final String friendId;
+  const ViewStoryScreen({required this.friendId, super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>

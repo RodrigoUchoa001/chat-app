@@ -152,10 +152,10 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         path: '/view-story',
         name: viewStoryRoute,
         builder: (context, state) {
-          final storyId = state.uri.queryParameters['storyId'];
+          final friendId = state.uri.queryParameters['friendId'];
 
           return ViewStoryScreen(
-            storyId: storyId!,
+            friendId: friendId!,
           );
         },
       )
