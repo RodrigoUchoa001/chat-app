@@ -1,3 +1,4 @@
+import 'package:chatapp/features/auth/presentation/widgets/auth_back_button.dart';
 import 'package:chatapp/features/chat/presentation/widgets/chat_profile_pic.dart';
 import 'package:chatapp/features/stories/data/repositories/stories_repository.dart';
 import 'package:chatapp/features/stories/presentation/providers/selected_story_index_provider.dart';
@@ -55,7 +56,6 @@ class _ViewStoryScreenState extends ConsumerState<ViewStoryScreen> {
                       stories[selectedStoryIndex]!.mediaURL ?? '',
                     ),
                     fit: BoxFit.cover,
-                    height: double.infinity,
                   ),
                 ),
                 Column(
@@ -111,9 +111,11 @@ class _ViewStoryScreenState extends ConsumerState<ViewStoryScreen> {
 
                                     return Row(
                                       children: [
+                                        AuthBackButton(),
+                                        const SizedBox(width: 12),
                                         ChatProfilePic(
                                           isOnline: true,
-                                          avatarRadius: 45,
+                                          avatarRadius: 26,
                                           chatPhotoURL: friend.photoURL,
                                         ),
                                         const SizedBox(width: 8),
