@@ -2,6 +2,7 @@ import 'package:chatapp/features/chat/presentation/widgets/chat_profile_pic.dart
 import 'package:chatapp/features/stories/presentation/widgets/story_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class ViewStoryScreen extends ConsumerStatefulWidget {
   final String storyId;
@@ -113,7 +114,27 @@ class _ViewStoryScreenState extends ConsumerState<ViewStoryScreen> {
                   ),
                 ),
               ],
-            )
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () {
+                      // TODO: create function to go to previous story
+                      Fluttertoast.showToast(msg: 'previous story');
+                    },
+                  ),
+                ),
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () {
+                      // TODO: create function to go to next story
+                      Fluttertoast.showToast(msg: 'next story');
+                    },
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),
