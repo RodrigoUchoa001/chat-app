@@ -32,7 +32,7 @@ class ChatProfilePic extends ConsumerWidget {
                 ),
                 child: SvgPicture.asset(
                   Assets.icons.user.path,
-                  height: avatarRadius,
+                  height: avatarRadius! * 2,
                 ),
               ),
         isOnline
