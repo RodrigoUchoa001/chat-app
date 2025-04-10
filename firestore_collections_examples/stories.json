@@ -6,7 +6,8 @@
       "caption": "Curtindo o dia!",
       "createdAt": "02-02-2025 15:30:00 UTC-3",
       "expiresAt": "03-02-2025 15:30:00 UTC-3",
-      "views": ["uid_456", "uid_789"]
+      "views": ["uid_456", "uid_789"],
+      "likes": ["uid_456", "uid_789"]
     },
     "story_def456": {
       "mediaURL": "https://link.com/video.mp4",
@@ -14,7 +15,8 @@
       "caption": "Novo projeto Flutter 🚀",
       "createdAt": "02-02-2025 16:00:00 UTC-3",
       "expiresAt": "03-02-2025 16:00:00 UTC-3",
-      "views": []
+      "views": [],
+      "likes": ["uid_456", "uid_789"]
     }
   },
   "uid_456": {
@@ -24,7 +26,8 @@
       "caption": "Café da manhã ☕",
       "createdAt": "02-02-2025 08:00:00 UTC-3",
       "expiresAt": "03-02-2025 08:00:00 UTC-3",
-      "views": ["uid_123"]
+      "views": ["uid_123"],
+      "likes": ["uid_456", "uid_789"]
     }
   }
 }
