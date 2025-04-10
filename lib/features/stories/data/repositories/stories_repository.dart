@@ -155,6 +155,20 @@ class StoriesRepository implements StoriesRepositoryInterface {
   }
 
   @override
+  Future<void> unlikeStory(String storyId) {
+    final collection = _firestore.collection('stories');
+
+    return collection.doc(storyId).get().then((doc) {
+      if (doc.exists) {
+        final data = doc.data()!;
+        final likes = data['likes'] ?? [];
+        likes.remove(_userId);
+        return collection.doc(storyId).update({'likes': likes});
+      }
+    });
+  }
+
+  @override
   Stream<bool> isStoryLikedByMe(String storyId) {
     final collection = _firestore.collection('stories');
 
