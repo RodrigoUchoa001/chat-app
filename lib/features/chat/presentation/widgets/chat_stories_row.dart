@@ -105,7 +105,6 @@ class _ChatStoriesRowState extends ConsumerState<ChatStoriesRow> {
               ],
             ),
           ),
-          // TODO: add the option see friends stories
           StreamBuilder(
             stream: storiesRepo.getFriendsWhoHaveStories(),
             builder: (context, snapshot) {
