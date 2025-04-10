@@ -7,6 +7,7 @@ class StoryDTO {
   String? createdAt;
   String? expiresAt;
   List<String>? views;
+  List<String>? likes;
 
   StoryDTO(
       {this.id,
@@ -16,7 +17,8 @@ class StoryDTO {
       this.caption,
       this.createdAt,
       this.expiresAt,
-      this.views});
+      this.views,
+      this.likes});
 
   StoryDTO.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -27,6 +29,7 @@ class StoryDTO {
     createdAt = json['createdAt'];
     expiresAt = json['expiresAt'];
     views = json['views'].cast<String>();
+    likes = json['likes'].cast<String>();
   }
 
   Map<String, dynamic> toJson() {
@@ -39,6 +42,7 @@ class StoryDTO {
     data['createdAt'] = createdAt;
     data['expiresAt'] = expiresAt;
     data['views'] = views;
+    data['likes'] = likes;
     return data;
   }
 
@@ -51,6 +55,7 @@ class StoryDTO {
     String? createdAt,
     String? expiresAt,
     List<String>? views,
+    List<String>? likes,
   }) {
     return StoryDTO(
       id: id ?? this.id,
@@ -61,6 +66,7 @@ class StoryDTO {
       createdAt: createdAt ?? this.createdAt,
       expiresAt: expiresAt ?? this.expiresAt,
       views: views ?? this.views,
+      likes: likes ?? this.likes,
     );
   }
 }
