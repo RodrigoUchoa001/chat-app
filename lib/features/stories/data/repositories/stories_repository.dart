@@ -126,4 +126,44 @@ class StoriesRepository implements StoriesRepositoryInterface {
       }).toList();
     });
   }
+
+  @override
+  Stream<List<String>> getStoryLikes(String storyId) {
+    final collection = _firestore.collection('stories');
+
+    return collection.doc(storyId).snapshots().map((snapshot) {
+      if (snapshot.exists) {
+        final data = snapshot.data()!;
+        return data['likes'] ?? [];
+      }
+      return [];
+    });
+  }
+
+  @override
+  Future<void> likeStory(String storyId) {
+    final collection = _firestore.collection('stories');
+
+    return collection.doc(storyId).get().then((doc) {
+      if (doc.exists) {
+        final data = doc.data()!;
+        final likes = data['likes'] ?? [];
+        likes.add(_userId);
+        return collection.doc(storyId).update({'likes': likes});
+      }
+    });
+  }
+
+  @override
+  Stream<bool> isStoryLikedByMe(String storyId) {
+    final collection = _firestore.collection('stories');
+
+    return collection.doc(storyId).snapshots().map((snapshot) {
+      if (snapshot.exists) {
+        final data = snapshot.data()!;
+        return data['likes'] != null && data['likes'].contains(_userId);
+      }
+      return false;
+    });
+  }
 }
