@@ -5,6 +5,9 @@ abstract interface class StoriesRepositoryInterface {
   Stream<List<UserDTO?>> getFriendsWhoHaveStories();
   Stream<List<StoryDTO?>> getStoriesByUserId(String userId);
   Stream<StoryDTO?> getStory(String storyId);
+  Future<void> likeStory(String storyId);
+  Stream<List<String>> getStoryLikes(String storyId);
+  Stream<bool> isStoryLikedByMe(String storyId);
   Future<void> sendStory(StoryDTO story);
   Future<void> deleteStory(String storyId);
   Future<void> deleteAllStories();
