@@ -171,6 +171,7 @@ class _SendStoryConfirmationScreenState
           mediaType: isVideo ? "video" : "image",
           expiresAt: DateTime.now().add(const Duration(days: 1)).toString(),
           views: [],
+          likes: [],
           caption: _captionController.text,
         ),
       );
