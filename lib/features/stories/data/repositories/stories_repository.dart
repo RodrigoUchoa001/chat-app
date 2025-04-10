@@ -55,6 +55,10 @@ class StoriesRepository implements StoriesRepositoryInterface {
     return collection.doc(storyId).snapshots().map((snapshot) {
       if (snapshot.exists) {
         final data = snapshot.data()!;
+        // marking story as seen
+        if (data['views'] != null && !data['views'].contains(_userId)) {
+          data['views'].add(_userId);
+        }
         return StoryDTO.fromJson(data)..id = snapshot.id;
       }
       return null;
