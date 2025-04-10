@@ -1,6 +1,7 @@
 import 'package:chatapp/features/auth/presentation/widgets/auth_back_button.dart';
 import 'package:chatapp/features/chat/presentation/widgets/chat_profile_pic.dart';
 import 'package:chatapp/features/stories/data/repositories/stories_repository.dart';
+import 'package:chatapp/features/stories/presentation/providers/is_story_liked_by_me_provider.dart';
 import 'package:chatapp/features/stories/presentation/providers/selected_story_index_provider.dart';
 import 'package:chatapp/features/stories/presentation/utils/calculate_time_since_story_posted.dart';
 import 'package:chatapp/features/stories/presentation/widgets/story_progress_bar.dart';
@@ -24,6 +25,7 @@ class _ViewStoryScreenState extends ConsumerState<ViewStoryScreen> {
     final storiesRepo = ref.watch(storiesRepositoryProvider);
     final userRepo = ref.watch(userRepositoryProvider);
     final selectedStoryIndex = ref.watch(selectedStoryIndexProvider);
+    final isStoryLikedByMe = ref.watch(isStoryLikedByMeProvider);
 
     return SafeArea(
       child: Scaffold(
@@ -193,6 +195,7 @@ class _ViewStoryScreenState extends ConsumerState<ViewStoryScreen> {
                             ),
                           ),
                         ),
+                        // TODO: check if is my story, if it is, show button to list likes
                         Container(
                           color: Colors.black.withAlpha(100),
                           child: Row(
@@ -212,6 +215,15 @@ class _ViewStoryScreenState extends ConsumerState<ViewStoryScreen> {
                                   }
 
                                   final isLiked = snapshot.data ?? false;
+                                  // this fix the error of setState() called during build
+                                  Future.delayed(Duration(milliseconds: 1), () {
+                                    ref
+                                        .read(
+                                          isStoryLikedByMeProvider.notifier,
+                                        )
+                                        .state = isLiked;
+                                  });
+
                                   return Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Material(
@@ -219,7 +231,31 @@ class _ViewStoryScreenState extends ConsumerState<ViewStoryScreen> {
                                       color: Theme.of(context).cardColor,
                                       child: InkWell(
                                         borderRadius: BorderRadius.circular(50),
-                                        onTap: () {},
+                                        onTap: () {
+                                          if (isLiked) {
+                                            storiesRepo.unlikeStory(
+                                              stories[selectedStoryIndex]!.id ??
+                                                  '',
+                                            );
+                                            ref
+                                                .read(
+                                                  isStoryLikedByMeProvider
+                                                      .notifier,
+                                                )
+                                                .state = false;
+                                          } else {
+                                            storiesRepo.likeStory(
+                                              stories[selectedStoryIndex]!.id ??
+                                                  '',
+                                            );
+                                            ref
+                                                .read(
+                                                  isStoryLikedByMeProvider
+                                                      .notifier,
+                                                )
+                                                .state = true;
+                                          }
+                                        },
                                         child: Container(
                                           decoration: BoxDecoration(
                                             borderRadius:
@@ -227,7 +263,7 @@ class _ViewStoryScreenState extends ConsumerState<ViewStoryScreen> {
                                           ),
                                           width: 48,
                                           height: 48,
-                                          child: isLiked
+                                          child: isStoryLikedByMe
                                               ? Icon(Icons.favorite)
                                               : Icon(Icons
                                                   .favorite_border_outlined),
