@@ -178,18 +178,69 @@ class _ViewStoryScreenState extends ConsumerState<ViewStoryScreen> {
                         ],
                       ),
                     ),
-                    Container(
-                      color: Colors.black.withAlpha(100),
-                      child: Center(
-                        child: Padding(
-                          padding:
-                              EdgeInsets.symmetric(vertical: 16, horizontal: 8),
-                          child: Text(
-                            textAlign: TextAlign.center,
-                            stories[selectedStoryIndex]!.caption ?? '',
+                    Column(
+                      children: [
+                        Container(
+                          color: Colors.black.withAlpha(100),
+                          child: Center(
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 16, horizontal: 8),
+                              child: Text(
+                                textAlign: TextAlign.center,
+                                stories[selectedStoryIndex]!.caption ?? '',
+                              ),
+                            ),
                           ),
                         ),
-                      ),
+                        Container(
+                          color: Colors.black.withAlpha(100),
+                          child: Row(
+                            children: [
+                              const Spacer(),
+                              StreamBuilder(
+                                stream: storiesRepo.isStoryLikedByMe(
+                                  stories[selectedStoryIndex]!.id ?? '',
+                                ),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return const Center(
+                                        child: CircularProgressIndicator());
+                                  } else if (snapshot.hasError) {
+                                    return Text('Error: ${snapshot.error}');
+                                  }
+
+                                  final isLiked = snapshot.data ?? false;
+                                  return Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Material(
+                                      borderRadius: BorderRadius.circular(50),
+                                      color: Theme.of(context).cardColor,
+                                      child: InkWell(
+                                        borderRadius: BorderRadius.circular(50),
+                                        onTap: () {},
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(50),
+                                          ),
+                                          width: 48,
+                                          height: 48,
+                                          child: isLiked
+                                              ? Icon(Icons.favorite)
+                                              : Icon(Icons
+                                                  .favorite_border_outlined),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
