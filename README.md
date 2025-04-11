@@ -27,9 +27,10 @@ Inspired by the design of Alex Hylton, design available at [Chatting App UI kit 
 - ✅✅ Messages
     - ✅✅ See if your friend saw your private message.
     - ✅✅ See who saw your message in the group.
-- Stories
-    - Post stories for friends.
-    - List the stories of your friends.
+- ✅✅ Stories
+    - ✅✅ Post stories for friends.
+    - ✅✅ List the stories of your friends.
+    - ✅✅ Like your friends stories.
 
 ## Screenshots
 *soon*
