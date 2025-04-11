@@ -1,3 +1,4 @@
+import 'package:chatapp/core/providers/firebase_auth_providers.dart';
 import 'package:chatapp/features/auth/presentation/widgets/auth_back_button.dart';
 import 'package:chatapp/features/chat/presentation/widgets/chat_profile_pic.dart';
 import 'package:chatapp/features/stories/data/repositories/stories_repository.dart';
@@ -26,6 +27,7 @@ class _ViewStoryScreenState extends ConsumerState<ViewStoryScreen> {
     final userRepo = ref.watch(userRepositoryProvider);
     final selectedStoryIndex = ref.watch(selectedStoryIndexProvider);
     final isStoryLikedByMe = ref.watch(isStoryLikedByMeProvider);
+    final currentUser = ref.watch(currentUserProvider).asData?.value;
 
     return SafeArea(
       child: Scaffold(
@@ -196,86 +198,96 @@ class _ViewStoryScreenState extends ConsumerState<ViewStoryScreen> {
                           ),
                         ),
                         // TODO: check if is my story, if it is, show button to list likes
-                        Container(
-                          color: Colors.black.withAlpha(100),
-                          child: Row(
-                            children: [
-                              const Spacer(),
-                              StreamBuilder(
-                                stream: storiesRepo.isStoryLikedByMe(
-                                  stories[selectedStoryIndex]!.id ?? '',
-                                ),
-                                builder: (context, snapshot) {
-                                  if (snapshot.connectionState ==
-                                      ConnectionState.waiting) {
-                                    return const Center(
-                                        child: CircularProgressIndicator());
-                                  } else if (snapshot.hasError) {
-                                    return Text('Error: ${snapshot.error}');
-                                  }
+                        stories[selectedStoryIndex]!.userId == currentUser?.uid
+                            ? Container()
+                            : Container(
+                                color: Colors.black.withAlpha(100),
+                                child: Row(
+                                  children: [
+                                    const Spacer(),
+                                    StreamBuilder(
+                                      stream: storiesRepo.isStoryLikedByMe(
+                                        stories[selectedStoryIndex]!.id ?? '',
+                                      ),
+                                      builder: (context, snapshot) {
+                                        if (snapshot.connectionState ==
+                                            ConnectionState.waiting) {
+                                          return const Center(
+                                              child:
+                                                  CircularProgressIndicator());
+                                        } else if (snapshot.hasError) {
+                                          return Text(
+                                              'Error: ${snapshot.error}');
+                                        }
 
-                                  final isLiked = snapshot.data ?? false;
-                                  // this fix the error of setState() called during build
-                                  Future.delayed(Duration(milliseconds: 1), () {
-                                    ref
-                                        .read(
-                                          isStoryLikedByMeProvider.notifier,
-                                        )
-                                        .state = isLiked;
-                                  });
+                                        final isLiked = snapshot.data ?? false;
+                                        // this fix the error of setState() called during build
+                                        Future.delayed(
+                                            Duration(milliseconds: 1), () {
+                                          ref
+                                              .read(
+                                                isStoryLikedByMeProvider
+                                                    .notifier,
+                                              )
+                                              .state = isLiked;
+                                        });
 
-                                  return Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Material(
-                                      borderRadius: BorderRadius.circular(50),
-                                      color: Theme.of(context).cardColor,
-                                      child: InkWell(
-                                        borderRadius: BorderRadius.circular(50),
-                                        onTap: () {
-                                          if (isLiked) {
-                                            storiesRepo.unlikeStory(
-                                              stories[selectedStoryIndex]!.id ??
-                                                  '',
-                                            );
-                                            ref
-                                                .read(
-                                                  isStoryLikedByMeProvider
-                                                      .notifier,
-                                                )
-                                                .state = false;
-                                          } else {
-                                            storiesRepo.likeStory(
-                                              stories[selectedStoryIndex]!.id ??
-                                                  '',
-                                            );
-                                            ref
-                                                .read(
-                                                  isStoryLikedByMeProvider
-                                                      .notifier,
-                                                )
-                                                .state = true;
-                                          }
-                                        },
-                                        child: Container(
-                                          decoration: BoxDecoration(
+                                        return Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Material(
                                             borderRadius:
                                                 BorderRadius.circular(50),
+                                            color: Theme.of(context).cardColor,
+                                            child: InkWell(
+                                              borderRadius:
+                                                  BorderRadius.circular(50),
+                                              onTap: () {
+                                                if (isLiked) {
+                                                  storiesRepo.unlikeStory(
+                                                    stories[selectedStoryIndex]!
+                                                            .id ??
+                                                        '',
+                                                  );
+                                                  ref
+                                                      .read(
+                                                        isStoryLikedByMeProvider
+                                                            .notifier,
+                                                      )
+                                                      .state = false;
+                                                } else {
+                                                  storiesRepo.likeStory(
+                                                    stories[selectedStoryIndex]!
+                                                            .id ??
+                                                        '',
+                                                  );
+                                                  ref
+                                                      .read(
+                                                        isStoryLikedByMeProvider
+                                                            .notifier,
+                                                      )
+                                                      .state = true;
+                                                }
+                                              },
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(50),
+                                                ),
+                                                width: 48,
+                                                height: 48,
+                                                child: isStoryLikedByMe
+                                                    ? Icon(Icons.favorite)
+                                                    : Icon(Icons
+                                                        .favorite_border_outlined),
+                                              ),
+                                            ),
                                           ),
-                                          width: 48,
-                                          height: 48,
-                                          child: isStoryLikedByMe
-                                              ? Icon(Icons.favorite)
-                                              : Icon(Icons
-                                                  .favorite_border_outlined),
-                                        ),
-                                      ),
+                                        );
+                                      },
                                     ),
-                                  );
-                                },
+                                  ],
+                                ),
                               ),
-                            ],
-                          ),
-                        ),
                       ],
                     ),
                   ],
