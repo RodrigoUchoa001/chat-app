@@ -6,6 +6,7 @@ import 'package:chatapp/features/chat/presentation/widgets/chat_profile_pic.dart
 import 'package:chatapp/features/stories/data/repositories/stories_repository.dart';
 import 'package:chatapp/features/users/data/repositories/user_repository.dart';
 import 'package:chatapp/gen/fonts.gen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -38,59 +39,73 @@ class _ChatStoriesRowState extends ConsumerState<ChatStoriesRow> {
               children: [
                 Material(
                   color: Colors.transparent,
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(50),
-                    onTap: () => _pickMedia(ref),
-                    child: Stack(
-                      alignment: Alignment.bottomRight,
-                      children: [
-                        Container(
-                          height: 58,
-                          width: 58,
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: themeMode == ThemeMode.dark ||
-                                      (themeMode == ThemeMode.system &&
-                                          MediaQuery.of(context)
-                                                  .platformBrightness ==
-                                              Brightness.dark)
-                                  ? Color(0xFF4B9289)
-                                  : Color(0xFF363F3B),
-                              width: 1,
+                  child: StreamBuilder(
+                    stream: storiesRepo.getStoriesByUserId(currentUser!.uid),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+
+                      final stories = snapshot.data;
+
+                      return InkWell(
+                        borderRadius: BorderRadius.circular(50),
+                        onTap: () => stories!.isEmpty
+                            ? _pickMedia(ref)
+                            : _showStoryOptionSelectionBottomSheet(currentUser),
+                        child: Stack(
+                          alignment: Alignment.bottomRight,
+                          children: [
+                            Container(
+                              height: 58,
+                              width: 58,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: themeMode == ThemeMode.dark ||
+                                          (themeMode == ThemeMode.system &&
+                                              MediaQuery.of(context)
+                                                      .platformBrightness ==
+                                                  Brightness.dark)
+                                      ? Color(0xFF4B9289)
+                                      : Color(0xFF363F3B),
+                                  width: 1,
+                                ),
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(6),
+                                // TODO: create circle to show the number of stories
+                                child: ChatProfilePic(
+                                  avatarRadius: 26,
+                                  chatPhotoURL: currentUser?.photoURL,
+                                  isOnline: false,
+                                ),
+                              ),
                             ),
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(6),
-                            child: ChatProfilePic(
-                              avatarRadius: 26,
-                              chatPhotoURL: currentUser?.photoURL,
-                              isOnline: false,
+                            Container(
+                              height: 16,
+                              width: 16,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: themeMode == ThemeMode.dark ||
+                                          (themeMode == ThemeMode.system &&
+                                              MediaQuery.of(context)
+                                                      .platformBrightness ==
+                                                  Brightness.dark)
+                                      ? Color(0xFF4B9289)
+                                      : Color(0xFF363F3B),
+                                  width: 1,
+                                ),
+                                borderRadius: BorderRadius.circular(50),
+                                color: Colors.white,
+                              ),
+                              child: Icon(Icons.add,
+                                  size: 10, color: Color(0xFF24786D)),
                             ),
-                          ),
+                          ],
                         ),
-                        Container(
-                          height: 16,
-                          width: 16,
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: themeMode == ThemeMode.dark ||
-                                      (themeMode == ThemeMode.system &&
-                                          MediaQuery.of(context)
-                                                  .platformBrightness ==
-                                              Brightness.dark)
-                                  ? Color(0xFF4B9289)
-                                  : Color(0xFF363F3B),
-                              width: 1,
-                            ),
-                            borderRadius: BorderRadius.circular(50),
-                            color: Colors.white,
-                          ),
-                          child: Icon(Icons.add,
-                              size: 10, color: Color(0xFF24786D)),
-                        ),
-                      ],
-                    ),
+                      );
+                    },
                   ),
                 ),
                 const SizedBox(height: 10),
