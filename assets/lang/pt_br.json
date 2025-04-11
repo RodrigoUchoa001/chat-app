@@ -144,5 +144,7 @@
     "failed-to-send-video": "Falha ao enviar vídeo",
     "invalid-media-format": "Formato de mídia inválido",
     "my-stories": "Meus stories",
-    "ago": "atrás"
+    "ago": "atrás",
+    "just-now": "agora",
+    "invalid-date": "Data inválida"
 }
