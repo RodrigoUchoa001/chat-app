@@ -163,7 +163,8 @@ class _ViewStoryScreenState extends ConsumerState<ViewStoryScreen> {
                                             Text(
                                               calculateTimeSinceStoryPosted(
                                                   stories[selectedStoryIndex]!
-                                                      .createdAt),
+                                                      .createdAt,
+                                                  ref),
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .bodySmall!
