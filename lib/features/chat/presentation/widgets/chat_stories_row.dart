@@ -235,4 +235,47 @@ class _ChatStoriesRowState extends ConsumerState<ChatStoriesRow> {
               "${localization!.translate("invalid-media-format")}: $pickedFileFormat");
     }
   }
+
+  void _showStoryOptionSelectionBottomSheet(User? currentUser) {
+    showModalBottomSheet(
+      context: context,
+      showDragHandle: true,
+      builder: (context) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              contentPadding:
+                  const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+              leading: const Icon(
+                Icons.photo_library_outlined,
+              ),
+              title: Text(
+                "See my stories",
+              ),
+              onTap: () {
+                context.pop();
+                context.push('/view-story/$currentUser');
+              },
+            ),
+            ListTile(
+              contentPadding:
+                  const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+              leading: const Icon(
+                Icons.add,
+              ),
+              title: Text(
+                "Add new story",
+              ),
+              onTap: () {
+                context.pop();
+                _pickMedia(ref);
+              },
+            ),
+            const SizedBox(height: 20),
+          ],
+        );
+      },
+    );
+  }
 }
