@@ -28,6 +28,9 @@ class _ChatStoriesRowState extends ConsumerState<ChatStoriesRow> {
     final userRepo = ref.watch(userRepositoryProvider);
     final themeMode = ref.watch(themeProvider);
 
+    final locale = ref.watch(localeProvider);
+    final localization = ref.watch(localizationProvider(locale)).value;
+
     return SizedBox(
       height: 100,
       child: ListView(
@@ -109,8 +112,8 @@ class _ChatStoriesRowState extends ConsumerState<ChatStoriesRow> {
                   ),
                 ),
                 const SizedBox(height: 10),
-                const Text(
-                  'My Status',
+                Text(
+                  localization?.translate("my-stories") ?? "",
                   style: TextStyle(
                     color: Colors.white,
                     fontFamily: FontFamily.caros,
