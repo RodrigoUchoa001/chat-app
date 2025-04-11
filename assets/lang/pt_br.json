@@ -142,5 +142,7 @@
     "video-sent": "Vídeo enviado",
     "failed-to-send-image": "Falha ao enviar imagem",
     "failed-to-send-video": "Falha ao enviar vídeo",
-    "invalid-media-format": "Formato de mídia inválido"
+    "invalid-media-format": "Formato de mídia inválido",
+    "my-stories": "Meus stories",
+    "ago": "atrás"
 }

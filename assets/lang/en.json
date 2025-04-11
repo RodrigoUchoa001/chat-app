@@ -142,5 +142,7 @@
     "video-sent": "Video sent",
     "failed-to-send-image": "Failed to send image",
     "failed-to-send-video": "Failed to send video",
-    "invalid-media-format": "Invalid media format"
+    "invalid-media-format": "Invalid media format",
+    "my-stories": "My stories",
+    "ago": "ago"
 }
