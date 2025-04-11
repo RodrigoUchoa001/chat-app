@@ -34,7 +34,6 @@ class StoryDTO {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
     data['userId'] = userId;
     data['mediaURL'] = mediaURL;
     data['mediaType'] = mediaType;
