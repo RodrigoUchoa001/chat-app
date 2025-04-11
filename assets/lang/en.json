@@ -146,5 +146,7 @@
     "my-stories": "My stories",
     "ago": "ago",
     "just-now": "just now",
-    "invalid-date": "Invalid date"
+    "invalid-date": "Invalid date",
+    "image": "Image",
+    "video": "Video"
 }

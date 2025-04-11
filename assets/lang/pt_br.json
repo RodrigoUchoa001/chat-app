@@ -146,5 +146,7 @@
     "my-stories": "Meus stories",
     "ago": "atrás",
     "just-now": "agora",
-    "invalid-date": "Data inválida"
+    "invalid-date": "Data inválida",
+    "image": "Imagem",
+    "video": "Vídeo"
 }
