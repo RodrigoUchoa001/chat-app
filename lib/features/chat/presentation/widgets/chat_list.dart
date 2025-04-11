@@ -277,7 +277,7 @@ class ChatList extends ConsumerWidget {
                 Text(
                   chat.lastMessage != null
                       ? calculateTimeSinceLastMessage(
-                          chat.lastMessage!.timestamp!)
+                          chat.lastMessage!.timestamp!, ref)
                       : "",
                   style: TextStyle(
                     color: Color(0xFF797C7B),
