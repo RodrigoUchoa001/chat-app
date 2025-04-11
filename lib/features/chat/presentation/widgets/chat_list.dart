@@ -239,7 +239,7 @@ class ChatList extends ConsumerWidget {
                         Icon(Icons.image, color: Color(0xFF797C7B), size: 16),
                         const SizedBox(width: 5),
                         Text(
-                          "image",
+                          localization?.translate("image") ?? "",
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
                           style: TextStyle(
@@ -257,7 +257,7 @@ class ChatList extends ConsumerWidget {
                             color: Color(0xFF797C7B), size: 16),
                         const SizedBox(width: 5),
                         Text(
-                          "video",
+                          localization?.translate("video") ?? "",
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
                           style: TextStyle(
