@@ -52,6 +52,9 @@ class _ViewStoryScreenState extends ConsumerState<ViewStoryScreen> {
               );
             }
 
+            // marking story as seen
+            storiesRepo.markStoryAsSeen(stories[selectedStoryIndex]!.id!);
+
             return Stack(
               children: [
                 Center(
