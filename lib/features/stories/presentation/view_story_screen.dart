@@ -152,7 +152,10 @@ class _ViewStoryScreenState extends ConsumerState<ViewStoryScreen> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              friend.name ?? '',
+                                              currentUser!.uid ==
+                                                      widget.friendId
+                                                  ? 'You'
+                                                  : friend.name ?? '',
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .bodySmall!
