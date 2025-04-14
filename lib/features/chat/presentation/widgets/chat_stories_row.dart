@@ -273,7 +273,7 @@ class _ChatStoriesRowState extends ConsumerState<ChatStoriesRow> {
               ),
               onTap: () {
                 context.pop();
-                context.push('/view-story/$currentUser');
+                context.push('/view-story/${currentUser!.uid}');
               },
             ),
             ListTile(
