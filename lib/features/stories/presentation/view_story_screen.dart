@@ -303,4 +303,40 @@ class _ViewStoryScreenState extends ConsumerState<ViewStoryScreen> {
       ),
     );
   }
+
+  Padding _storyButton(BuildContext context, List<StoryDTO?> stories,
+      int selectedStoryIndex, Icon icon, String text, Function() onTap) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Material(
+        borderRadius: BorderRadius.circular(50),
+        color: Theme.of(context).cardColor,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(50),
+          onTap: onTap,
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(50),
+            ),
+            width: 64,
+            height: 48,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                icon,
+                const SizedBox(width: 4),
+                Text(
+                  text,
+                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                        color: Colors.white,
+                        fontSize: 16,
+                      ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }
