@@ -77,164 +77,167 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      localization?.translate("group-name") ?? "",
-                      style: TextStyle(
-                        color: Color(0xFF797C7B),
-                        fontSize: 16,
-                        fontFamily: FontFamily.caros,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    TextField(
-                      controller: groupNameController,
-                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                            fontSize: 40,
-                          ),
-                      maxLines: 1,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText:
-                            localization?.translate("type-the-group-name") ??
-                                "",
-                        hintStyle: const TextStyle(
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        localization?.translate("group-name") ?? "",
+                        style: TextStyle(
                           color: Color(0xFF797C7B),
-                          fontSize: 40,
+                          fontSize: 16,
                           fontFamily: FontFamily.caros,
                         ),
                       ),
-                      autofocus: true,
-                    ),
-                    const SizedBox(height: 30),
-                    Text(
-                      localization?.translate("group-admin") ?? "",
-                      style: TextStyle(
-                        color: Color(0xFF797C7B),
-                        fontSize: 16,
-                        fontFamily: FontFamily.caros,
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    StreamBuilder(
-                      stream: userRepo.getUserDetails(currentUser!.uid),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const CircularProgressIndicator();
-                        }
-                        if (snapshot.hasError) {
-                          return Text('Error: ${snapshot.error}');
-                        }
-
-                        final user = snapshot.data!;
-                        final isPhotoValid = user.photoURL != null &&
-                            user.photoURL!.isNotEmpty &&
-                            user.photoURL != 'null';
-
-                        return Row(
-                          children: [
-                            isPhotoValid
-                                ? ChatProfilePic(
-                                    chatPhotoURL: user.photoURL,
-                                    isOnline: false,
-                                  )
-                                : ChatProfilePic(
-                                    isOnline: false,
-                                  ),
-                            const SizedBox(width: 12),
-                            Text(
-                              user.name != null
-                                  ? '${user.name} (${localization?.translate("you") ?? ""})'
-                                  : '',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium!
-                                  .copyWith(
-                                    fontSize: 16,
-                                  ),
+                      const SizedBox(height: 16),
+                      TextField(
+                        controller: groupNameController,
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                              fontSize: 40,
                             ),
-                          ],
-                        );
-                      },
-                    ),
-                    const SizedBox(height: 30),
-                    Text(
-                      localization?.translate("invited-members") ?? "",
-                      style: TextStyle(
-                        color: Color(0xFF797C7B),
-                        fontSize: 16,
-                        fontFamily: FontFamily.caros,
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    Wrap(
-                      spacing: 16,
-                      runSpacing: 20,
-                      children: [
-                        for (final friend in friendsListToCreateGroup)
-                          GestureDetector(
-                            onTap: () => _removeUserFromGroup(ref, friend.uid!),
-                            child: Stack(
-                              alignment: Alignment.bottomRight,
-                              children: [
-                                ChatProfilePic(
-                                  chatPhotoURL: friend.photoURL,
-                                  isOnline: false,
-                                  avatarRadius:
-                                      36, // half the size of the material widget above (70/2), plus 1 pixel for the border
-                                ),
-                                Container(
-                                  width: 24,
-                                  height: 24,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: themeMode == ThemeMode.light
-                                          ? Colors.white
-                                          : Color(0xFF121414),
-                                      width: 1.5,
-                                    ),
-                                    borderRadius: BorderRadius.circular(50),
-                                    color: Color(0xFFEA3736),
-                                  ),
-                                  child: Icon(Icons.close,
-                                      color: Colors.white, size: 16),
-                                ),
-                              ],
-                            ),
+                        maxLines: 1,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText:
+                              localization?.translate("type-the-group-name") ??
+                                  "",
+                          hintStyle: const TextStyle(
+                            color: Color(0xFF797C7B),
+                            fontSize: 40,
+                            fontFamily: FontFamily.caros,
                           ),
-                        Material(
-                          color: Colors.transparent,
-                          child: InkWell(
-                            borderRadius: BorderRadius.circular(50),
-                            onTap: () {
-                              context.push('/select-friends-to-create-group');
-                            },
-                            child: DottedBorder(
-                              dashPattern: [8, 4],
-                              borderType: BorderType.Circle,
-                              color: themeMode == ThemeMode.dark
-                                  ? Color(0xFF323C37)
-                                  : Color(0xFFCFD3D2),
-                              child: SizedBox(
-                                height: 70,
-                                width: 70,
-                                child: Icon(
-                                  Icons.add,
-                                  size: 24,
-                                  color: themeMode == ThemeMode.dark
-                                      ? Color(0xFF323C37)
-                                      : Color(0xFFCFD3D2),
+                        ),
+                        autofocus: true,
+                      ),
+                      const SizedBox(height: 30),
+                      Text(
+                        localization?.translate("group-admin") ?? "",
+                        style: TextStyle(
+                          color: Color(0xFF797C7B),
+                          fontSize: 16,
+                          fontFamily: FontFamily.caros,
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      StreamBuilder(
+                        stream: userRepo.getUserDetails(currentUser!.uid),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const CircularProgressIndicator();
+                          }
+                          if (snapshot.hasError) {
+                            return Text('Error: ${snapshot.error}');
+                          }
+
+                          final user = snapshot.data!;
+                          final isPhotoValid = user.photoURL != null &&
+                              user.photoURL!.isNotEmpty &&
+                              user.photoURL != 'null';
+
+                          return Row(
+                            children: [
+                              isPhotoValid
+                                  ? ChatProfilePic(
+                                      chatPhotoURL: user.photoURL,
+                                      isOnline: false,
+                                    )
+                                  : ChatProfilePic(
+                                      isOnline: false,
+                                    ),
+                              const SizedBox(width: 12),
+                              Text(
+                                user.name != null
+                                    ? '${user.name} (${localization?.translate("you") ?? ""})'
+                                    : '',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium!
+                                    .copyWith(
+                                      fontSize: 16,
+                                    ),
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 30),
+                      Text(
+                        localization?.translate("invited-members") ?? "",
+                        style: TextStyle(
+                          color: Color(0xFF797C7B),
+                          fontSize: 16,
+                          fontFamily: FontFamily.caros,
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      Wrap(
+                        spacing: 16,
+                        runSpacing: 20,
+                        children: [
+                          for (final friend in friendsListToCreateGroup)
+                            GestureDetector(
+                              onTap: () =>
+                                  _removeUserFromGroup(ref, friend.uid!),
+                              child: Stack(
+                                alignment: Alignment.bottomRight,
+                                children: [
+                                  ChatProfilePic(
+                                    chatPhotoURL: friend.photoURL,
+                                    isOnline: false,
+                                    avatarRadius:
+                                        36, // half the size of the material widget above (70/2), plus 1 pixel for the border
+                                  ),
+                                  Container(
+                                    width: 24,
+                                    height: 24,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: themeMode == ThemeMode.light
+                                            ? Colors.white
+                                            : Color(0xFF121414),
+                                        width: 1.5,
+                                      ),
+                                      borderRadius: BorderRadius.circular(50),
+                                      color: Color(0xFFEA3736),
+                                    ),
+                                    child: Icon(Icons.close,
+                                        color: Colors.white, size: 16),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              borderRadius: BorderRadius.circular(50),
+                              onTap: () {
+                                context.push('/select-friends-to-create-group');
+                              },
+                              child: DottedBorder(
+                                dashPattern: [8, 4],
+                                borderType: BorderType.Circle,
+                                color: themeMode == ThemeMode.dark
+                                    ? Color(0xFF323C37)
+                                    : Color(0xFFCFD3D2),
+                                child: SizedBox(
+                                  height: 70,
+                                  width: 70,
+                                  child: Icon(
+                                    Icons.add,
+                                    size: 24,
+                                    color: themeMode == ThemeMode.dark
+                                        ? Color(0xFF323C37)
+                                        : Color(0xFFCFD3D2),
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
               ChatTextButton(
