@@ -339,4 +339,65 @@ class _ViewStoryScreenState extends ConsumerState<ViewStoryScreen> {
       ),
     );
   }
+
+  _showStoryListBottomSheet(String title, List<String> userIds) {
+    final userRepo = ref.read(userRepositoryProvider);
+
+    showModalBottomSheet(
+      context: context,
+      showDragHandle: true,
+      builder: (context) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              title,
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+            ),
+            const SizedBox(height: 10),
+            ListView.builder(
+              shrinkWrap: true,
+              itemCount: userIds.length,
+              itemBuilder: (context, index) {
+                if (userIds.isEmpty) {
+                  return Center(
+                    child: Text(
+                      "No $title yet.",
+                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                            fontSize: 16,
+                          ),
+                    ),
+                  );
+                }
+
+                final userId = userIds[index];
+                return StreamBuilder(
+                  stream: userRepo.getUserDetails(userId),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    }
+
+                    final user = snapshot.data!;
+                    return ListTile(
+                      leading: CircleAvatar(
+                        backgroundImage: NetworkImage(user.photoURL ?? ''),
+                      ),
+                      title: Text(user.name ?? ''),
+                    );
+                  },
+                );
+              },
+            ),
+            const SizedBox(height: 20),
+          ],
+        );
+      },
+    );
+  }
 }
