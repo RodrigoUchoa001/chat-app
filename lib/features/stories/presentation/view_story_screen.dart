@@ -1,6 +1,7 @@
 import 'package:chatapp/core/providers/firebase_auth_providers.dart';
 import 'package:chatapp/features/auth/presentation/widgets/auth_back_button.dart';
 import 'package:chatapp/features/chat/presentation/widgets/chat_profile_pic.dart';
+import 'package:chatapp/features/stories/data/dto/story_dto.dart';
 import 'package:chatapp/features/stories/data/repositories/stories_repository.dart';
 import 'package:chatapp/features/stories/presentation/providers/is_story_liked_by_me_provider.dart';
 import 'package:chatapp/features/stories/presentation/providers/selected_story_index_provider.dart';
@@ -203,7 +204,41 @@ class _ViewStoryScreenState extends ConsumerState<ViewStoryScreen> {
                         ),
                         // TODO: check if is my story, if it is, show button to list likes
                         stories[selectedStoryIndex]!.userId == currentUser?.uid
-                            ? Container()
+                            ? Container(
+                                color: Colors.black.withAlpha(100),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    _storyButton(
+                                      context,
+                                      stories,
+                                      selectedStoryIndex,
+                                      Icon(Icons.favorite),
+                                      '${stories[selectedStoryIndex]!.likes?.length ?? 0}',
+                                      () {
+                                        _showStoryListBottomSheet(
+                                          "Likes",
+                                          stories[selectedStoryIndex]!.likes!,
+                                        );
+                                      },
+                                    ),
+                                    SizedBox(width: 8),
+                                    _storyButton(
+                                      context,
+                                      stories,
+                                      selectedStoryIndex,
+                                      Icon(Icons.remove_red_eye),
+                                      '${stories[selectedStoryIndex]!.views?.length ?? 0}',
+                                      () {
+                                        _showStoryListBottomSheet(
+                                          "Views",
+                                          stories[selectedStoryIndex]!.views!,
+                                        );
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              )
                             : Container(
                                 color: Colors.black.withAlpha(100),
                                 child: Row(
