@@ -148,5 +148,11 @@
     "just-now": "just now",
     "invalid-date": "Invalid date",
     "image": "Image",
-    "video": "Video"
+    "video": "Video",
+    "see-my-stories": "See my stories",
+    "add-new-story": "Add new story",
+    "views": "Views",
+    "no-views-yet": "No views yet",
+    "likes": "Likes",
+    "no-likes-yet": "No likes yet"
 }

@@ -148,5 +148,11 @@
     "just-now": "agora",
     "invalid-date": "Data inválida",
     "image": "Imagem",
-    "video": "Vídeo"
+    "video": "Vídeo",
+    "see-my-stories": "Ver meus stories",
+    "add-new-story": "Adicionar novo story",
+    "views": "Visualizações",
+    "no-views-yet": "Nenhuma visualização até agora",
+    "likes": "Curtidas",
+    "no-likes-yet": "Nenhuma curtida até agora"
 }
