@@ -230,6 +230,7 @@ class _ViewStoryScreenState extends ConsumerState<ViewStoryScreen> {
                                           localization?.translate("likes") ??
                                               "",
                                           stories[selectedStoryIndex]!.likes!,
+                                          true,
                                         );
                                       },
                                     ),
@@ -245,6 +246,7 @@ class _ViewStoryScreenState extends ConsumerState<ViewStoryScreen> {
                                           localization?.translate("views") ??
                                               "",
                                           stories[selectedStoryIndex]!.views!,
+                                          false,
                                         );
                                       },
                                     ),
@@ -387,8 +389,11 @@ class _ViewStoryScreenState extends ConsumerState<ViewStoryScreen> {
     );
   }
 
-  _showStoryListBottomSheet(String title, List<String> userIds) {
+  _showStoryListBottomSheet(String title, List<String> userIds, bool isLikes) {
     final userRepo = ref.read(userRepositoryProvider);
+
+    final locale = ref.watch(localeProvider);
+    final localization = ref.watch(localizationProvider(locale)).value;
 
     showModalBottomSheet(
       context: context,
@@ -408,7 +413,9 @@ class _ViewStoryScreenState extends ConsumerState<ViewStoryScreen> {
             if (userIds.isEmpty)
               Center(
                 child: Text(
-                  "No ${title.toLowerCase()} yet.",
+                  isLikes
+                      ? localization?.translate("no-likes-yet") ?? ""
+                      : localization?.translate("no-views-yet") ?? "",
                   style: Theme.of(context).textTheme.bodySmall!.copyWith(
                         fontSize: 16,
                       ),
