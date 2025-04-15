@@ -1,3 +1,5 @@
+import 'package:chatapp/core/localization/app_localization.dart';
+import 'package:chatapp/core/localization/locale_provider.dart';
 import 'package:chatapp/core/providers/firebase_auth_providers.dart';
 import 'package:chatapp/features/auth/presentation/widgets/auth_back_button.dart';
 import 'package:chatapp/features/chat/presentation/widgets/chat_profile_pic.dart';
@@ -29,6 +31,9 @@ class _ViewStoryScreenState extends ConsumerState<ViewStoryScreen> {
     final selectedStoryIndex = ref.watch(selectedStoryIndexProvider);
     final isStoryLikedByMe = ref.watch(isStoryLikedByMeProvider);
     final currentUser = ref.watch(currentUserProvider).asData?.value;
+
+    final locale = ref.watch(localeProvider);
+    final localization = ref.watch(localizationProvider(locale)).value;
 
     return SafeArea(
       child: Scaffold(
@@ -154,7 +159,9 @@ class _ViewStoryScreenState extends ConsumerState<ViewStoryScreen> {
                                             Text(
                                               currentUser!.uid ==
                                                       widget.friendId
-                                                  ? 'You'
+                                                  ? localization
+                                                          ?.translate("you") ??
+                                                      ""
                                                   : friend.name ?? '',
                                               style: Theme.of(context)
                                                   .textTheme
@@ -220,7 +227,8 @@ class _ViewStoryScreenState extends ConsumerState<ViewStoryScreen> {
                                       '${stories[selectedStoryIndex]!.likes?.length ?? 0}',
                                       () {
                                         _showStoryListBottomSheet(
-                                          "Likes",
+                                          localization?.translate("likes") ??
+                                              "",
                                           stories[selectedStoryIndex]!.likes!,
                                         );
                                       },
@@ -234,7 +242,8 @@ class _ViewStoryScreenState extends ConsumerState<ViewStoryScreen> {
                                       '${stories[selectedStoryIndex]!.views?.length ?? 0}',
                                       () {
                                         _showStoryListBottomSheet(
-                                          "Views",
+                                          localization?.translate("views") ??
+                                              "",
                                           stories[selectedStoryIndex]!.views!,
                                         );
                                       },
