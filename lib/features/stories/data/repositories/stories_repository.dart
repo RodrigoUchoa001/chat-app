@@ -63,8 +63,15 @@ class StoriesRepository implements StoriesRepositoryInterface {
   }
 
   @override
-  Future<void> markStoryAsSeen(String storyId) {
+  Future<void> markStoryAsSeen(String storyId) async {
     final collection = _firestore.collection('stories');
+
+    // check if the owner of the story is the current user
+    // if it is, don't mark it as seen
+    final doc = await collection.doc(storyId).get();
+    if (doc.exists && doc.data()?['userId'] == _userId) {
+      return;
+    }
 
     return collection.doc(storyId).update({
       'views': FieldValue.arrayUnion([_userId])
