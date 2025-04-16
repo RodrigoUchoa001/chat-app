@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:chatapp/core/localization/app_localization.dart';
 import 'package:chatapp/core/localization/locale_provider.dart';
 import 'package:chatapp/core/providers/firebase_auth_providers.dart';
-import 'package:chatapp/core/theme/theme_provider.dart';
+import 'package:chatapp/core/theme/is_dark_mode.dart';
 import 'package:chatapp/features/auth/presentation/widgets/auth_back_button.dart';
 import 'package:chatapp/features/chat/data/repositories/chat_repository.dart';
 import 'package:chatapp/features/chat/presentation/providers/is_sending_media_provider.dart';
@@ -63,7 +63,6 @@ class _SendMediaConfirmationScreenState
     final userRepo = ref.watch(userRepositoryProvider);
     final currentUser = ref.watch(currentUserProvider).asData?.value;
     final isSending = ref.watch(isSendingMediaProvider);
-    final themeMode = ref.watch(themeProvider);
 
     final locale = ref.watch(localeProvider);
     final localization = ref.watch(localizationProvider(locale)).value;
@@ -94,6 +93,7 @@ class _SendMediaConfirmationScreenState
               Expanded(
                 child: Center(
                   child: _controller.value.isInitialized
+                      // TODO: fix flickering when video is playing
                       ? AspectRatio(
                           aspectRatio: _controller.value.aspectRatio,
                           child: VideoPlayer(_controller),
@@ -226,11 +226,7 @@ class _SendMediaConfirmationScreenState
                             : SvgPicture.asset(
                                 Assets.icons.send.path,
                                 colorFilter: ColorFilter.mode(
-                                  themeMode == ThemeMode.dark ||
-                                          (themeMode == ThemeMode.system &&
-                                              MediaQuery.of(context)
-                                                      .platformBrightness ==
-                                                  Brightness.dark)
+                                  isDarkMode(ref, context)
                                       ? Colors.white
                                       : Colors.black,
                                   BlendMode.srcIn,

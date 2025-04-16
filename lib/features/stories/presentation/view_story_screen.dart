@@ -165,7 +165,7 @@ class _ViewStoryScreenState extends ConsumerState<ViewStoryScreen> {
                                         AuthBackButton(),
                                         const SizedBox(width: 12),
                                         ChatProfilePic(
-                                          isOnline: true,
+                                          isOnline: false,
                                           avatarRadius: 26,
                                           chatPhotoURL: friend.photoURL,
                                         ),

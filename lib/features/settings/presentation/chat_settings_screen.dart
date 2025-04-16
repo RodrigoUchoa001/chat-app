@@ -1,5 +1,6 @@
 import 'package:chatapp/core/localization/app_localization.dart';
 import 'package:chatapp/core/localization/locale_provider.dart';
+import 'package:chatapp/core/theme/is_dark_mode.dart';
 import 'package:chatapp/core/theme/theme_provider.dart';
 import 'package:chatapp/features/chat/data/repositories/chat_repository.dart';
 import 'package:chatapp/features/settings/presentation/widgets/setting_button.dart';
@@ -90,12 +91,7 @@ class _ChatSettingsScreenState extends ConsumerState<ChatSettingsScreen> {
                 },
                 trailing: Icon(
                   Icons.arrow_forward_ios,
-                  color: themeMode == ThemeMode.dark ||
-                          (themeMode == ThemeMode.system &&
-                              MediaQuery.of(context).platformBrightness ==
-                                  Brightness.dark)
-                      ? Colors.white
-                      : Colors.black,
+                  color: isDarkMode(ref, context) ? Colors.white : Colors.black,
                 ),
               ),
               SettingButton(
@@ -132,12 +128,7 @@ class _ChatSettingsScreenState extends ConsumerState<ChatSettingsScreen> {
                 },
                 trailing: Icon(
                   Icons.arrow_forward_ios,
-                  color: themeMode == ThemeMode.dark ||
-                          (themeMode == ThemeMode.system &&
-                              MediaQuery.of(context).platformBrightness ==
-                                  Brightness.dark)
-                      ? Colors.white
-                      : Colors.black,
+                  color: isDarkMode(ref, context) ? Colors.white : Colors.black,
                 ),
               ),
             ],

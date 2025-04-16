@@ -1,5 +1,6 @@
 import 'package:chatapp/core/localization/app_localization.dart';
 import 'package:chatapp/core/localization/locale_provider.dart';
+import 'package:chatapp/core/theme/is_dark_mode.dart';
 import 'package:chatapp/core/theme/theme_provider.dart';
 import 'package:chatapp/gen/fonts.gen.dart';
 import 'package:flutter/material.dart';
@@ -44,12 +45,8 @@ class ChatTextField extends ConsumerWidget {
           borderRadius: BorderRadius.circular(12),
         ),
         filled: true,
-        fillColor: themeMode == ThemeMode.dark ||
-                (themeMode == ThemeMode.system &&
-                    MediaQuery.of(context).platformBrightness ==
-                        Brightness.dark)
-            ? Color(0xFF192222)
-            : Color(0xFFF3F6F6),
+        fillColor:
+            isDarkMode(ref, context) ? Color(0xFF192222) : Color(0xFFF3F6F6),
         hintText: localization?.translate("write-your-message") ?? "",
         hintStyle: TextStyle(
           color: Color(0xFF797C7B),

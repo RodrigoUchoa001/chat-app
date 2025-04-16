@@ -1,6 +1,7 @@
 import 'package:chatapp/core/localization/app_localization.dart';
 import 'package:chatapp/core/localization/locale_provider.dart';
 import 'package:chatapp/core/providers/firebase_auth_providers.dart';
+import 'package:chatapp/core/theme/is_dark_mode.dart';
 import 'package:chatapp/core/theme/theme_provider.dart';
 import 'package:chatapp/features/auth/data/repositories/auth_repository.dart';
 import 'package:chatapp/features/settings/presentation/widgets/setting_button.dart';
@@ -105,11 +106,7 @@ class _AccountSettingsScreenState extends ConsumerState<AccountSettingsScreen> {
                                   .textTheme
                                   .bodySmall!
                                   .copyWith(
-                                      color: themeMode == ThemeMode.dark ||
-                                              (themeMode == ThemeMode.system &&
-                                                  MediaQuery.of(context)
-                                                          .platformBrightness ==
-                                                      Brightness.dark)
+                                      color: isDarkMode(ref, context)
                                           ? Colors.white
                                           : Colors.black),
                               decoration: InputDecoration(
@@ -158,10 +155,7 @@ class _AccountSettingsScreenState extends ConsumerState<AccountSettingsScreen> {
                     },
                     trailing: Icon(
                       Icons.arrow_forward_ios,
-                      color: themeMode == ThemeMode.dark ||
-                              (themeMode == ThemeMode.system &&
-                                  MediaQuery.of(context).platformBrightness ==
-                                      Brightness.dark)
+                      color: isDarkMode(ref, context)
                           ? Colors.white
                           : Colors.black,
                     ),
@@ -200,11 +194,7 @@ class _AccountSettingsScreenState extends ConsumerState<AccountSettingsScreen> {
                                   .textTheme
                                   .bodySmall!
                                   .copyWith(
-                                      color: themeMode == ThemeMode.dark ||
-                                              (themeMode == ThemeMode.system &&
-                                                  MediaQuery.of(context)
-                                                          .platformBrightness ==
-                                                      Brightness.dark)
+                                      color: isDarkMode(ref, context)
                                           ? Colors.white
                                           : Colors.black),
                               decoration: InputDecoration(
@@ -250,10 +240,7 @@ class _AccountSettingsScreenState extends ConsumerState<AccountSettingsScreen> {
                     },
                     trailing: Icon(
                       Icons.arrow_forward_ios,
-                      color: themeMode == ThemeMode.dark ||
-                              (themeMode == ThemeMode.system &&
-                                  MediaQuery.of(context).platformBrightness ==
-                                      Brightness.dark)
+                      color: isDarkMode(ref, context)
                           ? Colors.white
                           : Colors.black,
                     ),

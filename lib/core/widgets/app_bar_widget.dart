@@ -1,4 +1,4 @@
-import 'package:chatapp/core/theme/theme_provider.dart';
+import 'package:chatapp/core/theme/is_dark_mode.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -11,8 +11,6 @@ class AppBarWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final themeMode = ref.watch(themeProvider);
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: SizedBox(
@@ -26,10 +24,7 @@ class AppBarWidget extends ConsumerWidget {
                 height: 44,
                 decoration: BoxDecoration(
                   border: Border.all(
-                    color: themeMode == ThemeMode.dark ||
-                            (themeMode == ThemeMode.system &&
-                                MediaQuery.of(context).platformBrightness ==
-                                    Brightness.dark)
+                    color: isDarkMode(ref, context)
                         ? Color(0xFF4B9289)
                         : Color(0xFF363F3B),
                     width: 1,
@@ -52,10 +47,7 @@ class AppBarWidget extends ConsumerWidget {
                 height: 44,
                 decoration: BoxDecoration(
                   border: Border.all(
-                    color: themeMode == ThemeMode.dark ||
-                            (themeMode == ThemeMode.system &&
-                                MediaQuery.of(context).platformBrightness ==
-                                    Brightness.dark)
+                    color: isDarkMode(ref, context)
                         ? Color(0xFF4B9289)
                         : Color(0xFF363F3B),
                     width: 1,

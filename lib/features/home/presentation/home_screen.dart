@@ -1,6 +1,7 @@
 import 'package:chatapp/core/localization/app_localization.dart';
 import 'package:chatapp/core/localization/locale_provider.dart';
 import 'package:chatapp/core/providers/bottom_nav_index_provider.dart';
+import 'package:chatapp/core/theme/is_dark_mode.dart';
 import 'package:chatapp/core/theme/theme_provider.dart';
 import 'package:chatapp/features/chat/presentation/chats_list_screen.dart';
 import 'package:chatapp/features/friends/presentation/friends_screen.dart';
@@ -41,10 +42,7 @@ class HomeScreen extends ConsumerWidget {
             decoration: BoxDecoration(
               border: Border(
                 top: BorderSide(
-                  color: themeMode == ThemeMode.dark ||
-                          (themeMode == ThemeMode.system &&
-                              MediaQuery.of(context).platformBrightness ==
-                                  Brightness.dark)
+                  color: isDarkMode(ref, context)
                       ? const Color(0xFF242E2E)
                       : Color(0xFFEEFAF8),
                   width: 1,

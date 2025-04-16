@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:chatapp/core/localization/app_localization.dart';
 import 'package:chatapp/core/localization/locale_provider.dart';
 import 'package:chatapp/core/providers/firebase_auth_providers.dart';
+import 'package:chatapp/core/theme/is_dark_mode.dart';
 import 'package:chatapp/core/theme/theme_provider.dart';
 import 'package:chatapp/features/auth/presentation/widgets/auth_back_button.dart';
 import 'package:chatapp/features/chat/data/dto/chat_dto.dart';
@@ -361,12 +362,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                   icon: SvgPicture.asset(
                     Assets.icons.call.path,
                     colorFilter: ColorFilter.mode(
-                      themeMode == ThemeMode.dark ||
-                              (themeMode == ThemeMode.system &&
-                                  MediaQuery.of(context).platformBrightness ==
-                                      Brightness.dark)
-                          ? Colors.white
-                          : Colors.black,
+                      isDarkMode(ref, context) ? Colors.white : Colors.black,
                       BlendMode.srcIn,
                     ),
                     height: 24,
@@ -378,12 +374,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                   icon: SvgPicture.asset(
                     Assets.icons.video.path,
                     colorFilter: ColorFilter.mode(
-                      themeMode == ThemeMode.dark ||
-                              (themeMode == ThemeMode.system &&
-                                  MediaQuery.of(context).platformBrightness ==
-                                      Brightness.dark)
-                          ? Colors.white
-                          : Colors.black,
+                      isDarkMode(ref, context) ? Colors.white : Colors.black,
                       BlendMode.srcIn,
                     ),
                     height: 24,
@@ -611,11 +602,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                             Transform.translate(
                               offset: Offset(-10, 0.0),
                               child: CircleAvatar(
-                                backgroundColor: themeMode == ThemeMode.dark ||
-                                        (themeMode == ThemeMode.system &&
-                                            MediaQuery.of(context)
-                                                    .platformBrightness ==
-                                                Brightness.dark)
+                                backgroundColor: isDarkMode(ref, context)
                                     ? Color(0xFF212727)
                                     : Color(0xFFF2F7FB),
                                 radius: 10,
@@ -626,12 +613,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                                       .bodySmall!
                                       .copyWith(
                                         fontSize: 10,
-                                        color: themeMode == ThemeMode.dark ||
-                                                (themeMode ==
-                                                        ThemeMode.system &&
-                                                    MediaQuery.of(context)
-                                                            .platformBrightness ==
-                                                        Brightness.dark)
+                                        color: isDarkMode(ref, context)
                                             ? Colors.white
                                             : Colors.black,
                                       ),

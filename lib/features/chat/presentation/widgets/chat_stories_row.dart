@@ -1,7 +1,7 @@
 import 'package:chatapp/core/localization/app_localization.dart';
 import 'package:chatapp/core/localization/locale_provider.dart';
 import 'package:chatapp/core/providers/firebase_auth_providers.dart';
-import 'package:chatapp/core/theme/theme_provider.dart';
+import 'package:chatapp/core/theme/is_dark_mode.dart';
 import 'package:chatapp/features/chat/presentation/widgets/chat_profile_pic.dart';
 import 'package:chatapp/features/stories/data/repositories/stories_repository.dart';
 import 'package:chatapp/features/users/data/repositories/user_repository.dart';
@@ -26,7 +26,6 @@ class _ChatStoriesRowState extends ConsumerState<ChatStoriesRow> {
     final currentUser = ref.watch(currentUserProvider).asData?.value;
     final storiesRepo = ref.watch(storiesRepositoryProvider);
     final userRepo = ref.watch(userRepositoryProvider);
-    final themeMode = ref.watch(themeProvider);
 
     final locale = ref.watch(localeProvider);
     final localization = ref.watch(localizationProvider(locale)).value;
@@ -64,11 +63,8 @@ class _ChatStoriesRowState extends ConsumerState<ChatStoriesRow> {
                               width: 58,
                               decoration: BoxDecoration(
                                 border: Border.all(
-                                  color: themeMode == ThemeMode.dark ||
-                                          (themeMode == ThemeMode.system &&
-                                              MediaQuery.of(context)
-                                                      .platformBrightness ==
-                                                  Brightness.dark)
+                                  // TODO: create function isDarkMode with the code below
+                                  color: isDarkMode(ref, context)
                                       ? Color(0xFF4B9289)
                                       : Color(0xFF363F3B),
                                   width: 1,
@@ -90,11 +86,7 @@ class _ChatStoriesRowState extends ConsumerState<ChatStoriesRow> {
                               width: 16,
                               decoration: BoxDecoration(
                                 border: Border.all(
-                                  color: themeMode == ThemeMode.dark ||
-                                          (themeMode == ThemeMode.system &&
-                                              MediaQuery.of(context)
-                                                      .platformBrightness ==
-                                                  Brightness.dark)
+                                  color: isDarkMode(ref, context)
                                       ? Color(0xFF4B9289)
                                       : Color(0xFF363F3B),
                                   width: 1,
@@ -163,11 +155,7 @@ class _ChatStoriesRowState extends ConsumerState<ChatStoriesRow> {
                               width: 58,
                               decoration: BoxDecoration(
                                 border: Border.all(
-                                  color: themeMode == ThemeMode.dark ||
-                                          (themeMode == ThemeMode.system &&
-                                              MediaQuery.of(context)
-                                                      .platformBrightness ==
-                                                  Brightness.dark)
+                                  color: isDarkMode(ref, context)
                                       ? Color(0xFF4B9289)
                                       : Color(0xFF363F3B),
                                   width: 1,
@@ -187,6 +175,7 @@ class _ChatStoriesRowState extends ConsumerState<ChatStoriesRow> {
                                     }
 
                                     final user = snapshot.data;
+                                    // TODO: create circle to show the number of stories
                                     return ChatProfilePic(
                                       avatarRadius: 26,
                                       chatPhotoURL: user?.photoURL,

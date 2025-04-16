@@ -1,4 +1,4 @@
-import 'package:chatapp/core/theme/theme_provider.dart';
+import 'package:chatapp/core/theme/is_dark_mode.dart';
 import 'package:chatapp/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,19 +10,13 @@ class AuthBackButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final themeMode = ref.watch(themeProvider);
     return context.canPop()
         ? IconButton(
             onPressed: () => context.pop(),
             icon: SvgPicture.asset(
               Assets.icons.backButton.path,
               colorFilter: ColorFilter.mode(
-                themeMode == ThemeMode.dark ||
-                        (themeMode == ThemeMode.system &&
-                            MediaQuery.of(context).platformBrightness ==
-                                Brightness.dark)
-                    ? Colors.white
-                    : Colors.black,
+                isDarkMode(ref, context) ? Colors.white : Colors.black,
                 BlendMode.srcIn,
               ),
               width: 8,
