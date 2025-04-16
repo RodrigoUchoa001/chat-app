@@ -86,7 +86,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                   return Expanded(
                     child: Center(
                       child: Text(
-                        localization?.translate("no-messages-yet") ?? "",
+                        localization?.translate("chat-no-message-yet") ?? "",
                         style: Theme.of(context).textTheme.bodySmall!.copyWith(
                               fontSize: 24,
                             ),
