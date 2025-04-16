@@ -230,7 +230,6 @@ class _ViewStoryScreenState extends ConsumerState<ViewStoryScreen> {
                             ),
                           ),
                         ),
-                        // TODO: check if is my story, if it is, show button to list likes
                         stories[selectedStoryIndex]!.userId == currentUser?.uid
                             ? Container(
                                 color: Colors.black.withAlpha(100),
