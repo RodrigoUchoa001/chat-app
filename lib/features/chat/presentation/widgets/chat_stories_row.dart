@@ -120,7 +120,6 @@ class _ChatStoriesRowState extends ConsumerState<ChatStoriesRow> {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());
               } else if (snapshot.hasError) {
-                print(snapshot.error);
                 return Center(
                     child: Text('Error: ${snapshot.error}',
                         style: const TextStyle(color: Colors.red)));

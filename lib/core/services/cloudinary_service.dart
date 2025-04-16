@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -35,7 +36,9 @@ class CloudinaryService {
         return null;
       }
     } catch (e) {
-      print("Erro ao enviar mídia para Cloudinary: $e");
+      if (kDebugMode) {
+        print("Erro ao enviar mídia para Cloudinary: $e");
+      }
       return null;
     }
   }

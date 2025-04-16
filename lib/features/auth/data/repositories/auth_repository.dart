@@ -7,6 +7,7 @@ import 'package:chatapp/features/auth/data/dto/user_dto.dart';
 import 'package:chatapp/features/auth/domain/repositories/auth_repository_interface.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -69,7 +70,9 @@ class AuthRepository implements AuthRepositoryInterface {
 
       return true;
     } catch (e) {
-      print('Erro no login com Google: $e');
+      if (kDebugMode) {
+        print('Erro no login com Google: $e');
+      }
       return false;
     }
   }
@@ -129,8 +132,6 @@ class AuthRepository implements AuthRepositoryInterface {
         fcmToken: '',
         statusMessage: '',
       ).toJson();
-
-      print('user data: $userData');
 
       await userRef.set(userData);
 
