@@ -63,7 +63,6 @@ class _ChatStoriesRowState extends ConsumerState<ChatStoriesRow> {
                               width: 58,
                               decoration: BoxDecoration(
                                 border: Border.all(
-                                  // TODO: create function isDarkMode with the code below
                                   color: isDarkMode(ref, context)
                                       ? Color(0xFF4B9289)
                                       : Color(0xFF363F3B),
