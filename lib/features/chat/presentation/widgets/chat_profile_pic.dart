@@ -15,10 +15,13 @@ class ChatProfilePic extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // check if the chatProfileURL is valid
+    bool isChatPicValid = chatPhotoURL != null && chatPhotoURL!.isNotEmpty;
+
     return Stack(
       alignment: Alignment.bottomRight,
       children: [
-        chatPhotoURL != null
+        isChatPicValid
             ? CircleAvatar(
                 radius: avatarRadius,
                 backgroundImage: NetworkImage(
