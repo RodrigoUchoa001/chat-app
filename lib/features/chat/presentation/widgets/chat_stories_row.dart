@@ -255,6 +255,9 @@ class _ChatStoriesRowState extends ConsumerState<ChatStoriesRow> {
   }
 
   void _showStoryOptionSelectionBottomSheet(User? currentUser) {
+    final locale = ref.watch(localeProvider);
+    final localization = ref.watch(localizationProvider(locale)).value;
+
     showModalBottomSheet(
       context: context,
       showDragHandle: true,
@@ -269,7 +272,7 @@ class _ChatStoriesRowState extends ConsumerState<ChatStoriesRow> {
                 Icons.photo_library_outlined,
               ),
               title: Text(
-                "See my stories",
+                localization?.translate("see-my-stories") ?? "",
               ),
               onTap: () {
                 context.pop();
@@ -283,7 +286,7 @@ class _ChatStoriesRowState extends ConsumerState<ChatStoriesRow> {
                 Icons.add,
               ),
               title: Text(
-                "Add new story",
+                localization?.translate("add-new-story") ?? "",
               ),
               onTap: () {
                 context.pop();
