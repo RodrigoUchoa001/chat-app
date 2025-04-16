@@ -13,6 +13,7 @@ import 'package:chatapp/features/users/data/repositories/user_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:go_router/go_router.dart';
 
 class ViewStoryScreen extends ConsumerStatefulWidget {
   final String friendId;
@@ -24,6 +25,21 @@ class ViewStoryScreen extends ConsumerStatefulWidget {
 }
 
 class _ViewStoryScreenState extends ConsumerState<ViewStoryScreen> {
+  @override
+  void initState() {
+    resetStoryIndex();
+    super.initState();
+  }
+
+  // reset the story index, so, when, for example, if the user views two stories,
+  // left the view story screen and goes to the view story screen again, it will
+  // start from the first story
+  Future<void> resetStoryIndex() async {
+    await Future.delayed(const Duration(milliseconds: 1), () {
+      ref.read(selectedStoryIndexProvider.notifier).state = 0;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final storiesRepo = ref.watch(storiesRepositoryProvider);
@@ -84,7 +100,9 @@ class _ViewStoryScreenState extends ConsumerState<ViewStoryScreen> {
                     Expanded(
                       child: GestureDetector(
                         onTap: () {
-                          if (selectedStoryIndex == stories.length - 1) return;
+                          if (selectedStoryIndex == stories.length - 1) {
+                            return context.pop();
+                          }
                           ref.read(selectedStoryIndexProvider.notifier).state++;
                         },
                       ),
