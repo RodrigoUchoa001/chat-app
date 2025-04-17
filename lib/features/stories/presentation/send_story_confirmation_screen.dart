@@ -38,11 +38,16 @@ class _SendStoryConfirmationScreenState
   void initState() {
     videoProgress = 0.0;
     _controller = VideoPlayerController.file(File(widget.mediaFilePath))
-      ..initialize().then((_) {
-        setState(() {
-          videoProgress = _controller.value.position.inMilliseconds.toDouble();
-        });
+      ..initialize().then(
+        (value) => setState(() {}),
+      )
+      ..play();
+
+    _controller.addListener(() {
+      setState(() {
+        videoProgress = _controller.value.position.inMilliseconds.toDouble();
       });
+    });
 
     super.initState();
   }
