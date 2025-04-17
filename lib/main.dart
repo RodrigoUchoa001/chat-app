@@ -91,7 +91,6 @@ class _MainAppState extends ConsumerState<MainApp> with WidgetsBindingObserver {
     final themeMode = ref.watch(themeProvider);
     final locale = ref.watch(localeProvider);
 
-    // TODO: fix online status thing
     return FutureBuilder(
       future: _initializeUser(),
       builder: (context, snapshot) {
