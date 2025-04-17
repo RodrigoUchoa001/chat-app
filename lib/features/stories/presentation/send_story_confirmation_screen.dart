@@ -78,40 +78,14 @@ class _SendStoryConfirmationScreenState
             if (isVideo)
               Expanded(
                 child: Center(
-                  child: Column(
-                    children: [
-                      Center(
-                        child: _controller.value.isInitialized
-                            // TODO: fix flickering when video is playing
-                            ? AspectRatio(
-                                aspectRatio: _controller.value.aspectRatio,
-                                child: VideoPlayer(_controller),
-                              )
-                            : const Center(child: CircularProgressIndicator()),
-                      ),
-                      Slider(
-                        value: videoProgress,
-                        min: 0.0,
-                        max: _controller.value.duration.inMilliseconds
-                            .toDouble(),
-                        onChanged: (double value) {
-                          _controller
-                              .seekTo(Duration(milliseconds: value.toInt()));
-                        },
-                      ),
-                      IconButton(
-                        onPressed: () {
-                          setState(() {
-                            _controller.value.isPlaying
-                                ? _controller.pause()
-                                : _controller.play();
-                          });
-                        },
-                        icon: Icon(_controller.value.isPlaying
-                            ? Icons.pause
-                            : Icons.play_arrow),
-                      ),
-                    ],
+                  child: Center(
+                    child: _controller.value.isInitialized
+                        // TODO: fix flickering when video is playing
+                        ? AspectRatio(
+                            aspectRatio: _controller.value.aspectRatio,
+                            child: VideoPlayer(_controller),
+                          )
+                        : const Center(child: CircularProgressIndicator()),
                   ),
                 ),
               ),
@@ -126,8 +100,34 @@ class _SendStoryConfirmationScreenState
                   ),
                 ),
               ),
+            Column(
+              children: [
+                if (isVideo)
+                  Slider(
+                    value: videoProgress,
+                    min: 0.0,
+                    max: _controller.value.duration.inMilliseconds.toDouble(),
+                    onChanged: (double value) {
+                      _controller.seekTo(Duration(milliseconds: value.toInt()));
+                    },
+                  ),
+                if (isVideo)
+                  IconButton(
+                    onPressed: () {
+                      setState(() {
+                        _controller.value.isPlaying
+                            ? _controller.pause()
+                            : _controller.play();
+                      });
+                    },
+                    icon: Icon(_controller.value.isPlaying
+                        ? Icons.pause
+                        : Icons.play_arrow),
+                  ),
+              ],
+            ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: AuthTextField(
                 controller: _captionController,
                 labelText: "Insert caption",
