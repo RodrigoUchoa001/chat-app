@@ -91,46 +91,26 @@ class _MainAppState extends ConsumerState<MainApp> with WidgetsBindingObserver {
     final themeMode = ref.watch(themeProvider);
     final locale = ref.watch(localeProvider);
 
-    return FutureBuilder(
-      future: _initializeUser(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData || !_isInitialized) {
-          return MaterialApp.router(
-            theme: AppTheme.lightTheme,
-            darkTheme: AppTheme.darkTheme,
-            themeMode: themeMode,
-            debugShowCheckedModeBanner: false,
-            locale: locale,
-            localizationsDelegates: const [
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            supportedLocales: [
-              const Locale('en', 'US'),
-              const Locale('pt', 'BR'),
-            ],
-            routerConfig: goRouter,
-          );
-        }
-        return MaterialApp.router(
-          theme: AppTheme.lightTheme,
-          darkTheme: AppTheme.darkTheme,
-          themeMode: themeMode,
-          debugShowCheckedModeBanner: false,
-          locale: locale,
-          localizationsDelegates: const [
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: [
-            const Locale('en', 'US'),
-            const Locale('pt', 'BR'),
-          ],
-          routerConfig: goRouter,
-        );
-      },
+    if (!_isInitialized) {
+      _initializeUser();
+    }
+
+    return MaterialApp.router(
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
+      themeMode: themeMode,
+      debugShowCheckedModeBanner: false,
+      locale: locale,
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('en', 'US'),
+        const Locale('pt', 'BR'),
+      ],
+      routerConfig: goRouter,
     );
   }
 }
