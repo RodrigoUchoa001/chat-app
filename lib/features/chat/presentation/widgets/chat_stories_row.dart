@@ -8,6 +8,7 @@ import 'package:chatapp/features/stories/presentation/widgets/segmented_circle.d
 import 'package:chatapp/features/users/data/repositories/user_repository.dart';
 import 'package:chatapp/gen/fonts.gen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -208,6 +209,11 @@ class _ChatStoriesRowState extends ConsumerState<ChatStoriesRow> {
 
   Future<void> _pickMedia(WidgetRef ref) async {
     // TODO: DOENS'T WORK IN WEB, FIX
+    if (kIsWeb) {
+      Fluttertoast.showToast(msg: "Not supported in web for now");
+      return;
+    }
+
     final picker = ImagePicker();
     final pickedFile = await picker.pickMedia();
     final pickedFileFormat = pickedFile?.path.split(".").last;

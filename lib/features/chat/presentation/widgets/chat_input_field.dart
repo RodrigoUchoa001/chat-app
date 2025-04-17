@@ -6,6 +6,7 @@ import 'package:chatapp/features/chat/presentation/providers/show_send_message_i
 import 'package:chatapp/features/chat/presentation/widgets/chat_icon_button.dart';
 import 'package:chatapp/features/chat/presentation/widgets/chat_text_field.dart';
 import 'package:chatapp/gen/assets.gen.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -113,6 +114,11 @@ class _ChatInputFieldState extends ConsumerState<ChatInputField> {
 
   Future<void> _pickMedia(WidgetRef ref) async {
     // TODO: DOENS'T WORK IN WEB, FIX
+    if (kIsWeb) {
+      Fluttertoast.showToast(msg: "Not supported in web for now");
+      return;
+    }
+
     final picker = ImagePicker();
     final pickedFile = await picker.pickMedia();
     final pickedFileFormat = pickedFile?.path.split(".").last;
