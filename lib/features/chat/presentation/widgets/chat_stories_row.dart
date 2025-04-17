@@ -59,34 +59,12 @@ class _ChatStoriesRowState extends ConsumerState<ChatStoriesRow> {
                         child: Stack(
                           alignment: Alignment.bottomRight,
                           children: [
-                            Container(
-                              height: 58,
-                              width: 58,
-                              decoration: BoxDecoration(
-                                // only show border if there are no stories
-                                border: stories!.isEmpty
-                                    ? Border.all(
-                                        color: isDarkMode(ref, context)
-                                            ? Color(0xFF4B9289)
-                                            : Color(0xFF363F3B),
-                                        width: 1,
-                                      )
-                                    : null,
-                                borderRadius: BorderRadius.circular(50),
-                              ),
-                              child: Padding(
-                                // only show padding if there are no stories
-                                padding: stories.isEmpty
-                                    ? const EdgeInsets.all(6)
-                                    : const EdgeInsets.all(0),
-                                child: SegmentedCircle(
-                                  segmentCount: stories.length,
-                                  child: ChatProfilePic(
-                                    avatarRadius: 26,
-                                    chatPhotoURL: currentUser.photoURL,
-                                    isOnline: false,
-                                  ),
-                                ),
+                            SegmentedCircle(
+                              segmentCount: 1,
+                              child: ChatProfilePic(
+                                avatarRadius: 26,
+                                chatPhotoURL: currentUser.photoURL,
+                                isOnline: false,
                               ),
                             ),
                             Container(
@@ -169,50 +147,26 @@ class _ChatStoriesRowState extends ConsumerState<ChatStoriesRow> {
 
                                 final stories = snapshot.data;
 
-                                return Container(
-                                  height: 58,
-                                  width: 58,
-                                  decoration: stories!.isEmpty
-                                      //  only show border if there are no stories
-                                      ? BoxDecoration(
-                                          border: Border.all(
-                                            color: isDarkMode(ref, context)
-                                                ? Color(0xFF4B9289)
-                                                : Color(0xFF363F3B),
-                                            width: 1,
-                                          ),
-                                          borderRadius:
-                                              BorderRadius.circular(50),
-                                        )
-                                      : null,
-                                  child: Padding(
-                                    // only show padding if there are no stories
-                                    padding: stories.isEmpty
-                                        ? const EdgeInsets.all(6)
-                                        : const EdgeInsets.all(0),
-                                    child: StreamBuilder(
-                                      stream: userRepo
-                                          .getUserDetails(friend!.uid ?? ''),
-                                      builder: (context, snapshot) {
-                                        if (snapshot.connectionState ==
-                                            ConnectionState.waiting) {
-                                          return const Center(
-                                              child:
-                                                  CircularProgressIndicator());
-                                        }
+                                return StreamBuilder(
+                                  stream: userRepo
+                                      .getUserDetails(friend!.uid ?? ''),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return const Center(
+                                          child: CircularProgressIndicator());
+                                    }
 
-                                        final user = snapshot.data;
-                                        return SegmentedCircle(
-                                          segmentCount: stories.length,
-                                          child: ChatProfilePic(
-                                            avatarRadius: 26,
-                                            chatPhotoURL: user?.photoURL,
-                                            isOnline: false,
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  ),
+                                    final user = snapshot.data;
+                                    return SegmentedCircle(
+                                      segmentCount: stories!.length,
+                                      child: ChatProfilePic(
+                                        avatarRadius: 26,
+                                        chatPhotoURL: user?.photoURL,
+                                        isOnline: false,
+                                      ),
+                                    );
+                                  },
                                 );
                               },
                             ),
