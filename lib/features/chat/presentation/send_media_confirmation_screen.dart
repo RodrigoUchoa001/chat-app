@@ -100,8 +100,8 @@ class _SendMediaConfirmationScreenState
                         )
                       : const Center(child: CircularProgressIndicator()),
                 ),
-              ),
-            if (mediaFormat == 'jpg' ||
+              )
+            else if (mediaFormat == 'jpg' ||
                 mediaFormat == 'png' ||
                 mediaFormat == 'jpeg')
               Expanded(
@@ -157,84 +157,89 @@ class _SendMediaConfirmationScreenState
                           ? Icons.pause
                           : Icons.play_arrow),
                     ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      StreamBuilder(
-                        stream: chatRepo.getChatDetails(widget.chatId),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const Center(
-                                child: CircularProgressIndicator());
-                          }
-                          final chat = snapshot.data!;
-                          final friendId = chat.participants!.firstWhere(
-                            (id) => id != currentUser!.uid,
-                            orElse: () => '',
-                          );
+                  SizedBox(
+                    height: 60,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        StreamBuilder(
+                          stream: chatRepo.getChatDetails(widget.chatId),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const Center(
+                                  child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                              ));
+                            }
+                            final chat = snapshot.data!;
+                            final friendId = chat.participants!.firstWhere(
+                              (id) => id != currentUser!.uid,
+                              orElse: () => '',
+                            );
 
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "${localization.translate("sending-to")}:",
-                              ),
-                              const SizedBox(width: 10),
-                              StreamBuilder(
-                                  stream: userRepo.getUserDetails(friendId),
-                                  builder: (context, snapshot) {
-                                    if (snapshot.connectionState ==
-                                        ConnectionState.waiting) {
-                                      return const Center(
-                                          child: CircularProgressIndicator());
-                                    }
-                                    final user = snapshot.data!;
-                                    return Text(
-                                      user.name!,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodySmall!
-                                          .copyWith(
-                                            fontSize: 14,
-                                          ),
-                                    );
-                                  }),
-                            ],
-                          );
-                        },
-                      ),
-                      IconButton(
-                        style: ButtonStyle(
-                          backgroundColor:
-                              WidgetStatePropertyAll(Color(0xFF20A090)),
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "${localization.translate("sending-to")}:",
+                                ),
+                                const SizedBox(width: 10),
+                                StreamBuilder(
+                                    stream: userRepo.getUserDetails(friendId),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return const Center(
+                                            child: CircularProgressIndicator());
+                                      }
+                                      final user = snapshot.data!;
+                                      return Text(
+                                        user.name!,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall!
+                                            .copyWith(
+                                              fontSize: 14,
+                                            ),
+                                      );
+                                    }),
+                              ],
+                            );
+                          },
                         ),
-                        onPressed: isSending
-                            ? null
-                            : () {
-                                _sendMedia(ref, media, isVideo);
-                              },
-                        icon: isSending
-                            ? SizedBox(
-                                height: 24,
-                                width: 24,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  color: Colors.white,
+                        IconButton(
+                          style: ButtonStyle(
+                            backgroundColor:
+                                WidgetStatePropertyAll(Color(0xFF20A090)),
+                          ),
+                          onPressed: isSending
+                              ? null
+                              : () {
+                                  _sendMedia(ref, media, isVideo);
+                                },
+                          icon: isSending
+                              ? SizedBox(
+                                  height: 24,
+                                  width: 24,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    color: Colors.white,
+                                  ),
+                                )
+                              : SvgPicture.asset(
+                                  Assets.icons.send.path,
+                                  colorFilter: ColorFilter.mode(
+                                    isDarkMode(ref, context)
+                                        ? Colors.white
+                                        : Colors.black,
+                                    BlendMode.srcIn,
+                                  ),
+                                  height: 24,
                                 ),
-                              )
-                            : SvgPicture.asset(
-                                Assets.icons.send.path,
-                                colorFilter: ColorFilter.mode(
-                                  isDarkMode(ref, context)
-                                      ? Colors.white
-                                      : Colors.black,
-                                  BlendMode.srcIn,
-                                ),
-                                height: 24,
-                              ),
-                      )
-                    ],
+                        )
+                      ],
+                    ),
                   ),
                 ],
               ),
