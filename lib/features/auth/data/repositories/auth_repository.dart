@@ -147,6 +147,13 @@ class AuthRepository implements AuthRepositoryInterface {
 
   @override
   Future<void> logout() async {
+    // setting user to offline
+    final userRef = FirebaseFirestore.instance
+        .collection('users')
+        .doc(_auth.currentUser?.uid);
+
+    await userRef.update({'isOnline': false});
+
     await _auth.signOut();
     await _googleSignIn.signOut();
   }
