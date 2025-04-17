@@ -4,6 +4,7 @@ import 'package:chatapp/core/providers/firebase_auth_providers.dart';
 import 'package:chatapp/core/theme/is_dark_mode.dart';
 import 'package:chatapp/features/chat/presentation/widgets/chat_profile_pic.dart';
 import 'package:chatapp/features/stories/data/repositories/stories_repository.dart';
+import 'package:chatapp/features/stories/presentation/widgets/segmented_circle.dart';
 import 'package:chatapp/features/users/data/repositories/user_repository.dart';
 import 'package:chatapp/gen/fonts.gen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -62,21 +63,29 @@ class _ChatStoriesRowState extends ConsumerState<ChatStoriesRow> {
                               height: 58,
                               width: 58,
                               decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: isDarkMode(ref, context)
-                                      ? Color(0xFF4B9289)
-                                      : Color(0xFF363F3B),
-                                  width: 1,
-                                ),
+                                // only show border if there are no stories
+                                border: stories!.isEmpty
+                                    ? Border.all(
+                                        color: isDarkMode(ref, context)
+                                            ? Color(0xFF4B9289)
+                                            : Color(0xFF363F3B),
+                                        width: 1,
+                                      )
+                                    : null,
                                 borderRadius: BorderRadius.circular(50),
                               ),
                               child: Padding(
-                                padding: const EdgeInsets.all(6),
-                                // TODO: create circle to show the number of stories
-                                child: ChatProfilePic(
-                                  avatarRadius: 26,
-                                  chatPhotoURL: currentUser?.photoURL,
-                                  isOnline: false,
+                                // only show padding if there are no stories
+                                padding: stories.isEmpty
+                                    ? const EdgeInsets.all(6)
+                                    : const EdgeInsets.all(0),
+                                child: SegmentedCircle(
+                                  segmentCount: stories.length,
+                                  child: ChatProfilePic(
+                                    avatarRadius: 26,
+                                    chatPhotoURL: currentUser.photoURL,
+                                    isOnline: false,
+                                  ),
                                 ),
                               ),
                             ),
