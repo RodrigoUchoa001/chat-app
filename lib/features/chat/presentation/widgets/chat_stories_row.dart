@@ -60,7 +60,7 @@ class _ChatStoriesRowState extends ConsumerState<ChatStoriesRow> {
                           alignment: Alignment.bottomRight,
                           children: [
                             SegmentedCircle(
-                              segmentCount: 1,
+                              segmentCount: stories!.length,
                               child: ChatProfilePic(
                                 avatarRadius: 26,
                                 chatPhotoURL: currentUser.photoURL,
