@@ -4,6 +4,7 @@ import 'package:chatapp/core/providers/firebase_auth_providers.dart';
 import 'package:chatapp/core/widgets/app_bar_widget.dart';
 import 'package:chatapp/core/widgets/home_content_background_widget.dart';
 import 'package:chatapp/features/chat/presentation/widgets/chat_list.dart';
+import 'package:chatapp/features/chat/presentation/widgets/chat_profile_pic.dart';
 import 'package:chatapp/features/chat/presentation/widgets/chat_stories_row.dart';
 import 'package:chatapp/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
@@ -52,37 +53,15 @@ class _ChatScreenState extends ConsumerState<ChatsListScreen> {
                       ),
                     ),
                     title: localization?.translate("home") ?? "",
-                    rightButton: currentUser!.photoURL != null
-                        ? Material(
-                            color: Colors.transparent,
-                            child: InkWell(
-                              onTap: () => context
-                                  .push('/user-details/${currentUser.uid}'),
-                              child: CircleAvatar(
-                                radius: 22,
-                                backgroundImage: NetworkImage(
-                                  currentUser.photoURL ?? '',
-                                ),
-                              ),
-                            ),
-                          )
-                        : Material(
-                            color: Colors.transparent,
-                            child: InkWell(
-                              onTap: () => context
-                                  .push('/user-details/${currentUser.uid}'),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(50),
-                                ),
-                                child: SvgPicture.asset(
-                                  Assets.icons.user.path,
-                                  height: 52,
-                                ),
-                              ),
-                            ),
-                          ),
+                    rightButton: GestureDetector(
+                      onTap: () =>
+                          context.push('/user-details/${currentUser!.uid}'),
+                      child: ChatProfilePic(
+                        avatarRadius: 22,
+                        chatPhotoURL: currentUser!.photoURL ?? '',
+                        isOnline: false,
+                      ),
+                    ),
                   ),
                   SizedBox(height: 40),
                   ChatStoriesRow(),
