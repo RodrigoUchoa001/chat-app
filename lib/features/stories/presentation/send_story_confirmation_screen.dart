@@ -80,7 +80,6 @@ class _SendStoryConfirmationScreenState
                 child: Center(
                   child: Center(
                     child: _controller.value.isInitialized
-                        // TODO: fix flickering when video is playing
                         ? AspectRatio(
                             aspectRatio: _controller.value.aspectRatio,
                             child: VideoPlayer(_controller),
