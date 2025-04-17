@@ -1,15 +1,17 @@
 import 'dart:io';
 
 import 'package:chatapp/core/providers/firebase_auth_providers.dart';
+import 'package:chatapp/core/theme/is_dark_mode.dart';
 import 'package:chatapp/features/auth/presentation/widgets/auth_back_button.dart';
 import 'package:chatapp/features/auth/presentation/widgets/auth_text_field.dart';
-import 'package:chatapp/features/chat/presentation/widgets/chat_icon_button.dart';
+import 'package:chatapp/features/chat/presentation/providers/is_sending_media_provider.dart';
 import 'package:chatapp/features/media/data/repositories/media_repository.dart';
 import 'package:chatapp/features/stories/data/dto/story_dto.dart';
 import 'package:chatapp/features/stories/data/repositories/stories_repository.dart';
 import 'package:chatapp/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:video_player/video_player.dart';
@@ -63,6 +65,8 @@ class _SendStoryConfirmationScreenState
     final media = File(widget.mediaFilePath);
     final mediaFormat = media.path.split(".").last;
     final isVideo = mediaFormat == 'mp4';
+
+    final isSending = ref.watch(isSendingMediaProvider);
 
     return SafeArea(
       child: Scaffold(
@@ -138,19 +142,40 @@ class _SendStoryConfirmationScreenState
                 validator: (value) => null,
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: ChatIconButton(
-                  iconPath: Assets.icons.send.path,
-                  backgroundColor: const Color(0xFF20A090),
-                  onPressed: () {
-                    _sendStory(ref, media, isVideo);
-                  },
+            Row(
+              children: [
+                const Spacer(),
+                IconButton(
+                  style: ButtonStyle(
+                    backgroundColor: WidgetStatePropertyAll(Color(0xFF20A090)),
+                  ),
+                  onPressed: isSending
+                      ? null
+                      : () {
+                          _sendStory(ref, media, isVideo);
+                        },
+                  icon: isSending
+                      ? SizedBox(
+                          height: 24,
+                          width: 24,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: Colors.white,
+                          ),
+                        )
+                      : SvgPicture.asset(
+                          Assets.icons.send.path,
+                          colorFilter: ColorFilter.mode(
+                            isDarkMode(ref, context)
+                                ? Colors.white
+                                : Colors.black,
+                            BlendMode.srcIn,
+                          ),
+                          height: 24,
+                        ),
                 ),
-              ),
-            ),
+              ],
+            )
           ],
         ),
       ),
@@ -162,7 +187,7 @@ class _SendStoryConfirmationScreenState
     final storyRepo = ref.read(storiesRepositoryProvider);
     final currentUser = ref.read(currentUserProvider).value;
 
-    Fluttertoast.showToast(msg: "Uploading ${isVideo ? 'video' : 'image'}...");
+    ref.read(isSendingMediaProvider.notifier).state = true;
 
     final mediaUrl = await mediaRepo.uploadMedia(mediaFile, isVideo: isVideo);
 
@@ -181,9 +206,11 @@ class _SendStoryConfirmationScreenState
       );
 
       Fluttertoast.showToast(msg: "Story posted!");
+      ref.read(isSendingMediaProvider.notifier).state = false;
       context.go('/home');
     } else {
       Fluttertoast.showToast(msg: "Failed to upload story");
+      ref.read(isSendingMediaProvider.notifier).state = false;
     }
   }
 }
