@@ -31,6 +31,15 @@ Inspired by the design of Alex Hylton, design available at [Chatting App UI kit 
     - ✅✅ Post stories for friends.
     - ✅✅ List the stories of your friends.
     - ✅✅ Like your friends stories.
+- ✅✅ App Language
+    - ✅✅ Be able to change the app language.
+    - ✅✅ Support English.
+    - ✅✅ Support Brazilian Portuguese.
+- ✅✅ App Theme
+    - ✅✅ Be able to change the app theme mode.
+    - ✅✅ Support light theme mode.
+    - ✅✅ Support dark theme mode.
+    - ✅✅ Support system theme mode.
 
 ## Screenshots
 *soon*
