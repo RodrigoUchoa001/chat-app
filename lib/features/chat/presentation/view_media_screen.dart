@@ -21,6 +21,11 @@ class _ViewMediaScreenState extends ConsumerState<ViewMediaScreen> {
 
   @override
   void initState() {
+    initVideo();
+    super.initState();
+  }
+
+  void initVideo() {
     videoProgress = 0.0;
     _controller = VideoPlayerController.networkUrl(Uri.parse(widget.mediaUrl))
       ..initialize().then(
@@ -33,8 +38,6 @@ class _ViewMediaScreenState extends ConsumerState<ViewMediaScreen> {
         videoProgress = _controller.value.position.inMilliseconds.toDouble();
       });
     });
-
-    super.initState();
   }
 
   @override
