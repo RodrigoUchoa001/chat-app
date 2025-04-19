@@ -1,6 +1,7 @@
 import 'package:chatapp/core/localization/app_localization.dart';
 import 'package:chatapp/core/localization/locale_provider.dart';
 import 'package:chatapp/core/providers/firebase_auth_providers.dart';
+import 'package:chatapp/core/widgets/media_player_widget.dart';
 import 'package:chatapp/features/auth/presentation/widgets/auth_back_button.dart';
 import 'package:chatapp/features/chat/presentation/widgets/chat_profile_pic.dart';
 import 'package:chatapp/features/stories/data/dto/story_dto.dart';
@@ -80,11 +81,8 @@ class _ViewStoryScreenState extends ConsumerState<ViewStoryScreen> {
             return Stack(
               children: [
                 Center(
-                  child: Image(
-                    image: NetworkImage(
-                      stories[selectedStoryIndex]!.mediaURL ?? '',
-                    ),
-                    fit: BoxFit.cover,
+                  child: MediaPlayerWidget(
+                    mediaUrl: stories[selectedStoryIndex]!.mediaURL!,
                   ),
                 ),
                 Row(
