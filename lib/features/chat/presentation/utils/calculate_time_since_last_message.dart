@@ -8,6 +8,10 @@ String calculateTimeSinceLastMessage(dynamic timestamp, WidgetRef ref) {
   final locale = ref.watch(localeProvider);
   final localization = ref.watch(localizationProvider(locale)).value;
 
+  if (timestamp == null) {
+    return "";
+  }
+
   if (timestamp is Timestamp) {
     timestamp = timestamp.toDate();
   } else if (timestamp is String) {
