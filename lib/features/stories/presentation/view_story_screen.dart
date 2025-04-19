@@ -213,11 +213,11 @@ class _ViewStoryScreenState extends ConsumerState<ViewStoryScreen> {
                         ],
                       ),
                     ),
-                    Column(
-                      children: [
-                        Container(
-                          color: Colors.black.withAlpha(100),
-                          child: Center(
+                    Container(
+                      color: Colors.black.withAlpha(100),
+                      child: Column(
+                        children: [
+                          Center(
                             child: Padding(
                               padding: EdgeInsets.symmetric(
                                   vertical: 16, horizontal: 8),
@@ -227,11 +227,9 @@ class _ViewStoryScreenState extends ConsumerState<ViewStoryScreen> {
                               ),
                             ),
                           ),
-                        ),
-                        stories[selectedStoryIndex]!.userId == currentUser?.uid
-                            ? Container(
-                                color: Colors.black.withAlpha(100),
-                                child: Row(
+                          stories[selectedStoryIndex]!.userId ==
+                                  currentUser?.uid
+                              ? Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     _storyButton(
@@ -266,11 +264,8 @@ class _ViewStoryScreenState extends ConsumerState<ViewStoryScreen> {
                                       },
                                     ),
                                   ],
-                                ),
-                              )
-                            : Container(
-                                color: Colors.black.withAlpha(100),
-                                child: Row(
+                                )
+                              : Row(
                                   children: [
                                     const Spacer(),
                                     StreamBuilder(
@@ -355,8 +350,8 @@ class _ViewStoryScreenState extends ConsumerState<ViewStoryScreen> {
                                     ),
                                   ],
                                 ),
-                              ),
-                      ],
+                        ],
+                      ),
                     ),
                   ],
                 ),
