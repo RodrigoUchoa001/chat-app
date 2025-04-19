@@ -219,17 +219,16 @@ class _ViewStoryScreenState extends ConsumerState<ViewStoryScreen> {
                           : Colors.transparent,
                       child: Column(
                         children: [
-                          if (stories[selectedStoryIndex]!.caption!.isNotEmpty)
-                            Center(
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 16, horizontal: 8),
-                                child: Text(
-                                  textAlign: TextAlign.center,
-                                  stories[selectedStoryIndex]!.caption ?? '',
-                                ),
+                          Center(
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 16, horizontal: 8),
+                              child: Text(
+                                textAlign: TextAlign.center,
+                                stories[selectedStoryIndex]!.caption ?? '',
                               ),
                             ),
+                          ),
                           stories[selectedStoryIndex]!.userId ==
                                   currentUser?.uid
                               ? Row(
