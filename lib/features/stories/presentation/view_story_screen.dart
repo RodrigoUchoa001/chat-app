@@ -214,19 +214,22 @@ class _ViewStoryScreenState extends ConsumerState<ViewStoryScreen> {
                       ),
                     ),
                     Container(
-                      color: Colors.black.withAlpha(100),
+                      color: stories[selectedStoryIndex]!.caption!.isNotEmpty
+                          ? Colors.black.withAlpha(100)
+                          : Colors.transparent,
                       child: Column(
                         children: [
-                          Center(
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 16, horizontal: 8),
-                              child: Text(
-                                textAlign: TextAlign.center,
-                                stories[selectedStoryIndex]!.caption ?? '',
+                          if (stories[selectedStoryIndex]!.caption!.isNotEmpty)
+                            Center(
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 16, horizontal: 8),
+                                child: Text(
+                                  textAlign: TextAlign.center,
+                                  stories[selectedStoryIndex]!.caption ?? '',
+                                ),
                               ),
                             ),
-                          ),
                           stories[selectedStoryIndex]!.userId ==
                                   currentUser?.uid
                               ? Row(
