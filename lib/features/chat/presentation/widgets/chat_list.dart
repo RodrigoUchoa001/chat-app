@@ -219,7 +219,18 @@ class ChatList extends ConsumerWidget {
                         );
                       }),
                   const SizedBox(height: 6),
-                  if (chat.lastMessage!.messageType == 'text')
+                  if (chat.lastMessage == null)
+                    Text(
+                      localization?.translate("chat-no-message-yet") ?? "",
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      style: TextStyle(
+                        color: Color(0xFF797C7B),
+                        fontSize: 12,
+                        fontFamily: FontFamily.circular,
+                      ),
+                    )
+                  else if (chat.lastMessage!.messageType == 'text')
                     Text(
                       chat.lastMessage != null
                           ? chat.lastMessage!.text ?? ''
@@ -232,8 +243,8 @@ class ChatList extends ConsumerWidget {
                         fontSize: 12,
                         fontFamily: FontFamily.circular,
                       ),
-                    ),
-                  if (chat.lastMessage!.messageType == 'image')
+                    )
+                  else if (chat.lastMessage!.messageType == 'image')
                     Row(
                       children: [
                         Icon(Icons.image, color: Color(0xFF797C7B), size: 16),
@@ -249,8 +260,8 @@ class ChatList extends ConsumerWidget {
                           ),
                         )
                       ],
-                    ),
-                  if (chat.lastMessage!.messageType == 'video')
+                    )
+                  else if (chat.lastMessage!.messageType == 'video')
                     Row(
                       children: [
                         Icon(Icons.video_camera_back,
