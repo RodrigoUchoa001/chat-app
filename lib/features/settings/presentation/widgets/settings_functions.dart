@@ -94,7 +94,7 @@ class _SettingsFunctionsState extends ConsumerState<SettingsFunctions> {
           title: localization?.translate("settings-account-title") ?? "",
           subtitle: localization?.translate("settings-account-subtitle") ?? "",
           onTap: () {
-            context.push('/settings/account-settings');
+            context.push('/user-details/${currentUser.uid}');
           },
         ),
         SettingButton(
