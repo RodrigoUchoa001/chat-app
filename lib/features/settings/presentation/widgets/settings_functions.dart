@@ -27,8 +27,6 @@ class _SettingsFunctionsState extends ConsumerState<SettingsFunctions> {
     final userRepo = ref.watch(userRepositoryProvider);
     final currentUser = ref.watch(currentUserProvider).asData?.value;
 
-    final themeMode = ref.watch(themeProvider);
-
     final locale = ref.watch(localeProvider);
     final localization = ref.watch(localizationProvider(locale)).value;
 
