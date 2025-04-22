@@ -3,7 +3,9 @@ import 'package:chatapp/core/localization/locale_provider.dart';
 import 'package:chatapp/core/providers/firebase_auth_providers.dart';
 import 'package:chatapp/features/auth/data/dto/user_dto.dart';
 import 'package:chatapp/features/auth/data/repositories/auth_repository.dart';
+import 'package:chatapp/features/chat/presentation/widgets/chat_text_field.dart';
 import 'package:chatapp/features/settings/presentation/widgets/setting_button.dart';
+import 'package:chatapp/features/users/data/repositories/user_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -110,7 +112,10 @@ class _UserDetailsState extends ConsumerState<UserDetails> {
     );
   }
 
-  Widget _buildUserDetail(String title, String? value) {
+  Widget _buildUserDetail(String title, String? value,
+      {bool isEditable = false}) {
+    final currentUser = ref.watch(currentUserProvider).value;
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 15),
       child: Column(
@@ -123,11 +128,23 @@ class _UserDetailsState extends ConsumerState<UserDetails> {
                 ),
           ),
           const SizedBox(height: 10),
-          Text(
-            value ?? "",
-            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                  fontSize: 18,
-                ),
+          Row(
+            children: [
+              Text(
+                value ?? "",
+                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                      fontSize: 18,
+                    ),
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              if (currentUser!.uid == widget.user.uid && isEditable)
+                const Icon(
+                  Icons.edit,
+                  size: 16,
+                )
+            ],
           )
         ],
       ),
