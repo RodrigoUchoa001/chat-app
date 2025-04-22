@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chatapp/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -22,11 +23,15 @@ class ChatProfilePic extends ConsumerWidget {
       alignment: Alignment.bottomRight,
       children: [
         isChatPicValid
-            ? CircleAvatar(
-                radius: avatarRadius,
-                backgroundImage: NetworkImage(
-                  chatPhotoURL ?? '',
+            ? CachedNetworkImage(
+                imageUrl: chatPhotoURL!,
+                imageBuilder: (context, imageProvider) => CircleAvatar(
+                  radius: avatarRadius,
+                  backgroundImage: imageProvider,
                 ),
+                progressIndicatorBuilder: (context, url, downloadProgress) =>
+                    CircularProgressIndicator(value: downloadProgress.progress),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
               )
             : Container(
                 decoration: BoxDecoration(
