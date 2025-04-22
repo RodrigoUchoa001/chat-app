@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:chatapp/core/localization/app_localization.dart';
 import 'package:chatapp/core/localization/locale_provider.dart';
 import 'package:chatapp/core/providers/firebase_auth_providers.dart';
@@ -9,17 +7,14 @@ import 'package:chatapp/core/widgets/app_bar_widget.dart';
 import 'package:chatapp/core/widgets/home_content_background_widget.dart';
 import 'package:chatapp/features/chat/data/repositories/chat_repository.dart';
 import 'package:chatapp/features/chat/presentation/widgets/chat_profile_pic.dart';
-import 'package:chatapp/features/media/data/repositories/media_repository.dart';
 import 'package:chatapp/features/users/data/repositories/user_repository.dart';
 import 'package:chatapp/features/users/presentation/widgets/user_details.dart';
 import 'package:chatapp/gen/assets.gen.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 class UserDetailsScreen extends ConsumerStatefulWidget {
@@ -93,38 +88,23 @@ class _UserDetailsScreenState extends ConsumerState<UserDetailsScreen> {
                             children: [
                               GestureDetector(
                                 onTap: () {
-                                  if (currentUser.uid == widget.userId) {
-                                    _showProfilePicBottomSheet();
+                                  if (hasValidPhoto) {
+                                    context
+                                        .push('/view-profile-pic/${user.uid}');
+                                  } else {
+                                    Fluttertoast.showToast(
+                                      msg: 'This user has no profile picture',
+                                    );
                                   }
                                 },
-                                child: Stack(
-                                  alignment: Alignment.bottomRight,
-                                  children: [
-                                    Hero(
-                                      tag: 'profilePic',
-                                      child: ChatProfilePic(
-                                        avatarRadius: 41,
-                                        chatPhotoURL:
-                                            hasValidPhoto ? chatPhoto : null,
-                                        isOnline: user.isOnline!,
-                                      ),
-                                    ),
-                                    if (currentUser!.uid == widget.userId)
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          shape: BoxShape.circle,
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(4.0),
-                                          child: Icon(
-                                            Icons.edit,
-                                            size: 20,
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                      ),
-                                  ],
+                                child: Hero(
+                                  tag: 'profilePic',
+                                  child: ChatProfilePic(
+                                    avatarRadius: 41,
+                                    chatPhotoURL:
+                                        hasValidPhoto ? chatPhoto : null,
+                                    isOnline: user.isOnline!,
+                                  ),
                                 ),
                               ),
                               const SizedBox(height: 12),
@@ -152,7 +132,7 @@ class _UserDetailsScreenState extends ConsumerState<UserDetailsScreen> {
                                     ),
                               ),
                               const SizedBox(height: 20),
-                              currentUser.uid != widget.userId
+                              currentUser!.uid != widget.userId
                                   ? Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
@@ -257,138 +237,6 @@ class _UserDetailsScreenState extends ConsumerState<UserDetailsScreen> {
       return "${localization?.translate("last-seen-in") ?? ""} ${DateFormat('dd/MM/yyyy').format(
         DateTime.parse(timestamp),
       )}";
-    }
-  }
-
-  // TODO: maybe set to show the profile pic in the view media screen
-  void _showProfilePicBottomSheet() {
-    final userRepo = ref.watch(userRepositoryProvider);
-
-    showModalBottomSheet(
-      context: context,
-      showDragHandle: true,
-      builder: (context) {
-        return Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Material(
-                borderRadius: BorderRadius.circular(50),
-                color: Colors.transparent,
-                child: InkWell(
-                  borderRadius: BorderRadius.circular(50),
-                  onTap: () {
-                    _pickAndSendMedia(ref);
-                  },
-                  child: Container(
-                    height: 120,
-                    width: 120,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50),
-                      border: Border.all(
-                        color: Colors.white.withAlpha(60),
-                        width: 1,
-                      ),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.edit),
-                        Text(
-                          "Change profile picture",
-                          textAlign: TextAlign.center,
-                          style:
-                              Theme.of(context).textTheme.bodyMedium!.copyWith(
-                                    fontSize: 14,
-                                    color: Colors.white,
-                                  ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              Material(
-                borderRadius: BorderRadius.circular(50),
-                color: Colors.transparent,
-                child: InkWell(
-                  borderRadius: BorderRadius.circular(50),
-                  onTap: () {
-                    userRepo.removeUserProfilePic();
-                    Fluttertoast.showToast(msg: 'Profile picture removed!');
-                    Navigator.pop(context);
-                  },
-                  child: Container(
-                    height: 120,
-                    width: 120,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50),
-                      border: Border.all(
-                        color: Colors.white.withAlpha(60),
-                        width: 1,
-                      ),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.delete),
-                        Text(
-                          "Remove profile picture",
-                          textAlign: TextAlign.center,
-                          style:
-                              Theme.of(context).textTheme.bodyMedium!.copyWith(
-                                    fontSize: 14,
-                                    color: Colors.white,
-                                  ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  Future<void> _pickAndSendMedia(WidgetRef ref) async {
-    // TODO: DOENS'T WORK IN WEB, FIX
-    if (kIsWeb) {
-      Fluttertoast.showToast(msg: "Not supported in web for now");
-      return;
-    }
-
-    final userRepo = ref.watch(userRepositoryProvider);
-    final mediaRepo = ref.read(mediaRepositoryProvider);
-
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickMedia();
-    final pickedFileFormat = pickedFile?.path.split(".").last;
-
-    final local = ref.watch(localeProvider);
-    final localization = ref.watch(localizationProvider(local)).value;
-
-    if (pickedFile != null && pickedFileFormat == "mp4" ||
-        pickedFileFormat == "jpg" ||
-        pickedFileFormat == "png" ||
-        pickedFileFormat == "jpeg") {
-      final mediaFile = File(pickedFile!.path);
-      final mediaUrl = await mediaRepo.uploadMedia(mediaFile, isVideo: false);
-
-      if (mediaUrl != null) {
-        userRepo.updateUserProfilePic(photoURL: mediaUrl);
-        context.pop();
-
-        Fluttertoast.showToast(msg: localization!.translate("image-sent"));
-      }
-    } else if (pickedFileFormat == null) {
-    } else {
-      Fluttertoast.showToast(
-          msg:
-              "${localization!.translate("invalid-media-format")}: $pickedFileFormat");
     }
   }
 }
