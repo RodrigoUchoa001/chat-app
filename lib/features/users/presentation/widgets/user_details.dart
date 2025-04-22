@@ -54,7 +54,7 @@ class _UserDetailsState extends ConsumerState<UserDetails> {
           Material(
             color: Colors.transparent,
             child: InkWell(
-              onTap: currentUser!.uid == widget.user.uid
+              onTap: currentUser.uid == widget.user.uid
                   ? () {
                       _buildBottomModalSheet(
                           "status", widget.user.statusMessage ?? "");
