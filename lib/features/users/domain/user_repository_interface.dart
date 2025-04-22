@@ -6,6 +6,6 @@ abstract interface class UserRepositoryInterface {
   Future<void> updateUserOnlineStatus({required bool isOnline});
   Future<void> updateUserName({required String name});
   Future<void> updateUserStatusMessage({required String statusMessage});
-  Future<void> updateUserPhotoURL({required String photoURL});
-  Future<void> removeUserPhotoURL();
+  Future<void> updateUserProfilePic({required String photoURL});
+  Future<void> removeUserProfilePic();
 }

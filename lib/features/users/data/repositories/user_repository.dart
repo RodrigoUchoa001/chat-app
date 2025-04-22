@@ -62,14 +62,14 @@ class UserRepository implements UserRepositoryInterface {
   }
 
   @override
-  Future<void> removeUserPhotoURL() {
+  Future<void> removeUserProfilePic() {
     final userRef = FirebaseFirestore.instance.collection('users').doc(_userId);
 
     return userRef.update({'photoURL': ""});
   }
 
   @override
-  Future<void> updateUserPhotoURL({required String photoURL}) {
+  Future<void> updateUserProfilePic({required String photoURL}) {
     final userRef = FirebaseFirestore.instance.collection('users').doc(_userId);
 
     return userRef.update({'photoURL': photoURL});
