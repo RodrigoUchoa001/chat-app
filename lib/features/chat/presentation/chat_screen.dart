@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chatapp/core/localization/app_localization.dart';
 import 'package:chatapp/core/localization/locale_provider.dart';
 import 'package:chatapp/core/providers/firebase_auth_providers.dart';
@@ -756,41 +757,31 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                           : Image.file(File(data!.path));
                     },
                   )
-                : Image.network(
-                    message.text ?? '',
+                : CachedNetworkImage(
+                    imageUrl: message.text ?? '',
                     fit: BoxFit.cover,
-                    loadingBuilder: (context, child, loadingProgress) {
-                      if (loadingProgress == null) {
-                        return child;
-                      } else {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-                    },
-                    errorBuilder: (context, error, stackTrace) {
-                      return Center(
-                        child: Column(
-                          children: [
-                            Icon(
-                              Icons.error,
-                              color: Colors.red,
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              'Error loading image',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodySmall!
-                                  .copyWith(
-                                    fontSize: 12,
-                                    color: Colors.red,
-                                  ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
+                    placeholder: (context, url) => const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                    errorWidget: (context, url, error) => Center(
+                      child: Column(
+                        children: [
+                          Icon(
+                            Icons.error,
+                            color: Colors.red,
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            'Error loading image',
+                            style:
+                                Theme.of(context).textTheme.bodySmall!.copyWith(
+                                      fontSize: 12,
+                                      color: Colors.red,
+                                    ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
             if (isVideo)
               Container(
