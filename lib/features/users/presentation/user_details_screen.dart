@@ -315,4 +315,33 @@ class _UserDetailsScreenState extends ConsumerState<UserDetailsScreen> {
       },
     );
   }
+
+  Future<void> _pickMedia(WidgetRef ref) async {
+    // TODO: DOENS'T WORK IN WEB, FIX
+    if (kIsWeb) {
+      Fluttertoast.showToast(msg: "Not supported in web for now");
+      return;
+    }
+
+    final userRepo = ref.watch(userRepositoryProvider);
+
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickMedia();
+    final pickedFileFormat = pickedFile?.path.split(".").last;
+
+    final local = ref.watch(localeProvider);
+    final localization = ref.watch(localizationProvider(local)).value;
+
+    if (pickedFile != null && pickedFileFormat == "mp4" ||
+        pickedFileFormat == "jpg" ||
+        pickedFileFormat == "png" ||
+        pickedFileFormat == "jpeg") {
+      userRepo.updateUserProfilePic(photoURL: pickedFile!.path);
+    } else if (pickedFileFormat == null) {
+    } else {
+      Fluttertoast.showToast(
+          msg:
+              "${localization!.translate("invalid-media-format")}: $pickedFileFormat");
+    }
+  }
 }
