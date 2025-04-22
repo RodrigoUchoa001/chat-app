@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:chatapp/core/localization/app_localization.dart';
 import 'package:chatapp/core/localization/locale_provider.dart';
 import 'package:chatapp/core/providers/firebase_auth_providers.dart';
@@ -7,6 +9,7 @@ import 'package:chatapp/core/widgets/app_bar_widget.dart';
 import 'package:chatapp/core/widgets/home_content_background_widget.dart';
 import 'package:chatapp/features/chat/data/repositories/chat_repository.dart';
 import 'package:chatapp/features/chat/presentation/widgets/chat_profile_pic.dart';
+import 'package:chatapp/features/media/data/repositories/media_repository.dart';
 import 'package:chatapp/features/users/data/repositories/user_repository.dart';
 import 'package:chatapp/features/users/presentation/widgets/user_details.dart';
 import 'package:chatapp/gen/assets.gen.dart';
@@ -272,7 +275,7 @@ class _UserDetailsScreenState extends ConsumerState<UserDetailsScreen> {
                 child: InkWell(
                   borderRadius: BorderRadius.circular(50),
                   onTap: () {
-                    _pickMedia(ref);
+                    _pickAndSendMedia(ref);
                   },
                   child: Container(
                     height: 120,
@@ -347,7 +350,7 @@ class _UserDetailsScreenState extends ConsumerState<UserDetailsScreen> {
     );
   }
 
-  Future<void> _pickMedia(WidgetRef ref) async {
+  Future<void> _pickAndSendMedia(WidgetRef ref) async {
     // TODO: DOENS'T WORK IN WEB, FIX
     if (kIsWeb) {
       Fluttertoast.showToast(msg: "Not supported in web for now");
@@ -355,6 +358,7 @@ class _UserDetailsScreenState extends ConsumerState<UserDetailsScreen> {
     }
 
     final userRepo = ref.watch(userRepositoryProvider);
+    final mediaRepo = ref.read(mediaRepositoryProvider);
 
     final picker = ImagePicker();
     final pickedFile = await picker.pickMedia();
@@ -367,7 +371,12 @@ class _UserDetailsScreenState extends ConsumerState<UserDetailsScreen> {
         pickedFileFormat == "jpg" ||
         pickedFileFormat == "png" ||
         pickedFileFormat == "jpeg") {
-      userRepo.updateUserProfilePic(photoURL: pickedFile!.path);
+      final mediaFile = File(pickedFile!.path);
+      final mediaUrl = await mediaRepo.uploadMedia(mediaFile, isVideo: false);
+
+      if (mediaUrl != null) {
+        userRepo.updateUserProfilePic(photoURL: mediaUrl);
+      }
     } else if (pickedFileFormat == null) {
     } else {
       Fluttertoast.showToast(
