@@ -34,17 +34,40 @@ class _UserDetailsState extends ConsumerState<UserDetails> {
         // crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 41 - 15), // -15 for the top padding
-          _buildUserDetail(
-            localization?.translate("user-details-display-name") ?? "",
-            widget.user.name,
+          Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () {
+                if (currentUser.uid == widget.user.uid) {
+                  _buildBottomModalSheet("name", widget.user.name ?? "");
+                }
+              },
+              child: _buildUserDetail(
+                localization?.translate("user-details-display-name") ?? "",
+                widget.user.name,
+                isEditable: currentUser!.uid == widget.user.uid,
+              ),
+            ),
+          ),
+          Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () {
+                if (currentUser!.uid == widget.user.uid) {
+                  _buildBottomModalSheet(
+                      "status", widget.user.statusMessage ?? "");
+                }
+              },
+              child: _buildUserDetail(
+                localization?.translate("user-details-status-message") ?? "",
+                widget.user.statusMessage,
+                isEditable: currentUser.uid == widget.user.uid,
+              ),
+            ),
           ),
           _buildUserDetail(
             localization?.translate("user-details-email-address") ?? "",
             widget.user.email,
-          ),
-          _buildUserDetail(
-            localization?.translate("user-details-status-message") ?? "",
-            widget.user.statusMessage,
           ),
           _buildUserDetail(
             localization?.translate("user-details-joined-at") ?? "",
