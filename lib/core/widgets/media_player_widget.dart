@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:video_player/video_player.dart';
@@ -112,8 +113,8 @@ class _MediaPlayerWidgetState extends ConsumerState<MediaPlayerWidget> {
         mediaFormat == 'png' ||
         mediaFormat == 'jpeg') {
       return Center(
-        child: Image.network(
-          widget.mediaUrl,
+        child: CachedNetworkImage(
+          imageUrl: widget.mediaUrl,
           width: double.maxFinite,
           height: double.maxFinite,
           fit: BoxFit.contain,
