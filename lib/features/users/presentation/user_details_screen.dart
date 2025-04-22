@@ -10,10 +10,13 @@ import 'package:chatapp/features/chat/presentation/widgets/chat_profile_pic.dart
 import 'package:chatapp/features/users/data/repositories/user_repository.dart';
 import 'package:chatapp/features/users/presentation/widgets/user_details.dart';
 import 'package:chatapp/gen/assets.gen.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 class UserDetailsScreen extends ConsumerStatefulWidget {
@@ -85,10 +88,38 @@ class _UserDetailsScreenState extends ConsumerState<UserDetailsScreen> {
 
                           return Column(
                             children: [
-                              ChatProfilePic(
-                                avatarRadius: 41,
-                                chatPhotoURL: hasValidPhoto ? chatPhoto : null,
-                                isOnline: user.isOnline!,
+                              GestureDetector(
+                                onTap: () {
+                                  if (currentUser.uid == widget.userId) {
+                                    _showProfilePicBottomSheet();
+                                  }
+                                },
+                                child: Stack(
+                                  alignment: Alignment.bottomRight,
+                                  children: [
+                                    ChatProfilePic(
+                                      avatarRadius: 41,
+                                      chatPhotoURL:
+                                          hasValidPhoto ? chatPhoto : null,
+                                      isOnline: user.isOnline!,
+                                    ),
+                                    if (currentUser!.uid == widget.userId)
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(4.0),
+                                          child: Icon(
+                                            Icons.edit,
+                                            size: 20,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ),
+                                  ],
+                                ),
                               ),
                               const SizedBox(height: 12),
                               Text(
