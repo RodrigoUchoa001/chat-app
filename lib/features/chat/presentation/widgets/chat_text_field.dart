@@ -11,10 +11,12 @@ class ChatTextField extends ConsumerWidget {
   final Function(String text)? onSubmitted;
   final FocusNode? focusNode;
   final TextEditingController controller;
+  final String? hintText;
   const ChatTextField(
       {this.onChanged,
       this.onSubmitted,
       this.focusNode,
+      this.hintText,
       required this.controller,
       super.key});
 
@@ -47,7 +49,8 @@ class ChatTextField extends ConsumerWidget {
         filled: true,
         fillColor:
             isDarkMode(ref, context) ? Color(0xFF192222) : Color(0xFFF3F6F6),
-        hintText: localization?.translate("write-your-message") ?? "",
+        hintText:
+            hintText ?? localization?.translate("write-your-message") ?? "",
         hintStyle: TextStyle(
           color: Color(0xFF797C7B),
           fontSize: 12,
