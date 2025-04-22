@@ -38,20 +38,22 @@ class _SettingsFunctionsState extends ConsumerState<SettingsFunctions> {
             onTap: () => context.push('/user-details/${currentUser.uid}'),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
-              child: Row(
-                children: [
-                  ChatProfilePic(
-                    chatPhotoURL: currentUser?.photoURL,
-                    isOnline: false,
-                  ),
-                  const SizedBox(width: 15),
-                  StreamBuilder(
-                    stream: userRepo.getUserDetails(currentUser!.uid),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const CircularProgressIndicator();
-                      }
-                      return Column(
+              child: StreamBuilder(
+                stream: userRepo.getUserDetails(currentUser!.uid),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator();
+                  }
+
+                  final user = snapshot.data;
+                  return Row(
+                    children: [
+                      ChatProfilePic(
+                        chatPhotoURL: user!.photoURL,
+                        isOnline: false,
+                      ),
+                      const SizedBox(width: 15),
+                      Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
@@ -74,10 +76,10 @@ class _SettingsFunctionsState extends ConsumerState<SettingsFunctions> {
                             ),
                           ),
                         ],
-                      );
-                    },
-                  )
-                ],
+                      ),
+                    ],
+                  );
+                },
               ),
             ),
           ),

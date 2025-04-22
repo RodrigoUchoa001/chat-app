@@ -54,19 +54,31 @@ class _ChatStoriesRowState extends ConsumerState<ChatStoriesRow> {
 
                       return InkWell(
                         borderRadius: BorderRadius.circular(50),
-                        onTap: () => stories.isEmpty
+                        onTap: () => stories!.isEmpty
                             ? _pickMedia(ref)
                             : _showStoryOptionSelectionBottomSheet(currentUser),
                         child: Stack(
                           alignment: Alignment.bottomRight,
                           children: [
-                            SegmentedCircle(
-                              segmentCount: stories!.length,
-                              child: ChatProfilePic(
-                                avatarRadius: 26,
-                                chatPhotoURL: currentUser.photoURL,
-                                isOnline: false,
-                              ),
+                            StreamBuilder(
+                              stream: userRepo.getUserDetails(currentUser.uid),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return const Center(
+                                      child: CircularProgressIndicator());
+                                }
+
+                                final user = snapshot.data;
+                                return SegmentedCircle(
+                                  segmentCount: stories!.length,
+                                  child: ChatProfilePic(
+                                    avatarRadius: 26,
+                                    chatPhotoURL: user!.photoURL,
+                                    isOnline: false,
+                                  ),
+                                );
+                              },
                             ),
                             Container(
                               height: 16,

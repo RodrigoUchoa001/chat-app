@@ -6,6 +6,7 @@ import 'package:chatapp/core/widgets/home_content_background_widget.dart';
 import 'package:chatapp/features/chat/presentation/widgets/chat_list.dart';
 import 'package:chatapp/features/chat/presentation/widgets/chat_profile_pic.dart';
 import 'package:chatapp/features/chat/presentation/widgets/chat_stories_row.dart';
+import 'package:chatapp/features/users/data/repositories/user_repository.dart';
 import 'package:chatapp/gen/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -24,6 +25,7 @@ class _ChatScreenState extends ConsumerState<ChatsListScreen> {
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final currentUser = ref.watch(currentUserProvider).asData?.value;
+    final userRepo = ref.watch(userRepositoryProvider);
 
     final locale = ref.watch(localeProvider);
     final localization = ref.watch(localizationProvider(locale)).value;
@@ -55,11 +57,21 @@ class _ChatScreenState extends ConsumerState<ChatsListScreen> {
                     title: localization?.translate("home") ?? "",
                     rightButton: GestureDetector(
                       onTap: () =>
-                          context.push('/user-details/${currentUser!.uid}'),
-                      child: ChatProfilePic(
-                        avatarRadius: 22,
-                        chatPhotoURL: currentUser!.photoURL ?? '',
-                        isOnline: false,
+                          context.push('/user-details/${currentUser.uid}'),
+                      child: StreamBuilder(
+                        stream: userRepo.getUserDetails(currentUser!.uid),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const CircularProgressIndicator();
+                          }
+                          final user = snapshot.data!;
+                          return ChatProfilePic(
+                            avatarRadius: 22,
+                            chatPhotoURL: user.photoURL,
+                            isOnline: false,
+                          );
+                        },
                       ),
                     ),
                   ),
