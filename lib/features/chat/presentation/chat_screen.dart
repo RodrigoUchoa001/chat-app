@@ -116,8 +116,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       AsyncValue<User?> currentUser,
       BuildContext context,
       WidgetRef ref) {
-    final themeMode = ref.watch(themeProvider);
-
     final locale = ref.watch(localeProvider);
     final localization = ref.watch(localizationProvider(locale)).value;
 
