@@ -160,7 +160,7 @@ class _UserDetailsScreenState extends ConsumerState<UserDetailsScreen> {
             ),
             HomeContentBackground(
               height: screenHeight -
-                  (currentUser!.uid != widget.userId ? 313.33 : 200),
+                  (currentUser!.uid != widget.userId ? 313.33 : 250),
               child: StreamBuilder(
                 stream: userRepo.getUserDetails(widget.userId),
                 builder: (context, snapshot) {
