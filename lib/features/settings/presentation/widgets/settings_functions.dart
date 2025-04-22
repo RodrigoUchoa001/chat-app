@@ -48,9 +48,12 @@ class _SettingsFunctionsState extends ConsumerState<SettingsFunctions> {
                   final user = snapshot.data;
                   return Row(
                     children: [
-                      ChatProfilePic(
-                        chatPhotoURL: user!.photoURL,
-                        isOnline: false,
+                      Hero(
+                        tag: 'profilePic',
+                        child: ChatProfilePic(
+                          chatPhotoURL: user!.photoURL,
+                          isOnline: false,
+                        ),
                       ),
                       const SizedBox(width: 15),
                       Column(

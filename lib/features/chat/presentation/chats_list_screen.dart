@@ -66,10 +66,13 @@ class _ChatScreenState extends ConsumerState<ChatsListScreen> {
                             return const CircularProgressIndicator();
                           }
                           final user = snapshot.data!;
-                          return ChatProfilePic(
-                            avatarRadius: 22,
-                            chatPhotoURL: user.photoURL,
-                            isOnline: false,
+                          return Hero(
+                            tag: 'profilePic',
+                            child: ChatProfilePic(
+                              avatarRadius: 22,
+                              chatPhotoURL: user.photoURL,
+                              isOnline: false,
+                            ),
                           );
                         },
                       ),

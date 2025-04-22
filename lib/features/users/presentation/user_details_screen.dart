@@ -100,11 +100,14 @@ class _UserDetailsScreenState extends ConsumerState<UserDetailsScreen> {
                                 child: Stack(
                                   alignment: Alignment.bottomRight,
                                   children: [
-                                    ChatProfilePic(
-                                      avatarRadius: 41,
-                                      chatPhotoURL:
-                                          hasValidPhoto ? chatPhoto : null,
-                                      isOnline: user.isOnline!,
+                                    Hero(
+                                      tag: 'profilePic',
+                                      child: ChatProfilePic(
+                                        avatarRadius: 41,
+                                        chatPhotoURL:
+                                            hasValidPhoto ? chatPhoto : null,
+                                        isOnline: user.isOnline!,
+                                      ),
                                     ),
                                     if (currentUser!.uid == widget.userId)
                                       Container(
@@ -257,6 +260,7 @@ class _UserDetailsScreenState extends ConsumerState<UserDetailsScreen> {
     }
   }
 
+  // TODO: maybe set to show the profile pic in the view media screen
   void _showProfilePicBottomSheet() {
     final userRepo = ref.watch(userRepositoryProvider);
 
