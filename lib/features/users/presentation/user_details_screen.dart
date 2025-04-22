@@ -115,7 +115,7 @@ class _UserDetailsScreenState extends ConsumerState<UserDetailsScreen> {
                                     ),
                               ),
                               const SizedBox(height: 20),
-                              currentUser!.uid != widget.userId
+                              currentUser.uid != widget.userId
                                   ? Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
