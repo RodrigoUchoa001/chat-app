@@ -110,4 +110,80 @@ class _UserDetailsState extends ConsumerState<UserDetails> {
       ),
     );
   }
+
+  void _buildBottomModalSheet(String infoToChange, String currentValue) {
+    final userRepo = ref.watch(userRepositoryProvider);
+
+    final controller = TextEditingController();
+    controller.text = currentValue;
+
+    showModalBottomSheet(
+      context: context,
+      showDragHandle: true,
+      builder: (context) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 28),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                infoToChange == "name" ? "Edit name" : "Edit status message",
+                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                      fontSize: 18,
+                    ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: ChatTextField(
+                  hintText: infoToChange == "name"
+                      ? "Type your name"
+                      : "Type your status message",
+                  controller: controller,
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SizedBox(
+                      height: 40,
+                      child: FilledButton(
+                        onPressed: () {
+                          try {
+                            if (infoToChange == "name") {
+                              userRepo.updateUserName(name: controller.text);
+                            } else {
+                              userRepo.updateUserStatusMessage(
+                                  statusMessage: controller.text);
+                            }
+                            context.pop();
+                            Fluttertoast.showToast(msg: "Changes saved");
+                          } on Exception catch (e) {
+                            Fluttertoast.showToast(msg: "Error: $e");
+                          }
+                        },
+                        child: Text("Save changes"),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SizedBox(
+                      height: 40,
+                      child: TextButton(
+                        onPressed: () => context.pop(),
+                        child: Text("Cancel"),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 }
