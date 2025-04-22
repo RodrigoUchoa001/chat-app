@@ -376,6 +376,9 @@ class _UserDetailsScreenState extends ConsumerState<UserDetailsScreen> {
 
       if (mediaUrl != null) {
         userRepo.updateUserProfilePic(photoURL: mediaUrl);
+        context.pop();
+
+        Fluttertoast.showToast(msg: localization!.translate("image-sent"));
       }
     } else if (pickedFileFormat == null) {
     } else {
