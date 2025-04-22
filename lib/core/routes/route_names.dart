@@ -18,3 +18,4 @@ String sendMediaConfirmationRoute = 'send-media-confirmation';
 String viewMediaRoute = 'view-media';
 String sendStoryConfirmationRoute = 'send-story-confirmation';
 String viewStoryRoute = 'view-story';
+String viewProfilePicRoute = 'view-profile-pic';
