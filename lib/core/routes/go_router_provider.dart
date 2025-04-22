@@ -13,7 +13,6 @@ import 'package:chatapp/features/chat/presentation/view_media_screen.dart';
 import 'package:chatapp/features/friends/presentation/add_friend_screen.dart';
 import 'package:chatapp/features/home/presentation/home_screen.dart';
 import 'package:chatapp/features/search/presentation/search_screen.dart';
-import 'package:chatapp/features/settings/presentation/account_settings_screen.dart';
 import 'package:chatapp/features/settings/presentation/app_settings_screen.dart';
 import 'package:chatapp/features/settings/presentation/chat_settings_screen.dart';
 import 'package:chatapp/features/settings/presentation/settings_screen.dart';
@@ -69,11 +68,6 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         name: settingsRoute,
         builder: (context, state) => const SettingsScreen(),
         routes: [
-          GoRoute(
-            path: 'account-settings',
-            name: accountSettingsRoute,
-            builder: (context, state) => const AccountSettingsScreen(),
-          ),
           GoRoute(
             path: 'chat-settings',
             name: chatSettingsRoute,
