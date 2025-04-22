@@ -54,7 +54,7 @@ class _ChatStoriesRowState extends ConsumerState<ChatStoriesRow> {
 
                       return InkWell(
                         borderRadius: BorderRadius.circular(50),
-                        onTap: () => stories!.isEmpty
+                        onTap: () => stories.isEmpty
                             ? _pickMedia(ref)
                             : _showStoryOptionSelectionBottomSheet(currentUser),
                         child: Stack(
@@ -134,7 +134,7 @@ class _ChatStoriesRowState extends ConsumerState<ChatStoriesRow> {
                           child: InkWell(
                             borderRadius: BorderRadius.circular(50),
                             onTap: () {
-                              context.push('/view-story/${friend!.uid}');
+                              context.push('/view-story/${friend.uid}');
                             },
                             child: StreamBuilder(
                               stream:
@@ -149,8 +149,8 @@ class _ChatStoriesRowState extends ConsumerState<ChatStoriesRow> {
                                 final stories = snapshot.data;
 
                                 return StreamBuilder(
-                                  stream: userRepo
-                                      .getUserDetails(friend!.uid ?? ''),
+                                  stream:
+                                      userRepo.getUserDetails(friend.uid ?? ''),
                                   builder: (context, snapshot) {
                                     if (snapshot.connectionState ==
                                         ConnectionState.waiting) {
