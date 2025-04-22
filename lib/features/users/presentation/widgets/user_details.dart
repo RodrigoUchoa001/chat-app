@@ -39,27 +39,27 @@ class _UserDetailsState extends ConsumerState<UserDetails> {
           Material(
             color: Colors.transparent,
             child: InkWell(
-              onTap: () {
-                if (currentUser.uid == widget.user.uid) {
-                  _buildBottomModalSheet("name", widget.user.name ?? "");
-                }
-              },
+              onTap: currentUser!.uid == widget.user.uid
+                  ? () {
+                      _buildBottomModalSheet("name", widget.user.name ?? "");
+                    }
+                  : null,
               child: _buildUserDetail(
                 localization?.translate("user-details-display-name") ?? "",
                 widget.user.name,
-                isEditable: currentUser!.uid == widget.user.uid,
+                isEditable: currentUser.uid == widget.user.uid,
               ),
             ),
           ),
           Material(
             color: Colors.transparent,
             child: InkWell(
-              onTap: () {
-                if (currentUser.uid == widget.user.uid) {
-                  _buildBottomModalSheet(
-                      "status", widget.user.statusMessage ?? "");
-                }
-              },
+              onTap: currentUser!.uid == widget.user.uid
+                  ? () {
+                      _buildBottomModalSheet(
+                          "status", widget.user.statusMessage ?? "");
+                    }
+                  : null,
               child: _buildUserDetail(
                 localization?.translate("user-details-status-message") ?? "",
                 widget.user.statusMessage,
