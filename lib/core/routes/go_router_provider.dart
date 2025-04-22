@@ -18,6 +18,7 @@ import 'package:chatapp/features/settings/presentation/chat_settings_screen.dart
 import 'package:chatapp/features/settings/presentation/settings_screen.dart';
 import 'package:chatapp/features/stories/presentation/view_story_screen.dart';
 import 'package:chatapp/features/users/presentation/user_details_screen.dart';
+import 'package:chatapp/features/users/presentation/view_profile_pic_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -150,7 +151,16 @@ final goRouterProvider = Provider<GoRouter>((ref) {
             friendId: state.pathParameters['friendId']!,
           );
         },
-      )
+      ),
+      GoRoute(
+        path: '/view-profile-pic/:userId',
+        name: viewProfilePicRoute,
+        builder: (context, state) {
+          return ViewProfilePicScreen(
+            userId: state.pathParameters['userId']!,
+          );
+        },
+      ),
     ],
   );
 });
