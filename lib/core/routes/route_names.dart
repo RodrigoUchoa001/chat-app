@@ -9,7 +9,6 @@ String selectFriendsToCreateGroupRoute = 'select-friends-to-create-group';
 String friendsRoute = 'friends';
 String addFriendsRoute = 'add-friends';
 String settingsRoute = 'settings';
-String accountSettingsRoute = 'account-settings';
 String chatSettingsRoute = 'chat-settings';
 String appSettingsRoute = 'app-settings';
 String profileRoute = 'profile';
