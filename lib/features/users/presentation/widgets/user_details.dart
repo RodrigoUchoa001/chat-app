@@ -160,21 +160,27 @@ class _UserDetailsState extends ConsumerState<UserDetails> {
     showModalBottomSheet(
       context: context,
       showDragHandle: true,
+      isScrollControlled: true,
       builder: (context) {
         return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 28),
+          padding: MediaQuery.of(context).viewInsets,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(
-                infoToChange == "name" ? "Edit name" : "Edit status message",
-                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                      fontSize: 18,
-                    ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 28, vertical: 8.0),
+                child: Text(
+                  infoToChange == "name" ? "Edit name" : "Edit status message",
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        fontSize: 18,
+                      ),
+                ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 28, vertical: 8.0),
                 child: ChatTextField(
                   hintText: infoToChange == "name"
                       ? "Type your name"
