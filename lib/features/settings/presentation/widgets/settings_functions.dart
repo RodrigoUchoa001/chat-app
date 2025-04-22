@@ -2,7 +2,6 @@ import 'package:chatapp/core/localization/app_localization.dart';
 import 'package:chatapp/core/localization/locale_provider.dart';
 import 'package:chatapp/core/providers/firebase_auth_providers.dart';
 import 'package:chatapp/core/theme/is_dark_mode.dart';
-import 'package:chatapp/core/theme/theme_provider.dart';
 import 'package:chatapp/features/chat/presentation/widgets/chat_profile_pic.dart';
 import 'package:chatapp/features/settings/presentation/widgets/setting_button.dart';
 import 'package:chatapp/features/users/data/repositories/user_repository.dart';
