@@ -23,15 +23,11 @@ class ChatProfilePic extends ConsumerWidget {
       alignment: Alignment.bottomRight,
       children: [
         isChatPicValid
-            ? CachedNetworkImage(
-                imageUrl: chatPhotoURL!,
-                imageBuilder: (context, imageProvider) => CircleAvatar(
-                  radius: avatarRadius,
-                  backgroundImage: imageProvider,
+            ? CircleAvatar(
+                radius: avatarRadius,
+                backgroundImage: NetworkImage(
+                  chatPhotoURL ?? '',
                 ),
-                progressIndicatorBuilder: (context, url, downloadProgress) =>
-                    CircularProgressIndicator(value: downloadProgress.progress),
-                errorWidget: (context, url, error) => const Icon(Icons.error),
               )
             : Container(
                 decoration: BoxDecoration(

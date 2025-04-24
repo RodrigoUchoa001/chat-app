@@ -757,31 +757,41 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                           : Image.file(File(data!.path));
                     },
                   )
-                : CachedNetworkImage(
-                    imageUrl: message.text ?? '',
+                : Image.network(
+                    message.text ?? '',
                     fit: BoxFit.cover,
-                    placeholder: (context, url) => const Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                    errorWidget: (context, url, error) => Center(
-                      child: Column(
-                        children: [
-                          Icon(
-                            Icons.error,
-                            color: Colors.red,
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            'Error loading image',
-                            style:
-                                Theme.of(context).textTheme.bodySmall!.copyWith(
-                                      fontSize: 12,
-                                      color: Colors.red,
-                                    ),
-                          ),
-                        ],
-                      ),
-                    ),
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) {
+                        return child;
+                      } else {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                    },
+                    errorBuilder: (context, error, stackTrace) {
+                      return Center(
+                        child: Column(
+                          children: [
+                            Icon(
+                              Icons.error,
+                              color: Colors.red,
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              'Error loading image',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall!
+                                  .copyWith(
+                                    fontSize: 12,
+                                    color: Colors.red,
+                                  ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
                   ),
             if (isVideo)
               Container(

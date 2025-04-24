@@ -113,8 +113,8 @@ class _MediaPlayerWidgetState extends ConsumerState<MediaPlayerWidget> {
         mediaFormat == 'png' ||
         mediaFormat == 'jpeg') {
       return Center(
-        child: CachedNetworkImage(
-          imageUrl: widget.mediaUrl,
+        child: Image.network(
+          widget.mediaUrl,
           width: double.maxFinite,
           height: double.maxFinite,
           fit: BoxFit.contain,
