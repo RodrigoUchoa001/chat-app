@@ -28,6 +28,7 @@ class _ViewMediaScreenState extends ConsumerState<ViewMediaScreen> {
         body: MediaPlayerWidget(
           mediaUrl: widget.mediaUrl,
           showControls: true,
+          isVideo: widget.mediaUrl.split(".").last == "mp4",
         ),
       ),
     );

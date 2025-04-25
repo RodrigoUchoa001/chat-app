@@ -70,7 +70,10 @@ class _ViewProfilePicScreenState extends ConsumerState<ViewProfilePicScreen> {
             ),
             body: Hero(
               tag: 'profilePic',
-              child: MediaPlayerWidget(mediaUrl: user.photoURL!),
+              child: MediaPlayerWidget(
+                mediaUrl: user.photoURL!,
+                isVideo: false,
+              ),
             ),
           );
         },

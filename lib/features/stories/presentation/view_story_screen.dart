@@ -83,6 +83,7 @@ class _ViewStoryScreenState extends ConsumerState<ViewStoryScreen> {
                 Center(
                   child: MediaPlayerWidget(
                     mediaUrl: stories[selectedStoryIndex]!.mediaURL!,
+                    isVideo: stories[selectedStoryIndex]!.mediaType == 'video',
                   ),
                 ),
                 Row(
