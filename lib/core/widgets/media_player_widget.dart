@@ -5,8 +5,13 @@ import 'package:video_player/video_player.dart';
 class MediaPlayerWidget extends ConsumerStatefulWidget {
   final bool showControls;
   final String mediaUrl;
-  const MediaPlayerWidget(
-      {required this.mediaUrl, this.showControls = false, super.key});
+  final bool isVideo;
+  const MediaPlayerWidget({
+    required this.mediaUrl,
+    this.showControls = false,
+    required this.isVideo,
+    super.key,
+  });
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -19,17 +24,22 @@ class _MediaPlayerWidgetState extends ConsumerState<MediaPlayerWidget> {
 
   @override
   void initState() {
-    initVideo();
+    if (widget.isVideo) {
+      initVideo();
+    }
     super.initState();
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    if (widget.isVideo) {
+      _controller.dispose();
+    }
     super.dispose();
   }
 
   void initVideo() {
+    videoProgress = 0.0;
     _controller = VideoPlayerController.networkUrl(Uri.parse(widget.mediaUrl))
       ..initialize().then(
         (value) => setState(() {}),
@@ -45,17 +55,15 @@ class _MediaPlayerWidgetState extends ConsumerState<MediaPlayerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final mediaFormat = widget.mediaUrl.split(".").last;
-
     return Column(
       children: [
-        Expanded(child: mediaPlayer(mediaFormat)),
+        Expanded(child: mediaPlayer(widget.isVideo)),
         if (widget.showControls)
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
               children: [
-                if (mediaFormat == 'mp4')
+                if (widget.isVideo)
                   Slider(
                     value: videoProgress,
                     min: 0.0,
@@ -68,7 +76,7 @@ class _MediaPlayerWidgetState extends ConsumerState<MediaPlayerWidget> {
                       });
                     },
                   ),
-                if (mediaFormat == 'mp4')
+                if (widget.isVideo)
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -78,7 +86,7 @@ class _MediaPlayerWidgetState extends ConsumerState<MediaPlayerWidget> {
                           "${_controller.value.duration.inMinutes.remainder(60).toString().padLeft(2, '0')}:${_controller.value.duration.inSeconds.remainder(60).toString().padLeft(2, '0')}"),
                     ],
                   ),
-                if (mediaFormat == 'mp4')
+                if (widget.isVideo)
                   IconButton(
                     onPressed: () {
                       setState(() {
@@ -98,8 +106,8 @@ class _MediaPlayerWidgetState extends ConsumerState<MediaPlayerWidget> {
     );
   }
 
-  Widget mediaPlayer(String mediaFormat) {
-    if (mediaFormat == 'mp4') {
+  Widget mediaPlayer(bool isVideo) {
+    if (isVideo) {
       return Center(
         child: _controller.value.isInitialized
             ? AspectRatio(
@@ -108,9 +116,7 @@ class _MediaPlayerWidgetState extends ConsumerState<MediaPlayerWidget> {
               )
             : const Center(child: CircularProgressIndicator()),
       );
-    } else if (mediaFormat == 'jpg' ||
-        mediaFormat == 'png' ||
-        mediaFormat == 'jpeg') {
+    } else {
       return Center(
         child: Image.network(
           widget.mediaUrl,
@@ -119,8 +125,6 @@ class _MediaPlayerWidgetState extends ConsumerState<MediaPlayerWidget> {
           fit: BoxFit.contain,
         ),
       );
-    } else {
-      return Container();
     }
   }
 }
