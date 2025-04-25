@@ -91,6 +91,10 @@ class _UserDetailsScreenState extends ConsumerState<UserDetailsScreen> {
                                   if (hasValidPhoto) {
                                     context
                                         .push('/view-profile-pic/${user.uid}');
+                                  } else if (!hasValidPhoto &&
+                                      currentUser!.uid == widget.userId) {
+                                    context
+                                        .push('/view-profile-pic/${user.uid}');
                                   } else {
                                     Fluttertoast.showToast(
                                       msg: 'This user has no profile picture',
