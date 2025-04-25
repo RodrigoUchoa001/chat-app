@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:chatapp/core/localization/app_localization.dart';
 import 'package:chatapp/core/localization/locale_provider.dart';
 import 'package:chatapp/core/widgets/chat_text_button.dart';
@@ -52,7 +53,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                           const SizedBox(height: 64),
                           OnBoardAppbar(),
                           const SizedBox(height: 43.8),
-                          Text(
+                          AutoSizeText(
                             localization?.translate("onboarding-title1") ?? "",
                             style: TextStyle(
                               color: Colors.white,
@@ -60,8 +61,9 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                               height: 1.2,
                               fontFamily: FontFamily.caros,
                             ),
+                            maxLines: 2,
                           ),
-                          Text(
+                          AutoSizeText(
                             localization?.translate("onboarding-title2") ?? "",
                             style: TextStyle(
                               color: Colors.white,
@@ -70,6 +72,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                               fontFamily: FontFamily.caros,
                               fontWeight: FontWeight.bold,
                             ),
+                            maxLines: 2,
                           ),
                           const SizedBox(height: 16),
                           OnBoardSubtitle(),
