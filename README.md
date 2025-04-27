@@ -13,33 +13,33 @@ Inspired by the design of Alex Hylton, design available at [Chatting App UI kit 
 - Try Firebase Storage to store media sent by users and Stories *(Used Cloudinary instead)*.
 
 ## Functionalities
-- ✅✅ Users
-    - ✅✅ Login with Google. 
-    - ✅✅ Login and signup with email and password. 
-- ✅✅ Friends Requests
-    - ✅✅ Send friend requests to another accounts.
-    - ✅✅ Accept or decline friend requests by another accounts.
-- ✅✅ Chats
-    - ✅✅ Send and receive text privately with friend.
-    - ✅✅ Create groups with your friends.
-    - ✅✅ Send and receive text messages in groups with friends.
-    - ✅✅ Send media in private chats or groups. *(using cloudinary)*
-- ✅✅ Messages
-    - ✅✅ See if your friend saw your private message.
-    - ✅✅ See who saw your message in the group.
-- ✅✅ Stories
-    - ✅✅ Post stories for friends.
-    - ✅✅ List the stories of your friends.
-    - ✅✅ Like your friends stories.
-- ✅✅ App Language
-    - ✅✅ Be able to change the app language.
-    - ✅✅ Support English.
-    - ✅✅ Support Brazilian Portuguese.
-- ✅✅ App Theme
-    - ✅✅ Be able to change the app theme mode.
-    - ✅✅ Support light theme mode.
-    - ✅✅ Support dark theme mode.
-    - ✅✅ Support system theme mode.
+- Users
+    - Login with Google. 
+    - Login and signup with email and password. 
+- Friends Requests
+    - Send friend requests to another accounts.
+    - Accept or decline friend requests by another accounts.
+- Chats
+    - Send and receive text privately with friend.
+    - Create groups with your friends.
+    - Send and receive text messages in groups with friends.
+    - Send media in private chats or groups. *(using cloudinary)*
+- Messages
+    - See if your friend saw your private message.
+    - See who saw your message in the group.
+- Stories
+    - Post stories for friends.
+    - List the stories of your friends.
+    - Like your friends stories.
+- App Language
+    - Be able to change the app language.
+    - Support English.
+    - Support Brazilian Portuguese.
+- App Theme
+    - Be able to change the app theme mode.
+    - Support light theme mode.
+    - Support dark theme mode.
+    - Support system theme mode.
 
 ## Screenshots
 
