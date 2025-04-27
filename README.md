@@ -48,7 +48,7 @@ Inspired by the design of Alex Hylton, design available at [Chatting App UI kit 
 
 ### Log in screen
 <img src="screenshots/login.png" alt="screenshot" width="200"/>
-<img src="screenshots/login_google.png" alt="screenshot" width="200"/>
+<img src="screenshots/login_google.png" alt="screenshot" width="200" style="margin-left: 10px;"/>
 
 ### Sign in screen
 <img src="screenshots/signup.png" alt="screenshot" width="200"/>
@@ -76,7 +76,7 @@ Inspired by the design of Alex Hylton, design available at [Chatting App UI kit 
 
 ### App settings screen
 <img src="screenshots/app_setting_theme.png" alt="screenshot" width="200"/>
-<img src="screenshots/app_setting_lang.png" alt="screenshot" width="200"/>
+<img src="screenshots/app_setting_lang.png" alt="screenshot" width="200"  style="margin-left: 10px;"/>
 
 ## Build
 
