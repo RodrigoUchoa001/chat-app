@@ -77,3 +77,21 @@ Inspired by the design of Alex Hylton, design available at [Chatting App UI kit 
 ### App settings screen
 <img src="screenshots/app_setting_theme.png" alt="screenshot" width="200"/>
 <img src="screenshots/app_setting_lang.png" alt="screenshot" width="200"/>
+
+## Build
+
+To build, you need to initialize the Firebase in the app with your own Firebase Project. For this, use [FlutterFire](https://firebase.flutter.dev/docs/cli/).
+
+To make the media sending functionality to work, you must create an account on Cloudinary (It's free). After that, get the Cloud Name, API Key and API Secret and put in a *.env* file, in the project root, like that:
+
+```bash
+CLOUDINARY_CLOUD_NAME="abcde123"
+CLOUDINARY_API_KEY="abcde123"
+CLOUDINARY_API_SECRET="abcde123"
+```
+
+Finally, run the app pressing *F5* key on vscode, or with this command: 
+
+```bash
+flutter run
+```
