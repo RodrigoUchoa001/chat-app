@@ -42,4 +42,38 @@ Inspired by the design of Alex Hylton, design available at [Chatting App UI kit 
     - ✅✅ Support system theme mode.
 
 ## Screenshots
-*soon*
+
+### Onboarding screen
+<img src="screenshots/onboarding.png" alt="screenshot" width="200"/>
+
+### Log in screen
+<img src="screenshots/login.png" alt="screenshot" width="200"/>
+<img src="screenshots/login_google.png" alt="screenshot" width="200"/>
+
+### Sign in screen
+<img src="screenshots/signup.png" alt="screenshot" width="200"/>
+
+### Home screen
+<img src="screenshots/home.png" alt="screenshot" width="200"/>
+
+### Story screen
+<img src="screenshots/story.png" alt="screenshot" width="200"/>
+
+### Chat screen
+<img src="screenshots/group_chat_image.png" alt="screenshot" width="200"/>
+
+### New group screen
+<img src="screenshots/new_group.png" alt="screenshot" width="200"/>
+
+### Friends screen
+<img src="screenshots/friends.png" alt="screenshot" width="200"/>
+
+### Search friends and chats screen
+<img src="screenshots/search.png" alt="screenshot" width="200"/>
+
+### Settings screen
+<img src="screenshots/settings.png" alt="screenshot" width="200"/>
+
+### App settings screen
+<img src="screenshots/app_setting_theme.png" alt="screenshot" width="200"/>
+<img src="screenshots/app_setting_lang.png" alt="screenshot" width="200"/>
